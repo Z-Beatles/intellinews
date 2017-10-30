@@ -1,0 +1,14 @@
+/target/
+/.settings/
+/.idea/
+/log/
+
+.classpath
+.project
+.DS_Store
+.springBeans
+*.iml
+
+bower_components/
+node_modules/
+
