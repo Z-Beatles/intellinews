@@ -27,7 +27,7 @@ public class SessionController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "用户登录", notes = "登陆成功返回一个名为‘sid’的Cookie，如果设置记住我会返回一个" +
             "名为‘rememberMe’的Cookie用于实现自动登陆", produces = "application/json")
-    public Result<String> loginAction(
+    public Result loginAction(
             @ApiParam(name = "loginType", value = "登陆的类型")
             @RequestParam(required = false) String loginType,
             @ApiParam(name = "account", value = "账号", required = true)
@@ -65,7 +65,7 @@ public class SessionController extends BaseController {
             } catch (Exception e) {
                 logger.error("系统异常", e);
             }
-            return ResultUtil.error(ResultEnum.SYSTEM_ERROR);
+            return ResultUtil.error();
         }
         logger.warn("账号重复登陆，账号：{}", account);
         return ResultUtil.error(ResultEnum.REPEAT_LOGIN_ERROR, account);

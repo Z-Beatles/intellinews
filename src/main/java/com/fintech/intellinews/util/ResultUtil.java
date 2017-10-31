@@ -32,7 +32,7 @@ public class ResultUtil {
         return success(resultEnum, t);
     }
 
-    public static Result error(ResultEnum resultEnum) {
+    public static <T> Result<T> error(ResultEnum resultEnum) {
         return error(resultEnum, null);
     }
 

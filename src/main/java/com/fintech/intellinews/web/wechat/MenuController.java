@@ -36,7 +36,7 @@ public class MenuController extends BaseController {
             @RequestBody String menuStr) {
         AccessToken accessToken = securityService.getAccessToken();
         menuService.createMenu(accessToken.getToken(), menuStr);
-        return ResultUtil.success(ResultEnum.SUCCESS);
+        return ResultUtil.success();
     }
 
     @GetMapping
@@ -45,7 +45,7 @@ public class MenuController extends BaseController {
             "菜单信息", produces = "application/json")
     public Result listMenus() {
         AccessToken accessToken = securityService.getAccessToken();
-        return ResultUtil.success(ResultEnum.SUCCESS, menuService.queryMenu(accessToken.getToken()));
+        return ResultUtil.success(menuService.queryMenu(accessToken.getToken()));
     }
 
     @DeleteMapping
@@ -55,7 +55,7 @@ public class MenuController extends BaseController {
     public Result deleteMenus() {
         AccessToken accessToken = securityService.getAccessToken();
         menuService.deleteMenu(accessToken.getToken());
-        return ResultUtil.success(ResultEnum.SUCCESS);
+        return ResultUtil.success();
     }
 
 

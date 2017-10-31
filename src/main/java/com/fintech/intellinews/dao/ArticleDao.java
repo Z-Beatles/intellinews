@@ -16,5 +16,5 @@ public interface ArticleDao extends BaseDao<ArticleEntity> {
      * @param categoryId 目录id
      * @return 文章列表
      */
-    List<ArticleEntity> getArticlesByCategoryId(@Param(value="categoryId")Long categoryId);
+    List<ArticleEntity> getArticlesByCategoryId(@Param(value = "categoryId") Long categoryId);
 }
