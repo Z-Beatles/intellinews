@@ -9,4 +9,7 @@
         <!--开启驼峰命名转换 Table:create_time 到 Entity(createTime) -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
+    <typeAliases>
+            <package name="com.fintech.intellinews.entity" />
+    </typeAliases>
 </configuration>

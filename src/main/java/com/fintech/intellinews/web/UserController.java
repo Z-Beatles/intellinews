@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @Api(tags = "用户资源接口")
 @RequestMapping("/v1/users")
-public class UserController extends BaseController {
+public class UserController{
 
     @PostMapping
     @ResponseBody
@@ -30,6 +30,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "获取指定用户信息", notes = "用于查看指定用户的个人资料", produces = "application/json")
     public Result<UserInfoEntity> getUser(@PathVariable("userId") Long id) {
+
         return null;
     }
 

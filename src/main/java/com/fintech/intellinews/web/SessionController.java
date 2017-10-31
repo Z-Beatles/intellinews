@@ -49,7 +49,7 @@ public class SessionController extends BaseController {
                 return ResultUtil.success(ResultEnum.LOGIN_SUCCEED_INFO, account);
             } catch (UnknownAccountException e) {
                 logger.warn("账号{}不存在", account);
-                return ResultUtil.error(ResultEnum.ACCOUNT_NOTEXIT_ERROR, account);
+                return ResultUtil.error(ResultEnum.ACCOUNT_NOTEXIST_ERROR, account);
             } catch (LockedAccountException e) {
                 logger.warn("账号{}被锁定", account);
                 return ResultUtil.error(ResultEnum.ACCOUNT_LOCKED_ERROR, account);
