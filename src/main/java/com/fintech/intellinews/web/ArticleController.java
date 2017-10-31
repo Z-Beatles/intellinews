@@ -2,8 +2,12 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.entity.ArticleEntity;
+import com.fintech.intellinews.service.ArticleService;
+import com.fintech.intellinews.util.ResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +22,21 @@ import java.util.List;
 @RequestMapping("/v1/articles")
 public class ArticleController {
 
-    @GetMapping("/{categoryName}")
+    private ArticleService articleService;
+
+    @GetMapping("/{categoryId}/category")
     @ResponseBody
-    @ApiOperation(value = "按照目录查询文章列表详情", notes = "目录有待商量", produces = "application/json")
-    public Result<String> getArticlesByCategory(@PathVariable("categoryName") String categoryName) {
-        return null;
+    @ApiOperation(value = "根据目录id查询文章列表详情", notes = "目录有待商量", produces = "application/json")
+    public Result<List<ArticleEntity>> getArticlesByCategoryId(
+            @ApiParam(name = "categoryId", value = "目录id", required = true)
+            @PathVariable("categoryId") Long categoryId) {
+        return ResultUtil.success(articleService.getArticlesByCategoryId(categoryId));
     }
 
-    @GetMapping
+    @GetMapping("/{keyword}/keyword")
     @ResponseBody
-    @ApiOperation(value = "按照关键字查询文章列表详情", notes = "", produces = "application/json")
-    public Result<List<ArticleEntity>> getArticlesByKeyword(@RequestParam("keyword") String keyword) {
+    @ApiOperation(value = "根据关键字查询文章列表详情", notes = "", produces = "application/json")
+    public Result<List<ArticleEntity>> getArticlesByKeyword(@PathVariable("keyword") String keyword) {
         return null;
     }
 
@@ -39,4 +47,8 @@ public class ArticleController {
         return null;
     }
 
+    @Autowired
+    public void setArticleService(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 }

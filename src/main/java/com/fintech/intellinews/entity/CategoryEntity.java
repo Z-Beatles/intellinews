@@ -3,9 +3,6 @@ package com.fintech.intellinews.entity;
 import com.fintech.intellinews.base.BaseEntity;
 
 public class CategoryEntity extends BaseEntity {
-    /**
-     *
-     */
     private Long id;
 
     private String name;

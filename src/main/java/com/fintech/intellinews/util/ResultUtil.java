@@ -12,25 +12,24 @@ public class ResultUtil {
     private ResultUtil() {
     }
 
-    @SuppressWarnings("unchecked")
-    public static Result success(ResultEnum resultEnum, Object object) {
-        Result result = new Result();
+    public static <T> Result<T> success(ResultEnum resultEnum, T t) {
+        Result<T> result = new Result<>();
         result.setCode(resultEnum.getCode());
         result.setMessage(resultEnum.getMessage());
-        result.setData(object);
+        result.setData(t);
         return result;
     }
 
-    public static Result success(ResultEnum resultEnum) {
-        return success(resultEnum, null);
+    public static <T> Result<T> success(T t) {
+        return success(ResultEnum.SUCCESS, t);
     }
 
     public static Result success() {
         return success(ResultEnum.SUCCESS);
     }
 
-    public static Result error(ResultEnum resultEnum, Object object) {
-        return success(resultEnum,object);
+    public static <T> Result<T> error(ResultEnum resultEnum, T t) {
+        return success(resultEnum, t);
     }
 
     public static Result error(ResultEnum resultEnum) {
@@ -38,7 +37,7 @@ public class ResultUtil {
     }
 
     public static Result error() {
-        return error(ResultEnum.FAIL);
+        return error(ResultEnum.FAILED);
     }
 
     public static Result error(Integer code, String message) {

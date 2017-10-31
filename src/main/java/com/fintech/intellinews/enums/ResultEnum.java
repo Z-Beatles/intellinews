@@ -12,7 +12,7 @@ public enum ResultEnum {
      */
     SYSTEM_ERROR(-1, "系统错误"),
     SUCCESS(0, "succeed"),
-    FAIL(1, "failed"),
+    FAILED(1, "failed"),
 
     ACCOUNT_NOTEXIST_ERROR(1000, "账号不存在"),
     ACCOUNT_LOCKED_ERROR(1001, "帐号已锁定"),
@@ -30,6 +30,8 @@ public enum ResultEnum {
     ILLEGAL_MENU_TYPES_ERROR(40015, "不合法的菜单类型"),
     ILLEGAL_BUTTONS_NUMBER_ERROR(40016, "不合法的按钮个数"),
     NULL_OBJECT_ERROR(50001,"空对象");
+
+
 
     private Integer code;
     private String message;

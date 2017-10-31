@@ -6,59 +6,27 @@ import com.fintech.intellinews.base.BaseEntity;
  * @author wanghao
  */
 public class ArticleEntity extends BaseEntity {
-    /**
-     * 文章id
-     */
+    /** 文章id */
     private Long id;
-
-    /**
-     * 文章标题
-     */
+    /** 文章标题 */
     private String title;
-
-    /**
-     * 文章编辑者id
-     */
+    /** 文章编辑者id */
     private Long authorId;
-
-    /**
-     * 分类id
-     */
+    /** 分类id */
     private Long categoryId;
-
-    /**
-     * 关键字
-     */
+    /** 关键字 */
     private String keywords;
-
-    /**
-     * 浏览量，默认0
-     */
+    /** 浏览量，默认0 */
     private Integer browseCount;
-
-    /**
-     * 点赞量，默认0
-     */
+    /** 点赞量，默认0 */
     private Integer likeCount;
-
-    /**
-     * 踩数量，默认0
-     */
+    /** 踩数量，默认0 */
     private Integer dislikeCount;
-
-    /**
-     * 文章来源
-     */
+    /** 文章来源 */
     private String source;
-
-    /**
-     * 文章缩略图
-     */
+    /** 文章缩略图 */
     private String thumbnail;
-
-    /**
-     * 文章内容
-     */
+    /** 文章内容 */
     private String content;
 
     public Long getId() {
