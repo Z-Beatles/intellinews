@@ -5,15 +5,9 @@ package com.fintech.intellinews.model;
  * Created 2017-10-20 12:05
  */
 public class AccessToken {
-
-    /**
-     * 获取到的凭证
-     **/
+    /** 获取到的凭证 **/
     private String token;
-
-    /**
-     * 凭证有效时间
-     **/
+    /** 凭证有效时间 **/
     private int expiresIn;
 
     public String getToken() {
