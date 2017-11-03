@@ -17,7 +17,7 @@ public class ArticleEntity extends BaseEntity {
     /** 关键字 */
     private String keywords;
     /** 浏览量，默认0 */
-    private Integer browseCount;
+    private Integer viewCount;
     /** 点赞量，默认0 */
     private Integer likeCount;
     /** 踩数量，默认0 */
@@ -69,12 +69,12 @@ public class ArticleEntity extends BaseEntity {
         this.keywords = keywords;
     }
 
-    public Integer getBrowseCount() {
-        return browseCount;
+    public Integer getViewCount() {
+        return viewCount;
     }
 
-    public void setBrowseCount(Integer browseCount) {
-        this.browseCount = browseCount;
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
     }
 
     public Integer getLikeCount() {

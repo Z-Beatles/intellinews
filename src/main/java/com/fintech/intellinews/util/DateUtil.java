@@ -107,4 +107,21 @@ public class DateUtil {
         return toStringFromDate(date, "yyyy-MM-dd HH:mm:ss");
     }
 
+    public static String toCustomStringFromDate(Date date) {
+        if (date == null) {
+            return "";
+        }
+        long dateTime = (System.currentTimeMillis() - date.getTime()) / 1000;
+        if (dateTime <= 0) {
+            return "刚刚发布";
+        } else if (dateTime < 60) {
+            return dateTime + "秒前";
+        } else if (dateTime < 3600) {
+            return dateTime / 60 + "分钟前";
+        } else if (dateTime < 86400) {
+            return dateTime / 3600 + "小时前";
+        } else {
+            return toStringFromDate(date, "yyyy-MM-dd");
+        }
+    }
 }

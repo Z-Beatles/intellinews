@@ -14,7 +14,7 @@ public class ArticleDTO {
     /** 发布时间 */
     private String date;
     /** 关键字 */
-    private String keywords;
+    private Object keywords;
     /** 浏览量 */
     private Integer viewCount;
     /** 文章缩略图 */
@@ -52,11 +52,11 @@ public class ArticleDTO {
         this.date = date;
     }
 
-    public String getKeywords() {
+    public Object getKeywords() {
         return keywords;
     }
 
-    public void setKeywords(String keywords) {
+    public void setKeywords(Object keywords) {
         this.keywords = keywords;
     }
 

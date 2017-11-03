@@ -2,12 +2,16 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseController;
+import com.fintech.intellinews.dto.ArticleDTO;
+import com.fintech.intellinews.dto.ColumnDTO;
+import com.fintech.intellinews.service.ColumnService;
+import com.fintech.intellinews.util.ResultUtil;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author waynechu
@@ -18,10 +22,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/columns")
 public class ColumnController extends BaseController {
 
+    private ColumnService columnService;
+
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取所有专栏", produces = "application/json")
-    public Result<String> listColumns() {
-        return null;
+    @ApiOperation(value = "获取专栏信息", produces = "application/json")
+    public Result<PageInfo<ColumnDTO>> listColumns(
+            @ApiParam(name = "pageNum", value = "查询页数", required = true)
+            @RequestParam int pageNum,
+            @ApiParam(name = "pageSize", value = "查询条数", required = true)
+            @RequestParam int pageSize) {
+        return ResultUtil.success(columnService.listColumns(pageNum,pageSize));
+    }
+
+    @Autowired
+    public void setColumnService(ColumnService columnService) {
+        this.columnService = columnService;
     }
 }
