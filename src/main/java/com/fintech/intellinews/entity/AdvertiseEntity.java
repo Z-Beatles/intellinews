@@ -11,17 +11,18 @@ public class AdvertiseEntity extends BaseEntity {
      * 广告id
      */
     private Long id;
-
+    /**
+     * 广告是否上架
+     */
+    private Boolean active;
     /**
      * 广告标题
      */
     private String title;
-
     /**
      * 广告宣传图
      */
     private String imgUrl;
-
     /**
      * 广告链接地址
      */
@@ -33,6 +34,14 @@ public class AdvertiseEntity extends BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public String getTitle() {
@@ -58,5 +67,4 @@ public class AdvertiseEntity extends BaseEntity {
     public void setLinkUrl(String linkUrl) {
         this.linkUrl = linkUrl;
     }
-
 }

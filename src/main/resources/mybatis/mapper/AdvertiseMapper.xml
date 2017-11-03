@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fintech.intellinews.dao.AdvertiseDao">
+
+    <sql id="Base_Column_List">
+        id,
+        is_active as active,
+        title,
+        img_url,
+        link_url,
+        gmt_create,
+        gmt_modified
+    </sql>
+
+    <resultMap id="BaseResultMap" type="AdvertiseEntity">
+        <id property="id" column="id" javaType="Long" jdbcType="BIGINT"/>
+        <result property="active" column="active" jdbcType="TINYINT" javaType="Boolean"/>
+        <result property="title" column="title" jdbcType="VARCHAR" javaType="String"/>
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR" javaType="String"/>
+        <result property="linkUrl" column="link_url" jdbcType="VARCHAR" javaType="String"/>
+        <result property="gmtCreate" column="gmt_create" jdbcType="DATE" javaType="Date"/>
+        <result property="gmtModified" column="gmt_modified" jdbcType="DATE" javaType="Date"/>
+    </resultMap>
+
+    <!--查询-->
+    <select id="selectAdvertisements" resultMap="BaseResultMap" parameterType="AdvertiseEntity">
+
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_advertise
+        <where>
+            <if test="id!=null">
+                AND id=#{id}
+            </if>
+            <if test="active!=null">
+                AND is_active=#{active}
+            </if>
+            <if test="title!=null">
+                AND title=#{title}
+            </if>
+            <if test="imgUrl!=null">
+                AND img_url=#{imgUrl}
+            </if>
+            <if test="linkUrl!=null">
+                AND link_url=#{linkUrl}
+            </if>
+            <if test="gmtCreate!=null">
+                AND gmt_create=#{gmtCreate}
+            </if>
+            <if test="gmtModified!=null">
+                AND gmt_modified=#{gmtModified}
+            </if>
+        </where>
+
+    </select>
+
+</mapper>

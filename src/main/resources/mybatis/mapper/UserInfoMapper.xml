@@ -16,29 +16,27 @@
     <select id="select" resultType="com.fintech.intellinews.entity.UserInfoEntity">
         <include refid="Base_Column_List"/>
         <where>
-            <where>
-                <if test="id!=null">
-                    AND id=#{id}
-                </if>
-                <if test="username!=null">
-                    AND username=#{username}
-                </if>
-                <if test="nickname!=null">
-                    AND nickname=#{nickname}
-                </if>
-                <if test="mobile!=null">
-                    AND mobile=#{mobile}
-                </if>
-                <if test="email!=null">
-                    AND email=#{email}
-                </if>
-                <if test="gmtCreate!=null">
-                    AND gmt_create=#{gmtCreate}
-                </if>
-                <if test="gmtModified!=null">
-                    AND gmt_modified=#{gmtModified}
-                </if>
-            </where>
+            <if test="id!=null">
+                AND id=#{id}
+            </if>
+            <if test="username!=null">
+                AND username=#{username}
+            </if>
+            <if test="nickname!=null">
+                AND nickname=#{nickname}
+            </if>
+            <if test="mobile!=null">
+                AND mobile=#{mobile}
+            </if>
+            <if test="email!=null">
+                AND email=#{email}
+            </if>
+            <if test="gmtCreate!=null">
+                AND gmt_create=#{gmtCreate}
+            </if>
+            <if test="gmtModified!=null">
+                AND gmt_modified=#{gmtModified}
+            </if>
         </where>
     </select>
 </mapper>

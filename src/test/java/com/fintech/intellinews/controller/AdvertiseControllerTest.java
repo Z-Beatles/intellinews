@@ -1,10 +1,8 @@
 package com.fintech.intellinews.controller;
 
 import com.fintech.intellinews.Result;
-import com.fintech.intellinews.dao.UserInfoDao;
-import com.fintech.intellinews.entity.UserInfoEntity;
-import com.fintech.intellinews.entity.UserSetupEntity;
-import com.fintech.intellinews.service.UserSetupService;
+import com.fintech.intellinews.entity.AdvertiseEntity;
+import com.fintech.intellinews.web.AdvertiseController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,28 +11,25 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 /**
  * @author wanghao
- * create 2017-10-31 9:26
+ * create 2017-10-31 12:32
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = { "classpath*:spring/spring-context.xml"})
 @ActiveProfiles("develop")
-public class UserSetupControllerTest {
+public class AdvertiseControllerTest {
 
     @Autowired
-    private UserSetupService userSetupService;
-
-    @Autowired
-    private UserInfoDao userInfoDao;
+    private AdvertiseController advertiseController;
 
     @Test
-    public void currentUserSetup() throws UnsupportedEncodingException {
-        Result<UserSetupEntity> result = userSetupService.getCurrentUserSetup(1L);
-        System.out.println(result);
+    public void testAdsActive(){
+        Result<List<AdvertiseEntity>> result = advertiseController.listActiveAds();
+        System.out.println(result.getData().size());
     }
 
 }

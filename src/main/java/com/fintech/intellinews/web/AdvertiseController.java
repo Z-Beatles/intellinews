@@ -2,9 +2,12 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseController;
+import com.fintech.intellinews.dao.AdvertiseDao;
 import com.fintech.intellinews.entity.AdvertiseEntity;
+import com.fintech.intellinews.service.AdvertiseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +23,8 @@ import java.util.List;
 @Api(tags = "广告资源接口")
 @RequestMapping("/v1/ads")
 public class AdvertiseController extends BaseController {
+    @Autowired
+    private AdvertiseService advertiseService;
 
     @GetMapping
     @ResponseBody
@@ -31,8 +36,8 @@ public class AdvertiseController extends BaseController {
     @GetMapping("/active")
     @ResponseBody
     @ApiOperation(value = "获取首页上架广告", produces = "application/json")
-    public Result<String> listActiveAds() {
-        return null;
+    public Result<List<AdvertiseEntity>> listActiveAds() {
+        return advertiseService.selectActive();
     }
 
 }
