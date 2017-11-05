@@ -1,4 +1,4 @@
-package com.fintech.intellinews.handle;
+package com.fintech.intellinews.handler;
 
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.Result;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created 2017-10-19 11:21
  */
 @ControllerAdvice
-public class ExceptionHandle {
+public class AppExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(ExceptionHandle.class);
+    private static final Logger logger = LoggerFactory.getLogger(AppExceptionHandler.class);
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
