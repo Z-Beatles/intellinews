@@ -29,7 +29,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .title("企业资讯信息平台服务接口")
                 .description("企业咨询信息接口")
                 .termsOfServiceUrl("http://localhost:8080")
-                .contact(new Contact("Wayne Chu", "", "contact@haier.com"))
+                .contact(new Contact("Fintech", "", "contact@fintech.com"))
                 .version(API_VERSION)
                 .build();
     }
