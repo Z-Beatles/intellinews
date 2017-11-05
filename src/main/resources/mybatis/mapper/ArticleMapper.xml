@@ -4,7 +4,7 @@
 
     <select id="getArticlesByCategoryId" resultType="com.fintech.intellinews.entity.ArticleEntity">
         SELECT *
-        FROM t_article
+        FROM oi_article
         WHERE category_id = ${categoryId}
     </select>
 </mapper>
