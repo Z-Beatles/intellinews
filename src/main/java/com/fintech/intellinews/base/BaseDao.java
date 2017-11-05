@@ -1,7 +1,5 @@
 package com.fintech.intellinews.base;
 
-import java.util.List;
-
 /**
  * @author wanghao
  * create 2017-10-30 11:39
