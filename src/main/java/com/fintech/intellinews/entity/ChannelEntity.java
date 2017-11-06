@@ -2,16 +2,12 @@ package com.fintech.intellinews.entity;
 
 import com.fintech.intellinews.base.BaseEntity;
 
-import java.util.Date;
-
-public class PermissionEntity extends BaseEntity {
+public class ChannelEntity extends BaseEntity {
     private Long id;
 
     private String name;
 
     private String nameZh;
-
-    private String depict;
 
     public Long getId() {
         return id;
@@ -35,13 +31,5 @@ public class PermissionEntity extends BaseEntity {
 
     public void setNameZh(String nameZh) {
         this.nameZh = nameZh == null ? null : nameZh.trim();
-    }
-
-    public String getDepict() {
-        return depict;
-    }
-
-    public void setDepict(String depict) {
-        this.depict = depict == null ? null : depict.trim();
     }
 }

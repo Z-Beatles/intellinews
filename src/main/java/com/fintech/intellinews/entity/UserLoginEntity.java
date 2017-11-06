@@ -5,9 +5,9 @@ import com.fintech.intellinews.base.BaseEntity;
 public class UserLoginEntity extends BaseEntity {
     private Long id;
 
-    private String username;
-
     private String avatar;
+
+    private String username;
 
     private String passwordHash;
 
@@ -17,14 +17,6 @@ public class UserLoginEntity extends BaseEntity {
 
     private Integer passwordIteration;
 
-    private Boolean isDisabled;
-
-    private Boolean isLocked;
-
-    public UserLoginEntity() {
-        super();
-    }
-
     public Long getId() {
         return id;
     }
@@ -33,20 +25,20 @@ public class UserLoginEntity extends BaseEntity {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
-    }
-
     public String getAvatar() {
         return avatar;
     }
 
     public void setAvatar(String avatar) {
         this.avatar = avatar == null ? null : avatar.trim();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
     }
 
     public String getPasswordHash() {
@@ -79,21 +71,5 @@ public class UserLoginEntity extends BaseEntity {
 
     public void setPasswordIteration(Integer passwordIteration) {
         this.passwordIteration = passwordIteration;
-    }
-
-    public Boolean getIsDisabled() {
-        return isDisabled;
-    }
-
-    public void setIsDisabled(Boolean isDisabled) {
-        this.isDisabled = isDisabled;
-    }
-
-    public Boolean getIsLocked() {
-        return isLocked;
-    }
-
-    public void setIsLocked(Boolean isLocked) {
-        this.isLocked = isLocked;
     }
 }

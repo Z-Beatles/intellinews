@@ -2,18 +2,20 @@ package com.fintech.intellinews.entity;
 
 import com.fintech.intellinews.base.BaseEntity;
 
-import java.util.Date;
-
 public class UserInfoEntity extends BaseEntity {
     private Long id;
+
+    private Long userId;
 
     private String username;
 
     private String nickname;
 
-    private String mobile;
+    private String weixinId;
 
     private String email;
+
+    private String phone;
 
     public Long getId() {
         return id;
@@ -21,6 +23,14 @@ public class UserInfoEntity extends BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -39,12 +49,12 @@ public class UserInfoEntity extends BaseEntity {
         this.nickname = nickname == null ? null : nickname.trim();
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getWeixinId() {
+        return weixinId;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile == null ? null : mobile.trim();
+    public void setWeixinId(String weixinId) {
+        this.weixinId = weixinId == null ? null : weixinId.trim();
     }
 
     public String getEmail() {
@@ -53,5 +63,13 @@ public class UserInfoEntity extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
     }
 }

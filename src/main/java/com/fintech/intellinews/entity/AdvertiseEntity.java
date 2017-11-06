@@ -2,31 +2,16 @@ package com.fintech.intellinews.entity;
 
 import com.fintech.intellinews.base.BaseEntity;
 
-/**
- * @author waynechu
- * Created 2017-10-27 13:58
- */
 public class AdvertiseEntity extends BaseEntity {
-    /**
-     * 广告id
-     */
     private Long id;
-    /**
-     * 广告是否上架
-     */
-    private Boolean active;
-    /**
-     * 广告标题
-     */
+
     private String title;
-    /**
-     * 广告宣传图
-     */
-    private String imgUrl;
-    /**
-     * 广告链接地址
-     */
-    private String linkUrl;
+
+    private String url;
+
+    private String thumbnail;
+
+    private Boolean isActive;
 
     public Long getId() {
         return id;
@@ -36,35 +21,35 @@ public class AdvertiseEntity extends BaseEntity {
         this.id = id;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = title == null ? null : title.trim();
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setUrl(String url) {
+        this.url = url == null ? null : url.trim();
     }
 
-    public String getLinkUrl() {
-        return linkUrl;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setLinkUrl(String linkUrl) {
-        this.linkUrl = linkUrl;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail == null ? null : thumbnail.trim();
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }
