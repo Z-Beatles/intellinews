@@ -1,5 +1,6 @@
 package com.fintech.intellinews.service;
 
+import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.dao.UserConfigDao;
 import com.fintech.intellinews.entity.UserConfigEntity;
@@ -16,15 +17,15 @@ import org.springframework.stereotype.Service;
 public class UserConfigService {
     private UserConfigDao userConfigDao;
 
-    public Result<UserConfigEntity> getUserConfig(Long userId){
-        if (userId < 0){
-            return ResultUtil.error(ResultEnum.ACCOUNT_NOTEXIST_ERROR);
+    public UserConfigEntity getUserConfig(Long userId){
+        if (userId == null||userId < 0){
+            throw new AppException(ResultEnum.ACCOUNT_NOTEXIST_ERROR.getCode(),"账户不能再");
         }
         UserConfigEntity userConfigEntity = userConfigDao.getCurrentUserConfig(userId);
         if (userConfigEntity == null){
-            return ResultUtil.error(ResultEnum.NULL_OBJECT_ERROR);
+            throw new AppException(ResultEnum.NULL_OBJECT_ERROR.getCode(),"账户不能再");
         }
-        return ResultUtil.success(userConfigEntity);
+        return userConfigEntity;
     }
 
     @Autowired

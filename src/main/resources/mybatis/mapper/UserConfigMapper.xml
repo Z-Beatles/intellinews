@@ -16,9 +16,9 @@
         WHERE id = ${id}
     </select>
 
-    <select id="getCurrentUserConfig" parameterType="long" resultType="ChannelEntity">
+    <select id="getCurrentUserConfig" parameterType="long" resultType="UserConfigEntity">
         <include refid="Base_Column_Select"/>
-        WHERE userId = #{userId}
+        WHERE user_id = #{userId}
     </select>
 
 </mapper>

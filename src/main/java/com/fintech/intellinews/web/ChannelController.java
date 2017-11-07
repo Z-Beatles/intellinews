@@ -39,10 +39,7 @@ public class ChannelController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "获取指定用户的频道", produces = "application/json")
     public Result<UserConfigEntity> getUserChannelMenu(@PathVariable(value = "userId") Long id) {
-        if (id == null){
-            return ResultUtil.error(ResultEnum.ACCOUNT_NOTEXIST_ERROR);
-        }
-        return userConfigService.getUserConfig(id);
+        return ResultUtil.success(userConfigService.getUserConfig(id));
     }
 
     @Autowired
