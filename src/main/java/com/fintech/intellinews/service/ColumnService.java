@@ -2,13 +2,10 @@ package com.fintech.intellinews.service;
 
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.ColumnDao;
-import com.fintech.intellinews.dto.ColumnDTO;
-import com.fintech.intellinews.entity.ColumnEntity;
+import com.fintech.intellinews.vo.ColumnVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author waynechu
@@ -19,7 +16,7 @@ public class ColumnService extends BaseService {
 
     private ColumnDao columnDao;
 
-    public PageInfo<ColumnDTO> listColumns(int pageNum, int pageSize) {
+    public PageInfo<ColumnVO> listColumns(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         // List<ColumnEntity> columns = columnDao.select();
         return null;

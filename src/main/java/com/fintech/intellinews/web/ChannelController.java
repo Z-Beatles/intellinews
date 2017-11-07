@@ -4,7 +4,10 @@ import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseController;
 import com.fintech.intellinews.entity.ChannelEntity;
 import com.fintech.intellinews.entity.ColumnEntity;
+import com.fintech.intellinews.entity.UserConfigEntity;
+import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.ChannelService;
+import com.fintech.intellinews.service.UserConfigService;
 import com.fintech.intellinews.util.ResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +26,7 @@ import java.util.List;
 public class ChannelController extends BaseController {
 
     private ChannelService channelService;
+    private UserConfigService userConfigService;
 
     @GetMapping
     @ResponseBody
@@ -34,12 +38,20 @@ public class ChannelController extends BaseController {
     @GetMapping("/{userId}")
     @ResponseBody
     @ApiOperation(value = "获取指定用户的频道", produces = "application/json")
-    public Result<ColumnEntity> listUserCategories(@PathVariable(value = "userId") Long id) {
-        return null;
+    public Result<UserConfigEntity> getUserChannelMenu(@PathVariable(value = "userId") Long id) {
+        if (id == null){
+            return ResultUtil.error(ResultEnum.ACCOUNT_NOTEXIST_ERROR);
+        }
+        return userConfigService.getUserConfig(id);
     }
 
     @Autowired
     public void setChannelService(ChannelService channelService) {
         this.channelService = channelService;
+    }
+
+    @Autowired
+    public void setUserConfigService(UserConfigService userConfigService) {
+        this.userConfigService = userConfigService;
     }
 }

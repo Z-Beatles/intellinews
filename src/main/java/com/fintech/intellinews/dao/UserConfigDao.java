@@ -7,4 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserConfigDao extends BaseDao<UserConfigEntity> {
+    /**
+     * 查询当前用户的频道列表
+     * @param userId
+     * @return
+     */
+    UserConfigEntity getCurrentUserConfig(Long userId);
 }

@@ -2,8 +2,7 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseController;
-import com.fintech.intellinews.dto.ArticleDTO;
-import com.fintech.intellinews.dto.ColumnDTO;
+import com.fintech.intellinews.vo.ColumnVO;
 import com.fintech.intellinews.service.ColumnService;
 import com.fintech.intellinews.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
@@ -27,7 +26,7 @@ public class ColumnController extends BaseController {
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取专栏信息", produces = "application/json")
-    public Result<PageInfo<ColumnDTO>> listColumns(
+    public Result<PageInfo<ColumnVO>> listColumns(
             @ApiParam(name = "pageNum", value = "查询页数", required = true)
             @RequestParam int pageNum,
             @ApiParam(name = "pageSize", value = "查询条数", required = true)
