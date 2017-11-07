@@ -2,7 +2,10 @@ package com.fintech.intellinews.shiro;
 
 import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.service.UserService;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -25,7 +28,7 @@ public class ShiroRealm extends AuthorizingRealm {
     }
 
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
         LoginAuthenticationToken myToken = (LoginAuthenticationToken) token;
         UserLoginEntity userLoginEntity = userService.getByAccount(myToken.getUsername());
 
