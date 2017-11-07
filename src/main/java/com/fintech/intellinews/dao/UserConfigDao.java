@@ -5,6 +5,8 @@ import com.fintech.intellinews.entity.UserArticleEntity;
 import com.fintech.intellinews.entity.UserConfigEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserConfigDao extends BaseDao<UserConfigEntity> {
     /**
@@ -13,4 +15,6 @@ public interface UserConfigDao extends BaseDao<UserConfigEntity> {
      * @return
      */
     UserConfigEntity getCurrentUserConfig(Long userId);
+
+    List<UserConfigEntity> getSortEntity();
 }

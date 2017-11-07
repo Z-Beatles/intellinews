@@ -13,7 +13,15 @@
 
     <select id="selectById" resultType="UserConfigEntity">
         <include refid="Base_Column_Select"/>
-        WHERE id = ${id}
+        <trim>
+            <if test="id != null">
+
+            </if>
+        </trim>
+    </select>
+
+    <select id="getSortEntity" resultType="UserConfigEntity">
+        <include refid="Base_Column_Select"/>
     </select>
 
     <select id="getCurrentUserConfig" parameterType="long" resultType="UserConfigEntity">
