@@ -2,6 +2,7 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseController;
+import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.SessionService;
 import com.fintech.intellinews.util.ResultUtil;
 import io.swagger.annotations.Api;
@@ -36,14 +37,15 @@ public class SessionController extends BaseController {
             @RequestParam boolean rememberMe,
             @ApiParam(name = "host", value = "登陆IP")
             @RequestParam(required = false) String host) {
-        return ResultUtil.success(sessionService.doLogin(loginType, account, password, rememberMe, host));
+        return ResultUtil.success(ResultEnum.LOGIN_SUCCEED_INFO, sessionService.doLogin(loginType, account, password,
+                rememberMe, host));
     }
 
     @DeleteMapping
     @ResponseBody
     @ApiOperation(value = "用户退出", notes = "退出登录‘sid’Cookie将被删除，但保留‘rememberMe’", produces = "application/json")
     public Result logoutAction() {
-        return ResultUtil.success(sessionService.doLogout());
+        return ResultUtil.success(ResultEnum.LOGOUT_SUCCEED_INFO, sessionService.doLogout());
     }
 
     @Autowired

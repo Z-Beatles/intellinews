@@ -52,4 +52,9 @@
             </if>
         </where>
     </select>
+
+    <insert id="insert" parameterType="UserInfoEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO oi_user_info (user_id, username,nickname,weixin_id,email,phone,gmt_create)
+        VALUES (#{userId}, #{username},#{nickname},#{weixinId},#{email},#{phone},#{gmtCreate})
+    </insert>
 </mapper>
