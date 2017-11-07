@@ -26,23 +26,23 @@ public class ArticleController {
 
     private ArticleService articleService;
 
-    @GetMapping("/{categoryId}/category")
+    @GetMapping("/{channelId}/channel")
     @ResponseBody
-    @ApiOperation(value = "根据目录id查询文章列表详情", notes = "目录有待商量", produces = "application/json")
-    public Result<PageInfo<ArticleDTO>> getArticlesByCategoryId(
-            @ApiParam(name = "categoryId", value = "目录id", required = true)
-            @PathVariable("categoryId") Long categoryId,
+    @ApiOperation(value = "根据频道id查询文章列表详情", notes = "", produces = "application/json")
+    public Result<PageInfo<ArticleDTO>> getArticlesByChannelId(
+            @ApiParam(name = "channelId", value = "频道id", required = true)
+            @PathVariable("channelId") Long channelId,
             @ApiParam(name = "pageNum", value = "查询页数", required = true)
             @RequestParam int pageNum,
             @ApiParam(name = "pageSize", value = "查询条数", required = true)
             @RequestParam int pageSize) {
-        return ResultUtil.success(articleService.getArticlesByCategoryId(categoryId, pageNum, pageSize));
+        return ResultUtil.success(articleService.getArticlesByChannelId(channelId, pageNum, pageSize));
     }
 
     @GetMapping("/{keyword}/keyword")
     @ResponseBody
     @ApiOperation(value = "根据关键字查询文章列表详情", notes = "", produces = "application/json")
-    public Result<List<ArticleEntity>> getArticlesByKeyword(@PathVariable("keyword") String keyword) {
+    public Result<PageInfo<ArticleDTO>> getArticlesByKeyword(@PathVariable("keyword") String keyword) {
         return ResultUtil.success(articleService.getArticlesByKeyword(keyword));
     }
 

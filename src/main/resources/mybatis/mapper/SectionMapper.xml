@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fintech.intellinews.dao.UserSectionDao">
-
+<mapper namespace="com.fintech.intellinews.dao.SectionDao">
     <sql id="Base_Column_Select">
         SELECT
             id,
-            section_id,
-            user_id,
+            name,
+            create_by,
+            update_by,
             gmt_create,
             gmt_modified
-        FROM oi_user_section
+        FROM oi_section
     </sql>
 
-    <select id="selectById" resultType="UserSectionEntity">
+    <select id="selectById" resultType="SectionEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = ${id}
     </select>

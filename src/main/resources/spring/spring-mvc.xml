@@ -17,7 +17,6 @@
                 </property>
             </bean>
         </mvc:message-converters>
-
     </mvc:annotation-driven>
 
     <!-- 静态资源 -->

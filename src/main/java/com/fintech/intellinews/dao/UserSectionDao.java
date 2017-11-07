@@ -1,9 +1,9 @@
 package com.fintech.intellinews.dao;
 
 import com.fintech.intellinews.base.BaseDao;
-import com.fintech.intellinews.entity.UserLoginEntity;
+import com.fintech.intellinews.entity.UserSectionEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserLoginDao extends BaseDao<UserLoginEntity> {
+public interface UserSectionDao extends BaseDao<UserSectionEntity> {
 }

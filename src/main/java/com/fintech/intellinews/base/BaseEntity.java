@@ -11,13 +11,9 @@ import java.util.Date;
  * create 2017-10-30 11:25
  **/
 public class BaseEntity  implements Serializable {
-    /**
-     * 创建时间
-     */
+    /** 创建时间 */
     private Date gmtCreate;
-    /**
-     * 更新时间
-     */
+    /** 更新时间 */
     private Date gmtModified;
 
     public Date getGmtCreate() {

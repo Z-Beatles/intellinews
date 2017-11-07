@@ -1,13 +1,15 @@
 package com.fintech.intellinews.service;
 
+import com.fintech.intellinews.base.BaseService;
+import com.fintech.intellinews.dao.UserInfoDao;
 import com.fintech.intellinews.dao.UserLoginDao;
 import com.fintech.intellinews.entity.UserInfoEntity;
 import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.util.RegexUtil;
-import com.fintech.intellinews.base.BaseService;
-import com.fintech.intellinews.dao.UserInfoDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author waynechu
@@ -23,19 +25,20 @@ public class UserService extends BaseService {
     public UserLoginEntity getByAccount(String account) {
         UserInfoEntity userInfo = new UserInfoEntity();
         if (RegexUtil.matchMobile(account)) {
-            userInfo.setMobile(account);
+            userInfo.setPhone(account);
         } else if (RegexUtil.matchEmail(account)) {
             userInfo.setEmail(account);
         } else {
             userInfo.setUsername(account);
         }
-        UserInfoEntity userInfoEntity = userInfoDao.select(userInfo);
-        if (userInfoEntity == null) {
+        List<UserInfoEntity> userInfoEntities = userInfoDao.select(userInfo);
+        if (userInfoEntities == null) {
             return null;
         }
-        return userLoginDao.selectByUserName(userInfoEntity.getUsername());
+        UserLoginEntity userLoginEntity = new UserLoginEntity();
+        userLoginEntity.setUsername(userInfoEntities.get(0).getUsername());
+        return userLoginDao.select(userLoginEntity).get(0);
     }
-
 
     @Autowired
     public void setUserInfoDao(UserInfoDao userInfoDao) {

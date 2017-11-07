@@ -2,8 +2,12 @@ package com.fintech.intellinews.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.intellinews.base.BaseService;
+import com.fintech.intellinews.dao.ArticleChannelDao;
+import com.fintech.intellinews.dao.ArticleCountDao;
 import com.fintech.intellinews.dao.ArticleDao;
 import com.fintech.intellinews.dto.ArticleDTO;
+import com.fintech.intellinews.entity.ArticleChannelEntity;
+import com.fintech.intellinews.entity.ArticleCountEntity;
 import com.fintech.intellinews.entity.ArticleEntity;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
@@ -26,31 +30,54 @@ public class ArticleService extends BaseService {
 
     private ArticleDao articleDao;
 
+    private ArticleChannelDao articleChannelDao;
+
+    private ArticleCountDao articleCountDao;
+
     @SuppressWarnings("unchecked")
-    public PageInfo<ArticleDTO> getArticlesByCategoryId(Long categoryId, int pageNum, int pageSize) {
+    public PageInfo<ArticleDTO> getArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
+        ArticleChannelEntity entity = new ArticleChannelEntity();
+        entity.setChannelId(channelId);
         PageHelper.startPage(pageNum, pageSize);
-        List<ArticleEntity> articles = articleDao.getArticlesByCategoryId(categoryId);
+        List<ArticleChannelEntity> articleChannelEntities = articleChannelDao.select(entity);
+
         List<ArticleDTO> articleDTOS = new ArrayList<>();
-        for (ArticleEntity article : articles) {
+        for (ArticleChannelEntity articleChannelEntity : articleChannelEntities) {
+            Long articleId = articleChannelEntity.getArticleId();
+
+            ArticleEntity articleEntity = new ArticleEntity();
+            articleEntity.setId(articleId);
+            ArticleEntity articleEntity1 = articleDao.select(articleEntity).get(0);
+
+            ArticleCountEntity articleCountEntity = new ArticleCountEntity();
+            articleCountEntity.setArticleId(articleId);
+            ArticleCountEntity articleCountEntity1 = articleCountDao.select(articleCountEntity).get(0);
+
             ArticleDTO articleDTO = new ArticleDTO();
-            articleDTO.setId(article.getId());
-            articleDTO.setTitle(article.getTitle());
-            articleDTO.setSource(article.getSource());
-            Date gmtCreate = article.getGmtCreate();
+            articleDTO.setId(articleEntity1.getId());
+            articleDTO.setTitle(articleEntity1.getTitle());
+            articleDTO.setSource(articleEntity1.getSource());
+            Date gmtCreate = articleEntity1.getGmtCreate();
             articleDTO.setDate(DateUtil.toCustomStringFromDate(gmtCreate));
-            String keywords = article.getKeywords();
+            String keywords = articleEntity1.getKeywords();
             articleDTO.setKeywords(JacksonUtil.toArrayNodeFromString(objectMapper, keywords));
-            articleDTO.setViewCount(article.getViewCount());
-            articleDTO.setThumbnail(article.getThumbnail());
+            articleDTO.setViewCount(articleCountEntity1.getViewCount());
+            articleDTO.setThumbnail(articleEntity1.getThumbnail());
             articleDTOS.add(articleDTO);
         }
-        PageInfo page = new PageInfo(articles);
+        PageInfo page = new PageInfo(articleChannelEntities);
         page.setList(articleDTOS);
         return page;
     }
 
-    public List<ArticleEntity> getArticlesByKeyword(String keyword) {
+    public PageInfo<ArticleDTO> getArticlesByKeyword(String keyword) {
         return null;
+    }
+
+
+    @Autowired
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
     @Autowired
@@ -59,7 +86,12 @@ public class ArticleService extends BaseService {
     }
 
     @Autowired
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public void setArticleChannelDao(ArticleChannelDao articleChannelDao) {
+        this.articleChannelDao = articleChannelDao;
+    }
+
+    @Autowired
+    public void setArticleCountDao(ArticleCountDao articleCountDao) {
+        this.articleCountDao = articleCountDao;
     }
 }

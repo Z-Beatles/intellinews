@@ -1,6 +1,5 @@
 package com.fintech.intellinews.dao.cache;
 
-import com.fintech.intellinews.dao.CategoryDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = { "classpath*:spring/spring-context.xml"})
+@ContextConfiguration(locations = {"classpath*:spring/spring-context.xml"})
 @ActiveProfiles("develop")
 public class RedisDaoTest {
-
-    @Autowired
-    private CategoryDao categoryDao;
 
     @Autowired
     private RedisDao redisDao;

@@ -24,7 +24,7 @@ public class AdvertiseService extends BaseService {
     public Result<List<AdvertiseEntity>> selectActive(){
         AdvertiseEntity entity = new AdvertiseEntity();
         entity.setActive(true);
-        List<AdvertiseEntity> list = advertiseDao.selectAdvertisements(entity);
+        List<AdvertiseEntity> list = advertiseDao.select(entity);
         if (list == null || list.size() == 0){
             return ResultUtil.error(ResultEnum.NULL_OBJECT_ERROR);
         }

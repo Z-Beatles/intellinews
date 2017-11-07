@@ -1,35 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.fintech.intellinews.dao.UserInfoDao">
-    <sql id="Base_Column_List">
+    <sql id="Base_Column_Select">
         SELECT
             id,
+            user_id,
             username,
             nickname,
-            mobile,
+            weixin_id,
             email,
+            phone,
             gmt_create,
             gmt_modified
-        FROM t_user_info
+        FROM oi_user_info
     </sql>
 
-    <select id="select" resultType="com.fintech.intellinews.entity.UserInfoEntity">
-        <include refid="Base_Column_List"/>
+    <select id="selectById" resultType="UserInfoEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE id = ${id}
+    </select>
+
+    <select id="select" resultType="UserInfoEntity">
+        <include refid="Base_Column_Select"/>
         <where>
             <if test="id!=null">
                 AND id=#{id}
             </if>
-            <if test="username!=null">
+            <if test="userId!=null">
+                AND user_id=#{userId}
+            </if>
+            <if test="userame!=null">
                 AND username=#{username}
             </if>
             <if test="nickname!=null">
                 AND nickname=#{nickname}
             </if>
-            <if test="mobile!=null">
-                AND mobile=#{mobile}
+            <if test="weixinId!=null">
+                AND weixin_id=#{weixinId}
             </if>
             <if test="email!=null">
                 AND email=#{email}
+            </if>
+            <if test="phone!=null">
+                AND phone=#{phone}
             </if>
             <if test="gmtCreate!=null">
                 AND gmt_create=#{gmtCreate}

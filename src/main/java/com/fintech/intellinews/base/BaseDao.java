@@ -1,5 +1,7 @@
 package com.fintech.intellinews.base;
 
+import java.util.List;
+
 /**
  * @author wanghao
  * create 2017-10-30 11:39
@@ -34,9 +36,17 @@ public interface BaseDao<T> {
      * 通用查询方法
      *
      * @param t 实体
-     * @return 受影响的行数
+     * @return 查询结果
      */
-    T select(T t);
+    List<T> select(T t);
+
+    /**
+     * 根据id查询
+     *
+     * @param id id
+     * @return 查询结果
+     */
+    T selectById(Long id);
 
     /**
      * 通用统计方法

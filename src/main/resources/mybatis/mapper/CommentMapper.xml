@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fintech.intellinews.dao.CommentDao" >
+<mapper namespace="com.fintech.intellinews.dao.CommentDao">
+    <sql id="Base_Column_Select">
+        SELECT
+            id,
+            user_id,
+            article_id,
+            content,
+            like_count,
+            dislike_count,
+            is_delete,
+            gmt_create,
+            gmt_modified
+        FROM oi_comment
+    </sql>
+
+    <select id="selectById" resultType="CommentEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE id = ${id}
+    </select>
 
 </mapper>
