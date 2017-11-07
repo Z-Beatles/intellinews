@@ -36,10 +36,8 @@ public class ArticleService extends BaseService {
 
     @SuppressWarnings("unchecked")
     public PageInfo<ArticleVO> getArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
-        ArticleChannelEntity entity = new ArticleChannelEntity();
-        entity.setChannelId(channelId);
         PageHelper.startPage(pageNum, pageSize);
-        List<ArticleChannelEntity> articleChannelEntities = articleChannelDao.select(entity);
+        List<ArticleChannelEntity> articleChannelEntities = articleChannelDao.listByChannelId(channelId);
 
         List<ArticleVO> articleDTOS = new ArrayList<>();
         for (ArticleChannelEntity articleChannelEntity : articleChannelEntities) {
@@ -49,9 +47,7 @@ public class ArticleService extends BaseService {
             articleEntity.setId(articleId);
             ArticleEntity articleEntity1 = articleDao.select(articleEntity).get(0);
 
-            ArticleCountEntity articleCountEntity = new ArticleCountEntity();
-            articleCountEntity.setArticleId(articleId);
-            ArticleCountEntity articleCountEntity1 = articleCountDao.select(articleCountEntity).get(0);
+            ArticleCountEntity articleCountEntity = articleCountDao.getByArticleId(articleId);
 
             ArticleVO articleDTO = new ArticleVO();
             articleDTO.setId(articleEntity1.getId());
@@ -61,7 +57,7 @@ public class ArticleService extends BaseService {
             articleDTO.setDate(DateUtil.toCustomStringFromDate(gmtCreate));
             String keywords = articleEntity1.getKeywords();
             articleDTO.setKeywords(JacksonUtil.toArrayNodeFromString(objectMapper, keywords));
-            articleDTO.setViewCount(articleCountEntity1.getViewCount());
+            articleDTO.setViewCount(articleCountEntity.getViewCount());
             articleDTO.setThumbnail(articleEntity1.getThumbnail());
             articleDTOS.add(articleDTO);
         }

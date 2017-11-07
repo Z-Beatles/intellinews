@@ -20,4 +20,21 @@
         WHERE id = ${id}
     </select>
 
+    <select id="select" resultType="ArticleEntity">
+        <include refid="Base_Column_Select"/>
+        <where>
+            <if test="id!=null">
+                AND id=#{id}
+            </if>
+            <if test="title!=null">
+                AND title=#{title}
+            </if>
+            <if test="source!=null">
+                AND source=#{source}
+            </if>
+            <if test="gmtCreate!=null">
+                AND gmt_create=#{gmtCreate}
+            </if>
+        </where>
+    </select>
 </mapper>
