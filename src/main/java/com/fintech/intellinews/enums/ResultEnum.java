@@ -10,7 +10,7 @@ public enum ResultEnum {
     /**
      * 向前端返回的结果
      */
-    SYSTEM_ERROR(-1, "系统错误"),
+    SYSTEM_ERROR(-1, "系统异常"),
     SUCCESS(0, "succeed"),
     FAILED(1, "failed"),
 

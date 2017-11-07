@@ -18,4 +18,8 @@
         WHERE id = ${id}
     </select>
 
+    <select id="getByArticleId" resultType="com.fintech.intellinews.entity.ArticleCountEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE article_id = #{articleId}
+    </select>
 </mapper>
