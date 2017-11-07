@@ -1,10 +1,10 @@
-package com.fintech.intellinews.dto;
+package com.fintech.intellinews.vo;
 
 /**
  * @author waynechu
  * Created 2017-10-31 17:56
  */
-public class ColumnDTO {
+public class ColumnVO {
     /** 专栏id */
     private Long id;
     /** 专栏名称 */

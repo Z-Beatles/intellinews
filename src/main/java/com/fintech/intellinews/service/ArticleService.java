@@ -5,7 +5,7 @@ import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.ArticleChannelDao;
 import com.fintech.intellinews.dao.ArticleCountDao;
 import com.fintech.intellinews.dao.ArticleDao;
-import com.fintech.intellinews.dto.ArticleDTO;
+import com.fintech.intellinews.vo.ArticleVO;
 import com.fintech.intellinews.entity.ArticleChannelEntity;
 import com.fintech.intellinews.entity.ArticleCountEntity;
 import com.fintech.intellinews.entity.ArticleEntity;
@@ -35,11 +35,11 @@ public class ArticleService extends BaseService {
     private ArticleCountDao articleCountDao;
 
     @SuppressWarnings("unchecked")
-    public PageInfo<ArticleDTO> getArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
+    public PageInfo<ArticleVO> getArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleChannelEntity> articleChannelEntities = articleChannelDao.listByChannelId(channelId);
 
-        List<ArticleDTO> articleDTOS = new ArrayList<>();
+        List<ArticleVO> articleDTOS = new ArrayList<>();
         for (ArticleChannelEntity articleChannelEntity : articleChannelEntities) {
             Long articleId = articleChannelEntity.getArticleId();
 
@@ -49,7 +49,7 @@ public class ArticleService extends BaseService {
 
             ArticleCountEntity articleCountEntity = articleCountDao.getByArticleId(articleId);
 
-            ArticleDTO articleDTO = new ArticleDTO();
+            ArticleVO articleDTO = new ArticleVO();
             articleDTO.setId(articleEntity1.getId());
             articleDTO.setTitle(articleEntity1.getTitle());
             articleDTO.setSource(articleEntity1.getSource());
@@ -66,7 +66,7 @@ public class ArticleService extends BaseService {
         return page;
     }
 
-    public PageInfo<ArticleDTO> getArticlesByKeyword(String keyword) {
+    public PageInfo<ArticleVO> getArticlesByKeyword(String keyword) {
         return null;
     }
 
