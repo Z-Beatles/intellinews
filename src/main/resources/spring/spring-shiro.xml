@@ -12,7 +12,7 @@
     <!-- Cookie有效期 -->
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
         <constructor-arg value="sid"/>
-        <property name="httpOnly" value="true"/>
+        <!-- <property name="httpOnly" value="true"/> 禁止客户端读取-->
         <property name="maxAge" value="-1"/><!-- 浏览器关闭时Cookie失效 -->
     </bean>
 
