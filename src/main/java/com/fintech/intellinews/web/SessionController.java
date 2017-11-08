@@ -33,8 +33,8 @@ public class SessionController extends BaseController {
             @RequestParam String account,
             @ApiParam(name = "password", value = "密码", required = true)
             @RequestParam String password,
-            @ApiParam(name = "rememberMe", value = "记住我", defaultValue = "false", required = true)
-            @RequestParam boolean rememberMe,
+            @ApiParam(name = "rememberMe", value = "记住我", defaultValue = "false")
+            @RequestParam(defaultValue = "false") boolean rememberMe,
             @ApiParam(name = "host", value = "登陆IP")
             @RequestParam(required = false) String host) {
         return ResultUtil.success(ResultEnum.LOGIN_SUCCEED_INFO, sessionService.doLogin(loginType, account, password,

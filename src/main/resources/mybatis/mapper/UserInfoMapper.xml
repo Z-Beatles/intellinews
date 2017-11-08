@@ -17,7 +17,7 @@
 
     <select id="selectById" resultType="UserInfoEntity">
         <include refid="Base_Column_Select"/>
-        WHERE id = ${id}
+        WHERE id = #{id}
     </select>
 
     <select id="select" resultType="UserInfoEntity">

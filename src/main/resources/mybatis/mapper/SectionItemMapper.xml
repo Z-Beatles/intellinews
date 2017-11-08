@@ -13,7 +13,7 @@
 
     <select id="selectById" resultType="SectionItemEntity">
         <include refid="Base_Column_Select"/>
-        WHERE id = ${id}
+        WHERE id = #{id}
     </select>
 
 </mapper>

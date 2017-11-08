@@ -13,7 +13,7 @@
 
     <select id="selectById" resultType="ChannelEntity">
         <include refid="Base_Column_Select"/>
-        WHERE id = ${id}
+        WHERE id = #{id}
     </select>
 
 
