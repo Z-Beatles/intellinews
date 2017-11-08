@@ -25,7 +25,7 @@ public class UserServiceTest {
 
     @Test
     public void register() throws Exception {
-        userService.register("111111","111111");
+        userService.insertUser("111111","111111");
     }
 
 }
