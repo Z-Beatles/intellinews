@@ -1,6 +1,7 @@
 package com.fintech.intellinews.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.ArticleChannelDao;
 import com.fintech.intellinews.dao.ArticleCountDao;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,23 +42,19 @@ public class ArticleService extends BaseService {
         List<ArticleVO> articleDTOS = new ArrayList<>();
         for (ArticleChannelEntity articleChannelEntity : articleChannelEntities) {
             Long articleId = articleChannelEntity.getArticleId();
-
-            ArticleEntity articleEntity = new ArticleEntity();
-            articleEntity.setId(articleId);
-            ArticleEntity articleEntity1 = articleDao.select(articleEntity).get(0);
-
-            ArticleCountEntity articleCountEntity = articleCountDao.getByArticleId(articleId);
+            ArticleEntity articleEntity = articleDao.selectById(articleId);
+            ArticleCountEntity articleCountEntity = articleCountDao.selectByArticleId(articleId);
+            String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
+            ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
 
             ArticleVO articleDTO = new ArticleVO();
-            articleDTO.setId(articleEntity1.getId());
-            articleDTO.setTitle(articleEntity1.getTitle());
-            articleDTO.setSource(articleEntity1.getSource());
-            Date gmtCreate = articleEntity1.getGmtCreate();
-            articleDTO.setDate(DateUtil.toCustomStringFromDate(gmtCreate));
-            String keywords = articleEntity1.getKeywords();
-            articleDTO.setKeywords(JacksonUtil.toArrayNodeFromString(objectMapper, keywords));
+            articleDTO.setId(articleEntity.getId());
+            articleDTO.setTitle(articleEntity.getTitle());
+            articleDTO.setSource(articleEntity.getSource());
+            articleDTO.setDate(date);
+            articleDTO.setKeywords(keywords);
             articleDTO.setViewCount(articleCountEntity.getViewCount());
-            articleDTO.setThumbnail(articleEntity1.getThumbnail());
+            articleDTO.setThumbnail(articleEntity.getThumbnail());
             articleDTOS.add(articleDTO);
         }
         PageInfo page = new PageInfo(articleChannelEntities);

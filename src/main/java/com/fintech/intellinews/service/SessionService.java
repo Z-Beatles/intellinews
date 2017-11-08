@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SessionService extends BaseService {
 
-    public String doLogin(String loginType, String account, String password, boolean rememberMe, String host) {
+    public Long doLogin(String loginType, String account, String password, boolean rememberMe, String host) {
         Subject currentUser = SecurityUtils.getSubject();
         if (!currentUser.isAuthenticated()) {
             LoginAuthenticationToken token = new LoginAuthenticationToken(loginType, account, password, rememberMe,
@@ -25,8 +25,9 @@ public class SessionService extends BaseService {
             token.setRememberMe(rememberMe);
             try {
                 currentUser.login(token);
+                UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
                 logger.info("账号{}登陆成功", account);
-                return account;
+                return principal.getId();
             } catch (UnknownAccountException e) {
                 logger.warn("账号{}不存在", account);
                 throw new AppException(ResultEnum.ACCOUNT_NOTEXIST_ERROR);

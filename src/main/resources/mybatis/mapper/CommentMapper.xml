@@ -17,7 +17,7 @@
 
     <select id="selectById" resultType="CommentEntity">
         <include refid="Base_Column_Select"/>
-        WHERE id = ${id}
+        WHERE id = #{id}
     </select>
 
 </mapper>

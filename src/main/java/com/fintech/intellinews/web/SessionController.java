@@ -26,15 +26,15 @@ public class SessionController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "用户登录", notes = "登录类型暂时可不填写，登陆成功返回一个名为‘sid’的Cookie，如果设置记住我会返回一个" +
             "名为‘rememberMe’的Cookie用于实现自动登陆", produces = "application/json")
-    public Result<String> loginAction(
+    public Result<Long> loginAction(
             @ApiParam(name = "loginType", value = "登陆的类型")
             @RequestParam(required = false) String loginType,
             @ApiParam(name = "account", value = "账号", required = true)
             @RequestParam String account,
             @ApiParam(name = "password", value = "密码", required = true)
             @RequestParam String password,
-            @ApiParam(name = "rememberMe", value = "记住我", defaultValue = "false", required = true)
-            @RequestParam boolean rememberMe,
+            @ApiParam(name = "rememberMe", value = "记住我", defaultValue = "false")
+            @RequestParam(defaultValue = "false") boolean rememberMe,
             @ApiParam(name = "host", value = "登陆IP")
             @RequestParam(required = false) String host) {
         return ResultUtil.success(ResultEnum.LOGIN_SUCCEED_INFO, sessionService.doLogin(loginType, account, password,

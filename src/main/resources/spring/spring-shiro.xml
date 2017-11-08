@@ -12,7 +12,7 @@
     <!-- Cookie有效期 -->
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
         <constructor-arg value="sid"/>
-        <property name="httpOnly" value="true"/>
+        <property name="httpOnly" value="false"/><!-- 设置是否禁止客户端读取cookie-->
         <property name="maxAge" value="-1"/><!-- 浏览器关闭时Cookie失效 -->
     </bean>
 
@@ -35,7 +35,7 @@
     <!-- rememberMeCookie 有效期 -->
     <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
         <constructor-arg value="rememberMe"/>
-        <property name="httpOnly" value="true"/>
+        <property name="httpOnly" value="false"/><!-- 设置是否禁止客户端读取cookie-->
         <property name="maxAge" value="604800"/><!-- 7天 -->
     </bean>
 
