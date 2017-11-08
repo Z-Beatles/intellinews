@@ -14,8 +14,9 @@ public class FilterChainDefinitionMapBuilder {
 
         map.put("/static/**", "anon");
         map.put("/resources/**", "anon");
+        map.put("/v1/channels/**", "user");
 
-        //map.put("/admin/**", "roles[admin]");// 设置角色
+        //map.put("/channels/**", "roles[]");//admin 设置角色
         //map.put("/**", "perms[add]");// 设置权限
         return map;
     }
