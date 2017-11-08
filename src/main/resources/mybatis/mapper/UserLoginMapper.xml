@@ -50,4 +50,8 @@
         </where>
     </select>
 
+    <insert id="insert" parameterType="UserLoginEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO oi_user_login (username, password_hash, password_salt, password_algo, password_iteration, gmt_create)
+        VALUES (#{username}, #{passwordHash}, #{passwordSalt}, #{passwordAlgo}, #{passwordIteration}, #{gmtCreate})
+    </insert>
 </mapper>

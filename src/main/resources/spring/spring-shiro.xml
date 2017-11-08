@@ -49,8 +49,8 @@
     <bean id="jdbcRealm" class="com.fintech.intellinews.shiro.ShiroRealm">
         <property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                <property name="hashAlgorithmName" value="SHA-1"/>
-                <property name="hashIterations" value="1024"/>
+                <property name="hashAlgorithmName" value="${spring.shiro.algorithmName}"/>
+                <property name="hashIterations" value="${spring.shiro.hashIterations}"/>
             </bean>
         </property>
     </bean>
