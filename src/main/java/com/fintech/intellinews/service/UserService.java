@@ -52,7 +52,7 @@ public class UserService extends BaseService {
     }
 
     @Transactional
-    public String register(String username, String password) {
+    public String insertUser(String username, String password) {
         UserLoginEntity entity = new UserLoginEntity();
         entity.setUsername(username);
         List<UserLoginEntity> entities = userLoginDao.select(entity);

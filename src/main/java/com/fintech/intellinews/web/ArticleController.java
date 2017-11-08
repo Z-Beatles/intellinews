@@ -36,10 +36,13 @@ public class ArticleController {
             @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer limit,
             @ApiParam(name = "pageNum",value = "查询页数")
             @RequestParam(value = "pageNum",defaultValue = "1",required = false) Integer offset,
+            @ApiParam(name = "sort",value = "排序字段")
             @RequestParam(value = "sort",defaultValue = "time") String sort,
+            @ApiParam(name = "order",value = "DESC,ASC")
             @RequestParam(value = "order",defaultValue = "DESC",required = false) String order) {
         return ResultUtil.success(articleService.getArticlesByKeyword(keyword));
     }
+
     @GetMapping("/{articleId}")
     @ResponseBody
     @ApiOperation(value = "获取文章内容详情", produces = "application/json")
@@ -55,16 +58,6 @@ public class ArticleController {
     public Result<CommentEntity> getArticleComments(
             @ApiParam(name = "articleId",value = "文章id",required = true)
             @PathVariable(value = "articleId")Long id){
-        return null;
-    }
-
-
-    @PostMapping("/{articleId}/like")
-    @ResponseBody
-    @ApiOperation(value = "用户收藏文章", produces = "application/json")
-    public Result<String> likeArticle(
-            @ApiParam(name = "articleId",value = "文章id")
-            @PathVariable(value = "articleId") String id) {
         return null;
     }
 
