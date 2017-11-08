@@ -65,7 +65,7 @@ public class UserController {
     @PostMapping("/{userId}/footmarks")
     @ResponseBody
     @ApiOperation(value = "添加用户足迹", produces = "application/json")
-    public Result createUserFootmark(
+    public Result createUserFootmarks(
             @ApiParam(name = "userId",value = "用户id",required = true)
             @PathVariable(value = "userId")Long userId,
             @ApiParam(name = "contentId",value = "足迹内容id",required = true)
@@ -78,9 +78,9 @@ public class UserController {
         return null;
     }
 
-    @PostMapping("/{userId}/footmarks")
+    @GetMapping("/{userId}/footmarks")
     @ResponseBody
-    @ApiOperation(value = "添加用户足迹", produces = "application/json")
+    @ApiOperation(value = "查询用户足迹", produces = "application/json")
     public Result listUserFootmarks(
             @ApiParam(name = "userId",value = "用户id",required = true)
             @PathVariable(value = "userId")Long userId,
