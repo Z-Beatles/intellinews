@@ -31,7 +31,7 @@ import java.util.List;
 public class ChannelController extends BaseController {
 
     private ChannelService channelService;
-    private UserConfigService userConfigService;
+
     private ArticleService articleService;
 
     @GetMapping("/{channelId}/articles")

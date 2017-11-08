@@ -3,6 +3,7 @@ package com.fintech.intellinews.config;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import sun.security.provider.SHA;
 
 /**
  * @author waynechu
@@ -10,6 +11,12 @@ import org.springframework.stereotype.Component;
  */
 @Component("appProperties")
 public class AppProperties {
+
+    @Value("${spring.shiro.algorithmName}")
+    private String algorithmName;
+
+    @Value("${spring.shiro.hashIterations}")
+    private int hashIterations;
 
     @Value("${fintech.wechat.appId}")
     private String appId;
@@ -25,6 +32,22 @@ public class AppProperties {
 
     @Value("${fintech.wechat.encodingAESKey}")
     private String encodingAESKey;
+
+    public String getAlgorithmName() {
+        return algorithmName;
+    }
+
+    public void setAlgorithmName(String algorithmName) {
+        this.algorithmName = algorithmName;
+    }
+
+    public int getHashIterations() {
+        return hashIterations;
+    }
+
+    public void setHashIterations(int hashIterations) {
+        this.hashIterations = hashIterations;
+    }
 
     public String getAppId() {
         return appId;

@@ -37,6 +37,7 @@ public class ArticleController {
             @RequestParam(value = "order",defaultValue = "DESC") String order) {
         return ResultUtil.success(articleService.getArticlesByKeyword(keyword));
     }
+
     @GetMapping("/{articleId}")
     @ResponseBody
     @ApiOperation(value = "获取文章内容详情", produces = "application/json")
@@ -53,14 +54,13 @@ public class ArticleController {
         return null;
     }
 
-
-
     @PostMapping("/{articleId}/like")
     @ResponseBody
     @ApiOperation(value = "用户收藏文章", produces = "application/json")
     public Result<String> likeArticle(@PathVariable(value = "articleId") String id) {
         return null;
     }
+
 
     @Autowired
     public void setArticleService(ArticleService articleService) {
