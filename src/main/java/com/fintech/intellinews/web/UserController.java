@@ -38,18 +38,45 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @ResponseBody
-    @ApiOperation(value = "获取指定用户信息", notes = "用于查看指定用户的个人资料", produces = "application/json")
-    public Result<UserInfoEntity> getUser(@PathVariable("userId") Long id) {
+    @ApiOperation(value = "获取指定用户信息", produces = "application/json")
+    public Result<UserInfoEntity> getUser(
+            @PathVariable("userId") Long id) {
         return null;
     }
 
-    @GetMapping("/{userId}/like_notes")
+    @PostMapping("/{userId}/articles/{articleId}")
     @ResponseBody
-    @ApiOperation(value = "获取指定用户的收藏列表", notes = "用于查看指定用户的收藏列表", produces = "application/json")
-    public Result<List<ArticleEntity>> collectionArticles(@PathVariable("userId") Long id) {
+    @ApiOperation(value = "用户收藏文章", produces = "application/json")
+    public Result collectArticle(
+            @PathVariable("userId")Long uid,
+            @PathVariable("articleId")Long aid){
         return null;
     }
 
+    @PostMapping("/{userId}/articles")
+    @ResponseBody
+    @ApiOperation(value = "获取用户收藏文章", produces = "application/json")
+    public Result collectArticle(
+            @PathVariable("userId")Long uid){
+        return null;
+    }
+
+    @PostMapping("/{userId}/sections/{sectionId}")
+    @ResponseBody
+    @ApiOperation(value = "用户收藏条目", produces = "application/json")
+    public Result collectSection(
+            @PathVariable("userId")Long uid,
+            @PathVariable("sectionId")Long sid){
+        return null;
+    }
+
+    @GetMapping("/{userId}/sections/")
+    @ResponseBody
+    @ApiOperation(value = "获取用户收藏条目", produces = "application/json")
+    public Result getCollectSection(
+            @PathVariable("userId")Long uid){
+        return null;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {

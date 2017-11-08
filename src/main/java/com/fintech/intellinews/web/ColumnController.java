@@ -25,7 +25,7 @@ public class ColumnController extends BaseController {
 
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取专栏信息", produces = "application/json")
+    @ApiOperation(value = "获取专栏列表", produces = "application/json")
     public Result<PageInfo<ColumnVO>> listColumns(
             @ApiParam(name = "pageNum", value = "查询页数", required = true)
             @RequestParam int pageNum,

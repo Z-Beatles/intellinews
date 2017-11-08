@@ -1,6 +1,8 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.entity.ArticleEntity;
+import com.fintech.intellinews.entity.CommentEntity;
 import com.fintech.intellinews.vo.ArticleVO;
 import com.fintech.intellinews.service.ArticleService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -8,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,25 +26,34 @@ public class ArticleController {
 
     private ArticleService articleService;
 
-    @GetMapping("/{channelId}/channel")
+    @GetMapping("/search")
     @ResponseBody
-    @ApiOperation(value = "根据频道id查询文章列表详情", notes = "", produces = "application/json")
-    public Result<PageInfo<ArticleVO>> getArticlesByChannelId(
-            @ApiParam(name = "channelId", value = "频道id", required = true)
-            @PathVariable("channelId") Long channelId,
-            @ApiParam(name = "pageNum", value = "查询页数", required = true)
-            @RequestParam int pageNum,
-            @ApiParam(name = "pageSize", value = "查询条数", required = true)
-            @RequestParam int pageSize) {
-        return ResultUtil.success(articleService.getArticlesByChannelId(channelId, pageNum, pageSize));
-    }
-
-    @GetMapping("/{keyword}/keyword")
-    @ResponseBody
-    @ApiOperation(value = "根据关键字查询文章列表详情", notes = "", produces = "application/json")
-    public Result<PageInfo<ArticleVO>> getArticlesByKeyword(@PathVariable("keyword") String keyword) {
+    @ApiOperation(value = "通过关键字搜索文章", produces = "application/json")
+    public Result<PageInfo<ArticleVO>> getArticlesByKeyword(
+            @RequestParam(value = "keyword",required = true) String keyword,
+            @RequestParam(value = "limit",defaultValue = "10") Integer limit,
+            @RequestParam(value = "offset",defaultValue = "1") Integer offset,
+            @RequestParam(value = "sort",defaultValue = "time") String sort,
+            @RequestParam(value = "order",defaultValue = "DESC") String order) {
         return ResultUtil.success(articleService.getArticlesByKeyword(keyword));
     }
+    @GetMapping("/{articleId}")
+    @ResponseBody
+    @ApiOperation(value = "获取文章内容详情", produces = "application/json")
+    public Result<ArticleEntity> getArticle(
+            @PathVariable(value = "articleId",required = true)Long id){
+        return null;
+    }
+
+    @PostMapping("/{articleId}/comments")
+    @ResponseBody
+    @ApiOperation(value = "获取指定文章的评论", produces = "application/json")
+    public Result<CommentEntity> getArticleComments(
+            @PathVariable(value = "articleId",required = true)Long id){
+        return null;
+    }
+
+
 
     @PostMapping("/{articleId}/like")
     @ResponseBody

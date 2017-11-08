@@ -8,10 +8,7 @@ import com.fintech.intellinews.service.AdvertiseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,15 +25,9 @@ public class AdvertiseController extends BaseController {
 
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取所有广告资源", produces = "application/json")
-    public Result<List<AdvertiseEntity>> listAds() {
-        return null;
-    }
-
-    @GetMapping("/active")
-    @ResponseBody
     @ApiOperation(value = "获取首页上架广告", produces = "application/json")
-    public Result<List<AdvertiseEntity>> listActiveAds() {
+    public Result<List<AdvertiseEntity>> listActiveAds(
+            @RequestParam(value = "active",defaultValue = "true")Boolean active) {
         return advertiseService.selectActive();
     }
 

@@ -17,17 +17,11 @@ import java.util.List;
 @RequestMapping("/v1/keywords")
 public class KeywordController extends BaseController {
 
-    @GetMapping("/hot")
+    @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取热门搜索关键字列表", notes = "", produces = "application/json")
-    public Result<List<String>> listHotKeywords() {
-        return null;
-    }
-
-    @GetMapping("/{userId}")
-    @ResponseBody
-    @ApiOperation(value = "获取用户个人关键字列表", notes = "", produces = "application/json")
-    public Result<List<String>> listPersonalKeywords(@PathVariable(value = "userId") Long id) {
+    @ApiOperation(value = "获取搜索关键字", produces = "application/json")
+    public Result<List<String>> listHotKeywords(
+            @RequestParam(value = "type")String type) {
         return null;
     }
 }
