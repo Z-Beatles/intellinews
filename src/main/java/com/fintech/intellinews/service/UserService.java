@@ -2,6 +2,7 @@ package com.fintech.intellinews.service;
 
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.base.BaseService;
+import com.fintech.intellinews.config.AppProperties;
 import com.fintech.intellinews.dao.UserInfoDao;
 import com.fintech.intellinews.dao.UserLoginDao;
 import com.fintech.intellinews.entity.UserInfoEntity;
@@ -28,6 +29,8 @@ import java.util.List;
 @Service
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService extends BaseService {
+
+    private AppProperties appProperties;
 
     private UserInfoDao userInfoDao;
 
@@ -59,15 +62,18 @@ public class UserService extends BaseService {
         if (!entities.isEmpty()) {
             throw new AppException(ResultEnum.ACCOUNT_EXIST_ERROR);
         }
-        UserLoginEntity userLoginEntity = new UserLoginEntity();
         RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
         String salt = randomNumberGenerator.nextBytes().toHex();
-        String hexPassword = new SimpleHash("SHA-1", password, salt, 1024).toHex();
+        String algorithmName = appProperties.getAlgorithmName();
+        int hashIterations = appProperties.getHashIterations();
+        String hexPassword = new SimpleHash(algorithmName, password, salt, hashIterations).toHex();
+
+        UserLoginEntity userLoginEntity = new UserLoginEntity();
         userLoginEntity.setUsername(username);
         userLoginEntity.setPasswordHash(hexPassword);
         userLoginEntity.setPasswordSalt(salt);
-        userLoginEntity.setPasswordAlgo("SHA-1");
-        userLoginEntity.setPasswordIteration(1204);
+        userLoginEntity.setPasswordAlgo(algorithmName);
+        userLoginEntity.setPasswordIteration(hashIterations);
         userLoginEntity.setGmtCreate(new Date());
         userLoginDao.insert(userLoginEntity);
 
@@ -77,6 +83,12 @@ public class UserService extends BaseService {
         userInfoEntity.setGmtCreate(new Date());
         userInfoDao.insert(userInfoEntity);
         return username;
+    }
+
+
+    @Autowired
+    public void setAppProperties(AppProperties appProperties) {
+        this.appProperties = appProperties;
     }
 
     @Autowired

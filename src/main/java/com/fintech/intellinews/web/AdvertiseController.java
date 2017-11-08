@@ -21,7 +21,7 @@ import java.util.List;
 @Api(tags = "广告资源接口")
 @RequestMapping("/v1/ads")
 public class AdvertiseController extends BaseController {
-    @Autowired
+
     private AdvertiseService advertiseService;
 
     @GetMapping
@@ -33,4 +33,8 @@ public class AdvertiseController extends BaseController {
         return advertiseService.selectActive();
     }
 
+    @Autowired
+    public void setAdvertiseService(AdvertiseService advertiseService) {
+        this.advertiseService = advertiseService;
+    }
 }
