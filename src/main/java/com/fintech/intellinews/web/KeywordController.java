@@ -4,6 +4,7 @@ import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class KeywordController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "获取搜索关键字", produces = "application/json")
     public Result<List<String>> listHotKeywords(
+            @ApiParam(name = "type",value = "搜索类型(热门、最新)")
             @RequestParam(value = "type")String type) {
         return null;
     }

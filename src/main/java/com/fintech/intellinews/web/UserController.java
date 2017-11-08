@@ -36,10 +36,29 @@ public class UserController {
         return ResultUtil.success(ResultEnum.REGIST_SUCCESS_INFO, userService.register(username, password));
     }
 
+    @PutMapping("{userId}/channels")
+    @ResponseBody
+    @ApiOperation(value = "更新指定用户频道配置", produces = "application/json")
+    public Result updateUserChannels(
+            @ApiParam(name = "userId",value = "用户id",required = true)
+            @PathVariable(name = "userId")Long id){
+        return null;
+    }
+
+    @GetMapping("{userId}/channels")
+    @ResponseBody
+    @ApiOperation(value = "获取指定用户频道配置", produces = "application/json")
+    public Result getUserChannels(
+            @ApiParam(name = "userId",value = "用户id",required = true)
+            @PathVariable(name = "userId")Long id){
+        return null;
+    }
+
     @GetMapping("/{userId}")
     @ResponseBody
     @ApiOperation(value = "获取指定用户信息", produces = "application/json")
     public Result<UserInfoEntity> getUser(
+            @ApiParam(name = "userId", value = "用户id")
             @PathVariable("userId") Long id) {
         return null;
     }
@@ -48,7 +67,9 @@ public class UserController {
     @ResponseBody
     @ApiOperation(value = "用户收藏文章", produces = "application/json")
     public Result collectArticle(
+            @ApiParam(name = "userId", value = "用户id",required = true)
             @PathVariable("userId")Long uid,
+            @ApiParam(name = "articleId", value = "文章id",required = true)
             @PathVariable("articleId")Long aid){
         return null;
     }
@@ -57,6 +78,7 @@ public class UserController {
     @ResponseBody
     @ApiOperation(value = "获取用户收藏文章", produces = "application/json")
     public Result collectArticle(
+            @ApiParam(name = "userId", value = "用户id")
             @PathVariable("userId")Long uid){
         return null;
     }
@@ -65,7 +87,9 @@ public class UserController {
     @ResponseBody
     @ApiOperation(value = "用户收藏条目", produces = "application/json")
     public Result collectSection(
+            @ApiParam(name = "userId", value = "用户id",required = true)
             @PathVariable("userId")Long uid,
+            @ApiParam(name = "sectionId", value = "条目id",required = true)
             @PathVariable("sectionId")Long sid){
         return null;
     }
@@ -74,6 +98,7 @@ public class UserController {
     @ResponseBody
     @ApiOperation(value = "获取用户收藏条目", produces = "application/json")
     public Result getCollectSection(
+            @ApiParam(name = "sectionId", value = "条目id",required = true)
             @PathVariable("userId")Long uid){
         return null;
     }

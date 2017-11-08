@@ -7,6 +7,7 @@ import com.fintech.intellinews.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,9 +25,12 @@ public class SectionController {
     @ResponseBody
     @ApiOperation(value = "通过关键字搜索条目", produces = "application/json")
     public Result<PageInfo<SectionEntity>> getArticlesByKeyword(
-            @RequestParam(value = "keyword",required = true) String keyword,
-            @RequestParam(value = "limit",defaultValue = "10") Integer limit,
-            @RequestParam(value = "offset",defaultValue = "1") Integer offset) {
+            @ApiParam(name = "keyword",value = "搜索关键字",required = true)
+            @RequestParam(value = "keyword") String keyword,
+            @ApiParam(name = "pageSize",value = "搜索条数")
+            @RequestParam(value = "pageSize",defaultValue = "10") Integer limit,
+            @ApiParam(name = "pageNum",value = "搜索页数")
+            @RequestParam(value = "pageNum",defaultValue = "1") Integer offset) {
         return null;
     }
 

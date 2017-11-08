@@ -30,18 +30,22 @@ public class ArticleController {
     @ResponseBody
     @ApiOperation(value = "通过关键字搜索文章", produces = "application/json")
     public Result<PageInfo<ArticleVO>> getArticlesByKeyword(
-            @RequestParam(value = "keyword",required = true) String keyword,
-            @RequestParam(value = "limit",defaultValue = "10") Integer limit,
-            @RequestParam(value = "offset",defaultValue = "1") Integer offset,
+            @ApiParam(name = "keyword",value = "搜索关键字",required = true)
+            @RequestParam(value = "keyword") String keyword,
+            @ApiParam(name = "pageSize",value = "查询条数")
+            @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer limit,
+            @ApiParam(name = "pageNum",value = "查询页数")
+            @RequestParam(value = "pageNum",defaultValue = "1",required = false) Integer offset,
             @RequestParam(value = "sort",defaultValue = "time") String sort,
-            @RequestParam(value = "order",defaultValue = "DESC") String order) {
+            @RequestParam(value = "order",defaultValue = "DESC",required = false) String order) {
         return ResultUtil.success(articleService.getArticlesByKeyword(keyword));
     }
     @GetMapping("/{articleId}")
     @ResponseBody
     @ApiOperation(value = "获取文章内容详情", produces = "application/json")
     public Result<ArticleEntity> getArticle(
-            @PathVariable(value = "articleId",required = true)Long id){
+            @ApiParam(name = "articleId",value = "文章id",required = true)
+            @PathVariable(value = "articleId")Long id){
         return null;
     }
 
@@ -49,16 +53,18 @@ public class ArticleController {
     @ResponseBody
     @ApiOperation(value = "获取指定文章的评论", produces = "application/json")
     public Result<CommentEntity> getArticleComments(
-            @PathVariable(value = "articleId",required = true)Long id){
+            @ApiParam(name = "articleId",value = "文章id",required = true)
+            @PathVariable(value = "articleId")Long id){
         return null;
     }
-
 
 
     @PostMapping("/{articleId}/like")
     @ResponseBody
     @ApiOperation(value = "用户收藏文章", produces = "application/json")
-    public Result<String> likeArticle(@PathVariable(value = "articleId") String id) {
+    public Result<String> likeArticle(
+            @ApiParam(name = "articleId",value = "文章id")
+            @PathVariable(value = "articleId") String id) {
         return null;
     }
 

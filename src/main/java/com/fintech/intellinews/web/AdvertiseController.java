@@ -7,6 +7,7 @@ import com.fintech.intellinews.entity.AdvertiseEntity;
 import com.fintech.intellinews.service.AdvertiseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class AdvertiseController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "获取首页上架广告", produces = "application/json")
     public Result<List<AdvertiseEntity>> listActiveAds(
+            @ApiParam(name = "active", value = "广告的状态(上架、下架)")
             @RequestParam(value = "active",defaultValue = "true")Boolean active) {
         return advertiseService.selectActive();
     }
