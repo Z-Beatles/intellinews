@@ -31,8 +31,14 @@ import java.util.List;
 public class ChannelController extends BaseController {
 
     private ChannelService channelService;
-
     private ArticleService articleService;
+
+    @GetMapping
+    @ResponseBody
+    @ApiOperation(value = "获取所有频道", produces = "application/json")
+    public Result<List<ChannelEntity>> listChannels() {
+        return ResultUtil.success(channelService.listChanels());
+    }
 
     @GetMapping("/{channelId}/articles")
     @ResponseBody
@@ -40,18 +46,11 @@ public class ChannelController extends BaseController {
     public Result<PageInfo<ArticleVO>> getArticlesByChannelId(
             @ApiParam(name = "channelId", value = "频道id", required = true)
             @PathVariable("channelId") Long channelId,
-            @ApiParam(name = "pageNum", value = "查询页数", required = true)
-            @RequestParam int pageNum,
-            @ApiParam(name = "pageSize", value = "查询条数", required = true)
-            @RequestParam int pageSize) {
+            @ApiParam(name = "pageNum", value = "查询页数")
+            @RequestParam(name = "pageNum",defaultValue = "1") Integer pageNum,
+            @ApiParam(name = "pageSize", value = "查询条数")
+            @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize) {
         return ResultUtil.success(articleService.getArticlesByChannelId(channelId, pageNum, pageSize));
-    }
-
-    @GetMapping
-    @ResponseBody
-    @ApiOperation(value = "获取所有频道", produces = "application/json")
-    public Result<List<ChannelEntity>> listChannels() {
-        return ResultUtil.success(channelService.listChanels());
     }
 
     @Autowired

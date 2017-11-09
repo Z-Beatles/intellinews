@@ -69,9 +69,9 @@ public class UserController {
             @ApiParam(name = "userId",value = "用户id",required = true)
             @PathVariable(value = "userId")Long userId,
             @ApiParam(name = "contentId",value = "足迹内容id",required = true)
-            @RequestParam(name = "contentId") Long footmarkId,
+            @RequestParam(name = "contentId") Long contentId,
             @ApiParam(name = "contentType",value = "足迹内容类型(article、section)",required = true)
-            @RequestParam(name = "contentType") String footmarkType,
+            @RequestParam(name = "contentType") String contentType,
             @ApiParam(name = "source",value = "足迹来源(article、home、section)",required = true)
             @RequestParam(name = "source") String source){
 

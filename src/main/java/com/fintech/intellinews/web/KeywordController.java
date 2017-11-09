@@ -22,8 +22,12 @@ public class KeywordController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "获取搜索关键字", produces = "application/json")
     public Result<List<String>> listHotKeywords(
-            @ApiParam(name = "type",value = "搜索类型(热门、最新)")
-            @RequestParam(value = "type")String type) {
+            @ApiParam(name = "type",value = "搜索类型(hot)")
+            @RequestParam(name = "type",defaultValue = "hot")String type,
+            @ApiParam(name = "pageSize",value = "搜索条数")
+            @RequestParam(name = "pageSize",defaultValue = "10",required = false)Integer pageSize,
+            @ApiParam(name = "pageNum",value = "搜索页数")
+            @RequestParam(name = "pageNum",defaultValue = "1",required = false)Integer pageNum) {
         return null;
     }
 }

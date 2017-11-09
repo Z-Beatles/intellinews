@@ -24,16 +24,33 @@ public class SectionController {
     @GetMapping("/search")
     @ResponseBody
     @ApiOperation(value = "通过关键字搜索条目", produces = "application/json")
-    public Result<PageInfo<SectionEntity>> getArticlesByKeyword(
+    public Result<PageInfo<SectionEntity>> getSectionByKeyword(
             @ApiParam(name = "keyword",value = "搜索关键字",required = true)
-            @RequestParam(value = "keyword") String keyword,
+            @RequestParam(name = "keyword") String keyword,
             @ApiParam(name = "pageSize",value = "搜索条数")
-            @RequestParam(value = "pageSize",defaultValue = "10") Integer limit,
+            @RequestParam(name = "pageSize",defaultValue = "10") Integer limit,
             @ApiParam(name = "pageNum",value = "搜索页数")
-            @RequestParam(value = "pageNum",defaultValue = "1") Integer offset) {
+            @RequestParam(name = "pageNum",defaultValue = "1") Integer offset) {
         return null;
     }
 
+    @GetMapping("/{sectionId}")
+    @ResponseBody
+    @ApiOperation(value = "根据条目id查询条目详情", produces = "application/json")
+    public Result<PageInfo<SectionEntity>> getSectionById(
+            @ApiParam(name = "sectionId",value = "条目id",required = true)
+            @PathVariable(name = "sectionId") String keyword) {
+        return null;
+    }
+
+    @GetMapping("/{sectionId}/atlas")
+    @ResponseBody
+    @ApiOperation(value = "根据条目id查询图谱信息", produces = "application/json")
+    public Result<PageInfo<SectionEntity>> getSectionAtlas(
+            @ApiParam(name = "sectionId",value = "条目id",required = true)
+            @PathVariable(name = "sectionId") String keyword) {
+        return null;
+    }
 
 
 }
