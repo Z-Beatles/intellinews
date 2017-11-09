@@ -28,36 +28,36 @@ public class ArticleController {
 
     @GetMapping("/search")
     @ResponseBody
-    @ApiOperation(value = "通过关键字搜索文章", produces = "application/json")
+    @ApiOperation(value = "通过关键字搜索文章", notes = "默认返回3条搜索结果，按发布时间、浏览数排序", produces = "application/json")
     public Result<PageInfo<ArticleVO>> getArticlesByKeyword(
-            @ApiParam(name = "keyword",value = "搜索关键字",required = true)
+            @ApiParam(name = "keyword", value = "搜索关键字", required = true)
             @RequestParam(value = "keyword") String keyword,
-            @ApiParam(name = "pageSize",value = "查询条数")
-            @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer limit,
-            @ApiParam(name = "pageNum",value = "查询页数")
-            @RequestParam(value = "pageNum",defaultValue = "1",required = false) Integer offset,
-            @ApiParam(name = "sort",value = "排序字段")
-            @RequestParam(value = "sort",defaultValue = "time") String sort,
-            @ApiParam(name = "order",value = "DESC,ASC")
-            @RequestParam(value = "order",defaultValue = "DESC",required = false) String order) {
+            @ApiParam(name = "pageSize", value = "查询条数")
+            @RequestParam(value = "pageSize", defaultValue = "3", required = false) Integer limit,
+            @ApiParam(name = "pageNum", value = "查询页数")
+            @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer offset,
+            @ApiParam(name = "sort", value = "排序字段")
+            @RequestParam(value = "sort", defaultValue = "time") String sort,
+            @ApiParam(name = "order", value = "DESC,ASC")
+            @RequestParam(value = "order", defaultValue = "DESC", required = false) String order) {
         return ResultUtil.success(articleService.getArticlesByKeyword(keyword));
     }
 
     @GetMapping("/{articleId}")
     @ResponseBody
-    @ApiOperation(value = "获取文章内容详情", produces = "application/json")
+    @ApiOperation(value = "根据文章id获取文章内容详情", produces = "application/json")
     public Result<ArticleEntity> getArticle(
-            @ApiParam(name = "articleId",value = "文章id",required = true)
-            @PathVariable(value = "articleId")Long id){
+            @ApiParam(name = "articleId", value = "文章id", required = true)
+            @PathVariable(value = "articleId") Long id) {
         return null;
     }
 
     @PostMapping("/{articleId}/comments")
     @ResponseBody
-    @ApiOperation(value = "获取指定文章的评论", produces = "application/json")
+    @ApiOperation(value = "根据文章id获取文章的评论", produces = "application/json")
     public Result<CommentEntity> getArticleComments(
-            @ApiParam(name = "articleId",value = "文章id",required = true)
-            @PathVariable(value = "articleId")Long id){
+            @ApiParam(name = "articleId", value = "文章id", required = true)
+            @PathVariable(value = "articleId") Long id) {
         return null;
     }
 

@@ -3,7 +3,6 @@ package com.fintech.intellinews.web;
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.entity.SectionEntity;
 import com.fintech.intellinews.service.SectionService;
-import com.fintech.intellinews.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

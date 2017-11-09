@@ -42,7 +42,7 @@ public class ChannelController extends BaseController {
 
     @GetMapping("/{channelId}/articles")
     @ResponseBody
-    @ApiOperation(value = "获取指定频道的文章", produces = "application/json")
+    @ApiOperation(value = "据频道id获取频道下的文章", produces = "application/json")
     public Result<PageInfo<ArticleVO>> getArticlesByChannelId(
             @ApiParam(name = "channelId", value = "频道id", required = true)
             @PathVariable("channelId") Long channelId,

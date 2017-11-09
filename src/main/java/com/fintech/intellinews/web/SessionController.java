@@ -2,12 +2,15 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseController;
+import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.SessionService;
 import com.fintech.intellinews.util.ResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +40,13 @@ public class SessionController extends BaseController {
             @RequestParam(defaultValue = "false") boolean rememberMe,
             @ApiParam(name = "host", value = "登陆IP")
             @RequestParam(required = false) String host) {
-        return ResultUtil.success(ResultEnum.LOGIN_SUCCEED_INFO, sessionService.doLogin(loginType, account, password,
-                rememberMe, host));
+        Subject currentUser = SecurityUtils.getSubject();
+        if (!currentUser.isAuthenticated()) {
+            Long userId = sessionService.doLogin(loginType, account, password, rememberMe, host,currentUser);
+            return ResultUtil.success(ResultEnum.LOGIN_SUCCEED_INFO, userId);
+        }
+        UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
+        return ResultUtil.error(ResultEnum.REPEAT_LOGIN_ERROR, principal.getId());
     }
 
     @DeleteMapping

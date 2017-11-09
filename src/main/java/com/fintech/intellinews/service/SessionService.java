@@ -17,41 +17,38 @@ import org.springframework.stereotype.Service;
 @Service
 public class SessionService extends BaseService {
 
-    public Long doLogin(String loginType, String account, String password, boolean rememberMe, String host) {
-        Subject currentUser = SecurityUtils.getSubject();
-        if (!currentUser.isAuthenticated()) {
-            LoginAuthenticationToken token = new LoginAuthenticationToken(loginType, account, password, rememberMe,
-                    host);
-            token.setRememberMe(rememberMe);
-            try {
-                currentUser.login(token);
-                UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
-                logger.info("账号{}登陆成功", account);
-                return principal.getId();
-            } catch (UnknownAccountException e) {
-                logger.warn("账号{}不存在", account);
-                throw new AppException(ResultEnum.ACCOUNT_NOTEXIST_ERROR);
-            } catch (LockedAccountException e) {
-                logger.warn("账号{}被锁定", account);
-                throw new AppException(ResultEnum.ACCOUNT_LOCKED_ERROR);
-            } catch (DisabledAccountException e) {
-                logger.warn("账号{}已禁用", account);
-                throw new AppException(ResultEnum.ACCOUNT_DISABLED_ERROR);
-            } catch (IncorrectCredentialsException e) {
-                logger.warn("密码错误，账号：{}", account);
-                throw new AppException(ResultEnum.WRONG_PASSWORD_ERROR);
-            } catch (AuthenticationException e) {
-                logger.warn("登录失败", e);
-                throw new AppException(ResultEnum.LOGIN_FAILED_ERROR);
-            } catch (Exception e) {
-                logger.error("系统异常", e);
-            }
+    public Long doLogin(String loginType, String account, String password, boolean rememberMe, String host,
+                        Subject currentUser) {
+        LoginAuthenticationToken token = new LoginAuthenticationToken(loginType, account, password, rememberMe,
+                host);
+        token.setRememberMe(rememberMe);
+        try {
+            currentUser.login(token);
+            UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
+            logger.info("账号{}登陆成功", account);
+            return principal.getId();
+        } catch (UnknownAccountException e) {
+            logger.warn("账号{}不存在", account);
+            throw new AppException(ResultEnum.ACCOUNT_NOTEXIST_ERROR);
+        } catch (LockedAccountException e) {
+            logger.warn("账号{}被锁定", account);
+            throw new AppException(ResultEnum.ACCOUNT_LOCKED_ERROR);
+        } catch (DisabledAccountException e) {
+            logger.warn("账号{}已禁用", account);
+            throw new AppException(ResultEnum.ACCOUNT_DISABLED_ERROR);
+        } catch (IncorrectCredentialsException e) {
+            logger.warn("密码错误，账号：{}", account);
+            throw new AppException(ResultEnum.WRONG_PASSWORD_ERROR);
+        } catch (AuthenticationException e) {
+            logger.warn("登录失败", e);
+            throw new AppException(ResultEnum.LOGIN_FAILED_ERROR);
+        } catch (Exception e) {
+            logger.error("系统异常", e);
         }
-        logger.warn("账号重复登陆，账号：{}", account);
-        throw new AppException(ResultEnum.REPEAT_LOGIN_ERROR);
+        throw new AppException(ResultEnum.LOGIN_FAILED_ERROR);
     }
 
-    public String doLogout() {
+    public Long doLogout() {
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()) {
             UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
@@ -59,7 +56,7 @@ public class SessionService extends BaseService {
             try {
                 currentUser.logout();
                 logger.info("用户{}退出系统", account);
-                return account;
+                return principal.getId();
             } catch (Exception e) {
                 logger.error("系统异常", e);
             }
