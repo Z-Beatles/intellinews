@@ -16,7 +16,7 @@ public interface UserConfigDao extends BaseDao<UserConfigEntity> {
      * @param userId 用户id
      * @return 频道配置
      */
-    String getCurrentUserConfig(Long userId);
+    String getUserChannelConfig(Long userId);
 
     /**
      * 添加用户频道默认配置

@@ -9,6 +9,8 @@ public class UserLoginEntity extends BaseEntity {
 
     private String username;
 
+    private String nickname;
+
     private String passwordHash;
 
     private String passwordSalt;
@@ -39,6 +41,14 @@ public class UserLoginEntity extends BaseEntity {
 
     public void setUsername(String username) {
         this.username = username == null ? null : username.trim();
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPasswordHash() {

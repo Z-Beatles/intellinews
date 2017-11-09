@@ -41,8 +41,8 @@ public class UserConfigService {
     }
 
     @Transactional
-    public ArrayNode getCurrentUserConfig(Long id) {
-        String config = userConfigDao.getCurrentUserConfig(id);
+    public ArrayNode getUserChannelConfig(Long id) {
+        String config = userConfigDao.getUserChannelConfig(id);
         if (config == null) {
             String defaultConfig = Constant.DEFAULT_USER_CHANNEL_CONFIG;
             userConfigDao.insertUserConfig(id, defaultConfig, new Date());

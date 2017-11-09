@@ -9,8 +9,6 @@ public class UserInfoEntity extends BaseEntity {
 
     private String username;
 
-    private String nickname;
-
     private String weixinId;
 
     private String email;
@@ -39,14 +37,6 @@ public class UserInfoEntity extends BaseEntity {
 
     public void setUsername(String username) {
         this.username = username == null ? null : username.trim();
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
     }
 
     public String getWeixinId() {

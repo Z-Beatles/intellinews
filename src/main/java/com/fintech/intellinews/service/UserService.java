@@ -9,11 +9,13 @@ import com.fintech.intellinews.entity.UserInfoEntity;
 import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.util.RegexUtil;
+import com.fintech.intellinews.vo.UserInfoVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -57,7 +59,7 @@ public class UserService extends BaseService {
     }
 
     @Transactional
-    public String insertUser(String username, String password) {
+    public Long insertUser(String nickname, String username, String password) {
         UserLoginEntity entity = new UserLoginEntity();
         entity.setUsername(username);
         List<UserLoginEntity> entities = userLoginDao.select(entity);
@@ -72,6 +74,7 @@ public class UserService extends BaseService {
 
         UserLoginEntity userLoginEntity = new UserLoginEntity();
         userLoginEntity.setUsername(username);
+        userLoginEntity.setNickname(nickname);
         userLoginEntity.setPasswordHash(hexPassword);
         userLoginEntity.setPasswordSalt(salt);
         userLoginEntity.setPasswordAlgo(algorithmName);
@@ -84,15 +87,22 @@ public class UserService extends BaseService {
         userInfoEntity.setUsername(username);
         userInfoEntity.setGmtCreate(new Date());
         userInfoDao.insert(userInfoEntity);
-        return username;
+        return userLoginEntity.getId();
     }
 
     public void checkCurrentUser(Long id) {
         Subject currentUser = SecurityUtils.getSubject();
         UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
-        if (!principal.getId().equals(id)){
+        if (!principal.getId().equals(id)) {
             throw new AppException(ResultEnum.WITHOUT_PERMISSION_ERROR);
         }
+    }
+
+    public UserInfoVO getUserInfo(Long id) {
+        UserLoginEntity userLoginEntity = userLoginDao.selectById(id);
+        UserInfoVO userInfoVO = new UserInfoVO();
+        BeanUtils.copyProperties(userLoginEntity, userInfoVO);
+        return userInfoVO;
     }
 
     @Autowired

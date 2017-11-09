@@ -2,16 +2,14 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.entity.UserInfoEntity;
-import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.UserConfigService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
+import com.fintech.intellinews.vo.UserInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,13 +37,15 @@ public class UserController {
 
     @PostMapping
     @ResponseBody
-    @ApiOperation(value = "用户注册", notes = "注册接口", produces = "application/json")
-    public Result<String> register(
+    @ApiOperation(value = "用户注册", notes = "注册成功返回用户id", produces = "application/json")
+    public Result<Long> register(
+            @ApiParam(name = "nickname", value = "用户昵称")
+            @RequestParam(required = false, defaultValue = "还没有想好") String nickname,
             @ApiParam(name = "username", value = "用户名", required = true)
             @RequestParam String username,
             @ApiParam(name = "password", value = "密码", required = true)
             @RequestParam String password) {
-        return ResultUtil.success(ResultEnum.REGIST_SUCCESS_INFO, userService.insertUser(username, password));
+        return ResultUtil.success(ResultEnum.REGIST_SUCCESS_INFO, userService.insertUser(nickname, username, password));
     }
 
     @GetMapping("{userId}/channels")
@@ -54,17 +54,18 @@ public class UserController {
     public Result getUserChannels(
             @ApiParam(name = "userId", value = "用户id", required = true)
             @PathVariable(name = "userId") Long id) {
-       userService.checkCurrentUser(id);
-       return ResultUtil.success(userConfigService.getCurrentUserConfig(id));
+        userService.checkCurrentUser(id);
+        return ResultUtil.success(userConfigService.getUserChannelConfig(id));
     }
 
     @GetMapping("/{userId}")
     @ResponseBody
     @ApiOperation(value = "获取指定用户信息", produces = "application/json")
-    public Result<UserInfoEntity> getUser(
+    public Result<UserInfoVO> getUser(
             @ApiParam(name = "userId", value = "用户id", required = true)
             @PathVariable("userId") Long id) {
-        return null;
+        userService.checkCurrentUser(id);
+        return ResultUtil.success(userService.getUserInfo(id));
     }
 
     @PostMapping("/{userId}/footmarks")

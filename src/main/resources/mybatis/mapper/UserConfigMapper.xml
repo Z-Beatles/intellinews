@@ -29,7 +29,7 @@
         <include refid="Base_Column_Select"/>
     </select>
 
-    <select id="getCurrentUserConfig" parameterType="long" resultType="java.lang.String">
+    <select id="getUserChannelConfig" parameterType="long" resultType="java.lang.String">
         SELECT channel_config
         FROM oi_user_config
         WHERE user_id = #{userId}
