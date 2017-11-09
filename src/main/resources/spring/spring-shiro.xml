@@ -81,9 +81,9 @@
     <!-- 配置shiro的拦截规则，具体需要在FilterChainDefinitionMapBuilder中配置 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login"/>
-        <!--<property name="successUrl" value="/"/>-->
-        <property name="unauthorizedUrl" value="/unauthorized"/>
+        <property name="loginUrl" value="/v1/session"/>
+        <!--<property name="successUrl" value="/"/>
+        <property name="unauthorizedUrl" value="/unauthorized"/>-->
         <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>
     </bean>
 

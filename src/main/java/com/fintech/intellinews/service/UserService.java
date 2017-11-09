@@ -9,9 +9,11 @@ import com.fintech.intellinews.entity.UserInfoEntity;
 import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.util.RegexUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -46,7 +48,7 @@ public class UserService extends BaseService {
             userInfo.setUsername(account);
         }
         List<UserInfoEntity> userInfoEntities = userInfoDao.select(userInfo);
-        if (userInfoEntities == null) {
+        if (userInfoEntities.isEmpty()) {
             return null;
         }
         UserLoginEntity userLoginEntity = new UserLoginEntity();
@@ -85,6 +87,13 @@ public class UserService extends BaseService {
         return username;
     }
 
+    public void checkCurrentUser(Long id) {
+        Subject currentUser = SecurityUtils.getSubject();
+        UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
+        if (!principal.getId().equals(id)){
+            throw new AppException(ResultEnum.WITHOUT_PERMISSION_ERROR);
+        }
+    }
 
     @Autowired
     public void setAppProperties(AppProperties appProperties) {
@@ -100,4 +109,6 @@ public class UserService extends BaseService {
     public void setUserLoginDao(UserLoginDao userLoginDao) {
         this.userLoginDao = userLoginDao;
     }
+
+
 }

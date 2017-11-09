@@ -30,12 +30,6 @@ public class SessionService extends BaseService {
         } catch (UnknownAccountException e) {
             logger.warn("账号{}不存在", account);
             throw new AppException(ResultEnum.ACCOUNT_NOTEXIST_ERROR);
-        } catch (LockedAccountException e) {
-            logger.warn("账号{}被锁定", account);
-            throw new AppException(ResultEnum.ACCOUNT_LOCKED_ERROR);
-        } catch (DisabledAccountException e) {
-            logger.warn("账号{}已禁用", account);
-            throw new AppException(ResultEnum.ACCOUNT_DISABLED_ERROR);
         } catch (IncorrectCredentialsException e) {
             logger.warn("密码错误，账号：{}", account);
             throw new AppException(ResultEnum.WRONG_PASSWORD_ERROR);
@@ -45,7 +39,7 @@ public class SessionService extends BaseService {
         } catch (Exception e) {
             logger.error("系统异常", e);
         }
-        throw new AppException(ResultEnum.LOGIN_FAILED_ERROR);
+        return null;
     }
 
     public Long doLogout() {

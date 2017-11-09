@@ -26,6 +26,7 @@ import java.util.List;
  */
 @Service
 public class ArticleService extends BaseService {
+
     private ObjectMapper objectMapper;
 
     private ArticleDao articleDao;

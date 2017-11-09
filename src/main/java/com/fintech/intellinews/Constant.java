@@ -12,6 +12,10 @@ public class Constant {
     public static final String QUERY_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
     public static final String DELETE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
 
+    public static final String DEFAULT_USER_CHANNEL_CONFIG ="[{\"id\":1,\"name\":\"latest\",\"nameCN\":\"最新\"}," +
+            "{\"id\":2,\"name\":\"policy\",\"nameCN\":\"政策\"},{\"id\":3,\"name\":\"industry\",\"nameCN\":\"行业\"}," +
+            "{\"id\":4,\"name\":\"banking\",\"snameCN\":\"金融\"},{\"id\":5,\"name\":\"banking\",\"snameCN\":\"体育\"}]";
+
     /** 字符转Java失败 **/
     public static final int ERRORCODE_CONVERT_STR2JAVAERROR = 300001;
     /** Java转字符失败 **/

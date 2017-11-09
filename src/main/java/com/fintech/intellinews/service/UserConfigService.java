@@ -1,16 +1,21 @@
 package com.fintech.intellinews.service;
 
-import com.fintech.intellinews.AppException;
-import com.fintech.intellinews.Result;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fintech.intellinews.Constant;
 import com.fintech.intellinews.dao.UserConfigDao;
 import com.fintech.intellinews.entity.UserConfigEntity;
-import com.fintech.intellinews.enums.ResultEnum;
-import com.fintech.intellinews.util.ResultUtil;
+import com.fintech.intellinews.util.JacksonUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,29 +23,37 @@ import java.util.List;
  * create 2017-11-07 10:11
  **/
 @Service
+@Scope(scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserConfigService {
+
+    private ObjectMapper objectMapper;
+
     private UserConfigDao userConfigDao;
 
-    public PageInfo<List<UserConfigEntity>> listConfig(Integer pageNum,Integer pageSize){
-        if (pageNum == null || pageNum < 1){
+    public PageInfo<List<UserConfigEntity>> listConfig(Integer pageNum, Integer pageSize) {
+        if (pageNum == null || pageNum < 1) {
             pageNum = 1;
         }
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<UserConfigEntity> list = userConfigDao.getSortEntity();
         PageInfo<List<UserConfigEntity>> pageInfo = new PageInfo<>();
-
         return pageInfo;
     }
 
-    public UserConfigEntity getUserConfig(Long userId){
-        if (userId == null||userId < 0){
-            throw new AppException(ResultEnum.ACCOUNT_NOTEXIST_ERROR.getCode(),"账户不存在");
+    @Transactional
+    public ArrayNode getCurrentUserConfig(Long id) {
+        String config = userConfigDao.getCurrentUserConfig(id);
+        if (config == null) {
+            String defaultConfig = Constant.DEFAULT_USER_CHANNEL_CONFIG;
+            userConfigDao.insertUserConfig(id, defaultConfig, new Date());
+            return JacksonUtil.toArrayNodeFromString(objectMapper, defaultConfig);
         }
-        UserConfigEntity userConfigEntity = userConfigDao.getCurrentUserConfig(userId);
-        if (userConfigEntity == null){
-            throw new AppException(ResultEnum.NULL_OBJECT_ERROR.getCode(),"未查询到数据");
-        }
-        return userConfigEntity;
+        return JacksonUtil.toArrayNodeFromString(objectMapper, config);
+    }
+
+    @Autowired
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
     @Autowired

@@ -11,6 +11,11 @@
         FROM oi_user_config
     </sql>
 
+    <insert id="insertUserConfig">
+        INSERT INTO oi_user_config (user_id, channel_config, gmt_create)
+        VALUES (#{userId}, #{channelConfig}, #{gmtCreate})
+    </insert>
+
     <select id="selectById" resultType="UserConfigEntity">
         <include refid="Base_Column_Select"/>
         <trim>
@@ -24,8 +29,9 @@
         <include refid="Base_Column_Select"/>
     </select>
 
-    <select id="getCurrentUserConfig" parameterType="long" resultType="UserConfigEntity">
-        <include refid="Base_Column_Select"/>
+    <select id="getCurrentUserConfig" parameterType="long" resultType="java.lang.String">
+        SELECT channel_config
+        FROM oi_user_config
         WHERE user_id = #{userId}
     </select>
 
