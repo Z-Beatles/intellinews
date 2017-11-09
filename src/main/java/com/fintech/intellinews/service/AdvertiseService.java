@@ -1,14 +1,15 @@
 package com.fintech.intellinews.service;
 
-import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.AdvertiseDao;
 import com.fintech.intellinews.entity.AdvertiseEntity;
-import com.fintech.intellinews.enums.ResultEnum;
-import com.fintech.intellinews.util.ResultUtil;
+import com.fintech.intellinews.vo.AdvertiseVO;
+import com.github.pagehelper.PageHelper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,17 +19,25 @@ import java.util.List;
 @Service
 public class AdvertiseService extends BaseService {
 
-    @Autowired
     private AdvertiseDao advertiseDao;
 
-    public Result<List<AdvertiseEntity>> selectActive(){
+    public List<AdvertiseVO> selectAds(Integer pageNum, Integer pageSize, Boolean active) {
         AdvertiseEntity entity = new AdvertiseEntity();
-        entity.setActive(true);
-        List<AdvertiseEntity> list = advertiseDao.select(entity);
-        if (list == null || list.size() == 0){
-            return ResultUtil.error(ResultEnum.NULL_OBJECT_ERROR);
+        entity.setActive(active);
+        PageHelper.startPage(pageNum, pageSize);
+        List<AdvertiseEntity> advertiseEntities = advertiseDao.select(entity);
+
+        List<AdvertiseVO> advertiseVOS = new ArrayList<>();
+        for (AdvertiseEntity advertiseEntity : advertiseEntities) {
+            AdvertiseVO advertiseVO = new AdvertiseVO();
+            BeanUtils.copyProperties(advertiseEntity, advertiseVO);
+            advertiseVOS.add(advertiseVO);
         }
-        return ResultUtil.success(list);
+        return advertiseVOS;
     }
 
+    @Autowired
+    public void setAdvertiseDao(AdvertiseDao advertiseDao) {
+        this.advertiseDao = advertiseDao;
+    }
 }
