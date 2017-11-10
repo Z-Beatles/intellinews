@@ -2,20 +2,17 @@ package com.fintech.intellinews.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.ArticleChannelDao;
 import com.fintech.intellinews.dao.ArticleCountDao;
 import com.fintech.intellinews.dao.ArticleDao;
-import com.fintech.intellinews.util.ResultUtil;
-import com.fintech.intellinews.vo.ArticleVO;
+import com.fintech.intellinews.dao.CommentDao;
+import com.fintech.intellinews.vo.*;
 import com.fintech.intellinews.entity.ArticleChannelEntity;
 import com.fintech.intellinews.entity.ArticleCountEntity;
 import com.fintech.intellinews.entity.ArticleEntity;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
-import com.fintech.intellinews.vo.DetailsArticleVO;
-import com.fintech.intellinews.vo.SearchArticleVO;
 import com.fintech.intellinews.vo.ArticleVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,11 +20,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.soap.DetailEntry;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +40,11 @@ public class ArticleService extends BaseService {
 
     private ArticleCountDao articleCountDao;
 
+    private CommentDao commentDao;
+
+    /**
+     * 计算文章详情显示时间
+     */
     private static String[] TIME_UNIT = {"秒","分钟","小时"};
 
     @SuppressWarnings("unchecked")
@@ -107,7 +107,7 @@ public class ArticleService extends BaseService {
     @SuppressWarnings("unchecked")
     public PageInfo<SearchArticleVO> getArticlesByKeyword(String keyword,Integer pageNum,Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
-        List<ArticleEntity> searchList = articleDao.getArticleByKeyword(keyword);
+        List<ArticleEntity> searchList = articleDao.listArticleByKeyword(keyword);
         if (searchList == null){
             return new PageInfo<>();
         }
@@ -169,6 +169,17 @@ public class ArticleService extends BaseService {
         return details;
     }
 
+    /**
+     * 获取指定文章的评论信息
+     * @param articleId 文章id
+     * @param pageNum 分页索引
+     * @param PageSize 分页椰页容
+     * @return 评论的分页信息
+     */
+    public PageInfo<CommentVO> getArticleComments(Long articleId,Integer pageNum,Integer PageSize){
+        return null;
+    }
+
     @Autowired
     public void setObjectMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -187,5 +198,10 @@ public class ArticleService extends BaseService {
     @Autowired
     public void setArticleCountDao(ArticleCountDao articleCountDao) {
         this.articleCountDao = articleCountDao;
+    }
+
+    @Autowired
+    public void setCommentDao(CommentDao commentDao) {
+        this.commentDao = commentDao;
     }
 }

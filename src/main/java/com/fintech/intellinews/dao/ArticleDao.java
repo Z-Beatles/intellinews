@@ -9,7 +9,12 @@ import java.util.List;
 @Repository
 public interface ArticleDao extends BaseDao<ArticleEntity> {
 
-    List<ArticleEntity> getArticleByKeyword(String keyword);
+    /**
+     * 根据关键搜索文章
+     * @param keyword 关键字
+     * @return 文章列表
+     */
+    List<ArticleEntity> listArticleByKeyword(String keyword);
 
     /**
      * 获取最新文章列表
@@ -17,4 +22,5 @@ public interface ArticleDao extends BaseDao<ArticleEntity> {
      * @return 文章列表
      */
     List<ArticleEntity> listLatestArticles();
+
 }

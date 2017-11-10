@@ -1,9 +1,12 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.dao.CommentDao;
 import com.fintech.intellinews.entity.CommentEntity;
 import com.fintech.intellinews.service.ArticleService;
+import com.fintech.intellinews.service.CommentService;
 import com.fintech.intellinews.util.ResultUtil;
+import com.fintech.intellinews.vo.CommentVO;
 import com.fintech.intellinews.vo.DetailsArticleVO;
 import com.fintech.intellinews.vo.SearchArticleVO;
 import com.github.pagehelper.PageInfo;
@@ -12,6 +15,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author waynechu
@@ -24,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleController {
 
     private ArticleService articleService;
+
+    private CommentService commentService;
 
     @GetMapping("/search")
     @ResponseBody
@@ -50,18 +57,23 @@ public class ArticleController {
     @PostMapping("/{articleId}/comments")
     @ResponseBody
     @ApiOperation(value = "根据文章id获取文章的评论", produces = "application/json")
-    public Result<CommentEntity> getArticleComments(
+    public Result<PageInfo<CommentVO>> getArticleComments(
             @ApiParam(name = "articleId", value = "文章id", required = true)
             @PathVariable(value = "articleId") Long id,
             @ApiParam(name = "pageNum",value = "搜索页数")
             @RequestParam(name = "pageNum",defaultValue = "1",required = false)Integer pageNum,
             @ApiParam(name = "pageNum",value = "搜索页数")
             @RequestParam(name = "pageSize",defaultValue = "3",required = false)Integer pageSize) {
-        return null;
+        return ResultUtil.success(commentService.listArticleComments(id,pageNum,pageSize));
     }
 
     @Autowired
     public void setArticleService(ArticleService articleService) {
         this.articleService = articleService;
+    }
+
+    @Autowired
+    public void setCommentService(CommentDao commentDao) {
+        this.commentService = commentService;
     }
 }

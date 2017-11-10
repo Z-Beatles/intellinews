@@ -20,4 +20,9 @@
         WHERE id = #{id}
     </select>
 
+    <select id="listArticleComments" resultType="CommentEntity" parameterType="Long">
+        <include refid="Base_Column_Select"></include>
+        WHERE article_id = #{articleId}
+    </select>
+
 </mapper>
