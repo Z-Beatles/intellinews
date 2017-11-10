@@ -42,4 +42,9 @@
             </if>
         </where>
     </select>
+
+    <select id="listLatestArticles" resultType="com.fintech.intellinews.entity.ArticleEntity">
+        <include refid="Base_Column_Select"/>
+        ORDER BY gmt_create DESC
+    </select>
 </mapper>

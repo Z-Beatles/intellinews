@@ -1,6 +1,7 @@
 package com.fintech.intellinews.service;
 
 import com.fintech.intellinews.AppException;
+import com.fintech.intellinews.Constant;
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.config.AppProperties;
 import com.fintech.intellinews.dao.UserInfoDao;
@@ -75,6 +76,7 @@ public class UserService extends BaseService {
         UserLoginEntity userLoginEntity = new UserLoginEntity();
         userLoginEntity.setUsername(username);
         userLoginEntity.setNickname(nickname);
+        userLoginEntity.setAvatar(Constant.DEFAULT_USER_AVATAR);
         userLoginEntity.setPasswordHash(hexPassword);
         userLoginEntity.setPasswordSalt(salt);
         userLoginEntity.setPasswordAlgo(algorithmName);

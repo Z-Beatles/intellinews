@@ -16,6 +16,7 @@ import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.vo.DetailsArticleVO;
 import com.fintech.intellinews.vo.SearchArticleVO;
+import com.fintech.intellinews.vo.ArticleVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -48,6 +49,9 @@ public class ArticleService extends BaseService {
 
     @SuppressWarnings("unchecked")
     public PageInfo<ArticleVO> getArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
+        if (channelId == 1) {
+            return getLatestArticles(pageNum, pageSize);
+        }
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleChannelEntity> articleChannelEntities = articleChannelDao.listByChannelId(channelId);
 
@@ -70,6 +74,32 @@ public class ArticleService extends BaseService {
             articleDTOS.add(articleDTO);
         }
         PageInfo page = new PageInfo(articleChannelEntities);
+        page.setList(articleDTOS);
+        return page;
+    }
+
+    @SuppressWarnings("unchecked")
+    private PageInfo<ArticleVO> getLatestArticles(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<ArticleEntity> articleEntities = articleDao.listLatestArticles();
+        List<ArticleVO> articleDTOS = new ArrayList<>();
+        for (ArticleEntity articleEntity : articleEntities) {
+            Long articleId = articleEntity.getId();
+            ArticleCountEntity articleCountEntity = articleCountDao.selectByArticleId(articleId);
+            String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
+            ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
+
+            ArticleVO articleDTO = new ArticleVO();
+            articleDTO.setId(articleEntity.getId());
+            articleDTO.setTitle(articleEntity.getTitle());
+            articleDTO.setSource(articleEntity.getSource());
+            articleDTO.setDate(date);
+            articleDTO.setKeywords(keywords);
+            articleDTO.setViewCount(articleCountEntity.getViewCount());
+            articleDTO.setThumbnail(articleEntity.getThumbnail());
+            articleDTOS.add(articleDTO);
+        }
+        PageInfo page = new PageInfo(articleEntities);
         page.setList(articleDTOS);
         return page;
     }
