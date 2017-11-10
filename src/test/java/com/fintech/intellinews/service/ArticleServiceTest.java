@@ -34,13 +34,12 @@ public class ArticleServiceTest {
     public void beforeTest(){
         start = System.currentTimeMillis();
     }
-
+    @Test
     public void testSearch(){
-        PageInfo<SearchArticleVO> pageInfo = articleService.getArticlesByKeyword("%中%",1,10);
+        PageInfo<SearchArticleVO> pageInfo = articleService.getArticlesByKeyword("中",1,10);
         System.out.println(pageInfo);
     }
 
-    @Test
     public void testDetails(){
         DetailsArticleVO detailsArticleVO = articleService.getDetailsArticleById(16L);
         System.out.println(detailsArticleVO);
