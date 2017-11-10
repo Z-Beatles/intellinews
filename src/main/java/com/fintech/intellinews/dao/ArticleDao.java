@@ -9,4 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ArticleDao extends BaseDao<ArticleEntity> {
+
+    List<ArticleEntity> getArticleByKeyword(String keyword);
+
 }
