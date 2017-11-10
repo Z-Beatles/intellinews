@@ -29,8 +29,7 @@ public enum ResultEnum {
     CREATE_MENU_ERROR(40000, "自定义菜单失败"),
     DELETE_MENU_ERROR(40001, "删除自定义菜单失败"),
     ILLEGAL_MENU_TYPES_ERROR(40015, "不合法的菜单类型"),
-    ILLEGAL_BUTTONS_NUMBER_ERROR(40016, "不合法的按钮个数"),
-    NULL_OBJECT_ERROR(50001, "空对象");
+    ILLEGAL_BUTTONS_NUMBER_ERROR(40016, "不合法的按钮个数");
 
     private Integer code;
     private String message;
