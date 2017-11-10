@@ -73,7 +73,7 @@ public class ArticleController {
     }
 
     @Autowired
-    public void setCommentService(CommentDao commentDao) {
+    public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
     }
 }

@@ -1,8 +1,12 @@
 package com.fintech.intellinews.service;
 
+import com.fintech.intellinews.Result;
 import com.fintech.intellinews.vo.CommentVO;
 import com.fintech.intellinews.vo.DetailsArticleVO;
 import com.fintech.intellinews.vo.SearchArticleVO;
+import com.fintech.intellinews.web.ArticleController;
+import com.fintech.intellinews.web.CommentController;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.junit.After;
 import org.junit.Before;
@@ -29,6 +33,10 @@ public class CommentServiceTest {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private ArticleController articleController;
+
     private Long start = 0L;
 
     @Before
@@ -38,8 +46,9 @@ public class CommentServiceTest {
 
     @Test
     public void testComments(){
-        PageInfo<CommentVO>  pageInfo = commentService.listArticleComments(1L,1,3);
-        System.out.println(pageInfo);
+        Result<PageInfo<CommentVO>> result = articleController.getArticleComments(1L,1,3);
+//        PageInfo<CommentVO>  pageInfo = commentService.listArticleComments(1L,1,3);
+        System.out.println(result);
     }
 
     @After
