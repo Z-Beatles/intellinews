@@ -22,7 +22,7 @@
 
     <select id="getArticleByKeyword" parameterType="String" resultType="ArticleEntity">
         <include refid="Base_Column_Select"/>
-        WHERE title LIKE #{keyword}
+        WHERE title LIKE CONCAT('%',#{keyword},'%')
     </select>
 
     <select id="select" resultType="ArticleEntity">
