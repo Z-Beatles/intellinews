@@ -1,7 +1,6 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
-import com.fintech.intellinews.entity.UserInfoEntity;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.UserConfigService;
 import com.fintech.intellinews.service.UserService;
@@ -26,15 +25,6 @@ public class UserController {
 
     private UserConfigService userConfigService;
 
-    @PutMapping("{userId}/channels")
-    @ResponseBody
-    @ApiOperation(value = "更新指定用户频道配置", produces = "application/json")
-    public Result updateUserChannels(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable(name = "userId") Long id) {
-        return null;
-    }
-
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户注册", notes = "注册成功返回用户id", produces = "application/json")
@@ -56,6 +46,18 @@ public class UserController {
             @PathVariable(name = "userId") Long id) {
         userService.checkCurrentUser(id);
         return ResultUtil.success(userConfigService.getUserChannelConfig(id));
+    }
+
+    @PutMapping("{userId}/channels")
+    @ResponseBody
+    @ApiOperation(value = "更新指定用户频道配置", produces = "application/json")
+    public Result updateUserChannels(
+            @ApiParam(name = "userId", value = "用户id", required = true)
+            @PathVariable(name = "userId") Long id,
+            @ApiParam(name = "config", value = "Json用户配置", required = true)
+            @RequestBody String config) {
+        userService.checkCurrentUser(id);
+        return ResultUtil.success(userConfigService.updateUserChannelConfig(id, config));
     }
 
     @GetMapping("/{userId}")
