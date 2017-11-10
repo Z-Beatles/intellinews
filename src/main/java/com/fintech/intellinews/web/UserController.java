@@ -140,12 +140,23 @@ public class UserController {
         return null;
     }
 
-    @PostMapping("{userId}/comments")
+    @GetMapping("{userId}/comments")
     @ResponseBody
     @ApiOperation(value = "获取用户发表的所有评论", produces = "application/json")
     public Result getUserComments(
             @ApiParam(name = "userId", value = "用户id", required = true)
             @PathVariable("userId") Long userId) {
+        return null;
+    }
+
+    @PostMapping("{userId}/comments")
+    @ResponseBody
+    @ApiOperation(value = "创建用户文章评论", produces = "application/json")
+    public Result insertComment(
+            @ApiParam(name = "userId",value = "用户id",required = true)
+            @PathVariable(name = "userId")Long userId,
+            @ApiParam(name = "articleId",value = "文章id",required = true)
+            @PathVariable(name = "articleId")Long articleId){
         return null;
     }
 

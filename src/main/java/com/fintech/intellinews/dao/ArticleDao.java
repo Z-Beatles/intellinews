@@ -8,6 +8,9 @@ import java.util.List;
 
 @Repository
 public interface ArticleDao extends BaseDao<ArticleEntity> {
+
+    List<ArticleEntity> getArticleByKeyword(String keyword);
+
     /**
      * 获取最新文章列表
      *
