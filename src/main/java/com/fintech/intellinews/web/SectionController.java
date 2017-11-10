@@ -26,10 +26,10 @@ public class SectionController {
     public Result<PageInfo<SectionEntity>> getSectionByKeyword(
             @ApiParam(name = "keyword",value = "搜索关键字",required = true)
             @RequestParam(name = "keyword") String keyword,
-            @ApiParam(name = "pageSize",value = "搜索条数")
-            @RequestParam(name = "pageSize",defaultValue = "10") Integer limit,
             @ApiParam(name = "pageNum",value = "搜索页数")
-            @RequestParam(name = "pageNum",defaultValue = "1") Integer offset) {
+            @RequestParam(name = "pageNum",defaultValue = "1",required = false) Integer offset,
+            @ApiParam(name = "pageSize",value = "搜索条数")
+            @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer limit) {
         return null;
     }
 

@@ -15,15 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/comments")
 public class CommentController {
 
-    @PostMapping
-    @ResponseBody
-    @ApiOperation(value = "创建用户文章评论", produces = "application/json")
-    public Result insertComment(
-            @ApiParam(name = "userId",value = "用户id",required = true)
-            @RequestParam(name = "userId")Long userId,
-            @ApiParam(name = "articleId",value = "文章id",required = true)
-            @RequestParam(name = "articleId")Long articleId){
-        return null;
-    }
+
 
 }

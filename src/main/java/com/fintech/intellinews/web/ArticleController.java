@@ -32,12 +32,12 @@ public class ArticleController {
     public Result<PageInfo<ArticleVO>> getArticlesByKeyword(
             @ApiParam(name = "keyword", value = "搜索关键字", required = true)
             @RequestParam(value = "keyword") String keyword,
-            @ApiParam(name = "pageSize", value = "查询条数")
-            @RequestParam(value = "pageSize", defaultValue = "3", required = false) Integer limit,
             @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer offset,
+            @ApiParam(name = "pageSize", value = "查询条数")
+            @RequestParam(value = "pageSize", defaultValue = "3", required = false) Integer limit,
             @ApiParam(name = "sort", value = "排序字段")
-            @RequestParam(value = "sort", defaultValue = "time") String sort,
+            @RequestParam(value = "sort", defaultValue = "time",required = false) String sort,
             @ApiParam(name = "order", value = "DESC,ASC")
             @RequestParam(value = "order", defaultValue = "DESC", required = false) String order) {
         return ResultUtil.success(articleService.getArticlesByKeyword(keyword));
@@ -45,7 +45,7 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     @ResponseBody
-    @ApiOperation(value = "根据文章id获取文章内容详情", produces = "application/json")
+    @ApiOperation(value = "根据文章id获取文章内容详情",notes = "标题、图片、关键字、文章来源、日期、阅读数", produces = "application/json")
     public Result<ArticleEntity> getArticle(
             @ApiParam(name = "articleId", value = "文章id", required = true)
             @PathVariable(value = "articleId") Long id) {
@@ -57,7 +57,11 @@ public class ArticleController {
     @ApiOperation(value = "根据文章id获取文章的评论", produces = "application/json")
     public Result<CommentEntity> getArticleComments(
             @ApiParam(name = "articleId", value = "文章id", required = true)
-            @PathVariable(value = "articleId") Long id) {
+            @PathVariable(value = "articleId") Long id,
+            @ApiParam(name = "pageNum",value = "搜索页数")
+            @RequestParam(name = "pageNum",defaultValue = "1",required = false)Integer pageNum,
+            @ApiParam(name = "pageNum",value = "搜索页数")
+            @RequestParam(name = "pageSize",defaultValue = "3",required = false)Integer pageSize) {
         return null;
     }
 

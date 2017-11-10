@@ -44,9 +44,9 @@ public class ChannelController extends BaseController {
             @ApiParam(name = "channelId", value = "频道id", required = true)
             @PathVariable("channelId") Long channelId,
             @ApiParam(name = "pageNum", value = "查询页数")
-            @RequestParam(name = "pageNum",defaultValue = "1") Integer pageNum,
+            @RequestParam(name = "pageNum",defaultValue = "1",required = false) Integer pageNum,
             @ApiParam(name = "pageSize", value = "查询条数")
-            @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize) {
+            @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize) {
         return ResultUtil.success(articleService.getArticlesByChannelId(channelId, pageNum, pageSize));
     }
 
