@@ -11,12 +11,12 @@
         FROM oi_channel
     </sql>
 
-    <select id="selectById" resultType="ChannelEntity">
+    <select id="getById" resultType="ChannelEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
 
-    <select id="selectAll" resultType="com.fintech.intellinews.entity.ChannelEntity">
+    <select id="listAll" resultType="com.fintech.intellinews.entity.ChannelEntity">
         <include refid="Base_Column_Select"/>
         ORDER BY gmt_create
     </select>

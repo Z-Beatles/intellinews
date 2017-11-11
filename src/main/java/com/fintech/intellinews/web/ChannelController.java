@@ -2,7 +2,6 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseController;
-import com.fintech.intellinews.entity.*;
 import com.fintech.intellinews.service.ArticleService;
 import com.fintech.intellinews.service.ChannelService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -40,14 +39,14 @@ public class ChannelController extends BaseController {
     @GetMapping("/{channelId}/articles")
     @ResponseBody
     @ApiOperation(value = "据频道id获取频道下的文章", produces = "application/json")
-    public Result<PageInfo<ArticleVO>> getArticlesByChannelId(
+    public Result<PageInfo<ArticleVO>> listArticlesByChannelId(
             @ApiParam(name = "channelId", value = "频道id", required = true)
             @PathVariable("channelId") Long channelId,
             @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(name = "pageNum",defaultValue = "1",required = false) Integer pageNum,
             @ApiParam(name = "pageSize", value = "查询条数")
             @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize) {
-        return ResultUtil.success(articleService.getArticlesByChannelId(channelId, pageNum, pageSize));
+        return ResultUtil.success(articleService.listArticlesByChannelId(channelId, pageNum, pageSize));
     }
 
     @Autowired

@@ -16,12 +16,12 @@
         FROM oi_user_login
     </sql>
 
-    <select id="selectById" resultType="UserLoginEntity">
+    <select id="getById" resultType="UserLoginEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
 
-    <select id="select" resultType="UserLoginEntity">
+    <select id="list" resultType="UserLoginEntity">
         <include refid="Base_Column_Select"/>
         <where>
             <if test="id!=null">

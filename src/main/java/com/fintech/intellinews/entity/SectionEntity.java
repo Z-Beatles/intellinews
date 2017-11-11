@@ -2,10 +2,10 @@ package com.fintech.intellinews.entity;
 
 import com.fintech.intellinews.base.BaseEntity;
 
-import java.util.Date;
-
 public class SectionEntity extends BaseEntity {
     private Long id;
+
+    private String logo;
 
     private String name;
 
@@ -13,7 +13,13 @@ public class SectionEntity extends BaseEntity {
 
     private String updateBy;
 
-    private Date updateTime;
+    private Integer viewCount;
+
+    private Integer shareCount;
+
+    private Integer collectCount;
+
+    private String introduction;
 
     public Long getId() {
         return id;
@@ -23,12 +29,20 @@ public class SectionEntity extends BaseEntity {
         this.id = id;
     }
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getCreateBy() {
@@ -36,7 +50,7 @@ public class SectionEntity extends BaseEntity {
     }
 
     public void setCreateBy(String createBy) {
-        this.createBy = createBy == null ? null : createBy.trim();
+        this.createBy = createBy;
     }
 
     public String getUpdateBy() {
@@ -44,14 +58,38 @@ public class SectionEntity extends BaseEntity {
     }
 
     public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy == null ? null : updateBy.trim();
+        this.updateBy = updateBy;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Integer getViewCount() {
+        return viewCount;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public Integer getShareCount() {
+        return shareCount;
+    }
+
+    public void setShareCount(Integer shareCount) {
+        this.shareCount = shareCount;
+    }
+
+    public Integer getCollectCount() {
+        return collectCount;
+    }
+
+    public void setCollectCount(Integer collectCount) {
+        this.collectCount = collectCount;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 }

@@ -28,10 +28,10 @@ public class ColumnController extends BaseController {
     @ApiOperation(value = "获取专栏列表", produces = "application/json")
     public Result<PageInfo<ColumnVO>> listColumns(
             @ApiParam(name = "pageNum", value = "查询页数")
-            @RequestParam(name = "pageNum",defaultValue = "1",required = false) int pageNum,
+            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
             @ApiParam(name = "pageSize", value = "查询条数")
-            @RequestParam(name = "pageSize",defaultValue = "3",required = false) int pageSize) {
-        return ResultUtil.success(columnService.listColumns(pageNum,pageSize));
+            @RequestParam(name = "pageSize", defaultValue = "3", required = false) Integer pageSize) {
+        return ResultUtil.success(columnService.listColumns(pageNum, pageSize));
     }
 
     @Autowired

@@ -15,13 +15,13 @@
         FROM oi_comment
     </sql>
 
-    <select id="selectById" resultType="CommentEntity">
+    <select id="getById" resultType="CommentEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
 
     <select id="listArticleComments" resultType="CommentEntity" parameterType="Long">
-        <include refid="Base_Column_Select"></include>
+        <include refid="Base_Column_Select"/>
         WHERE article_id = #{articleId}
     </select>
 

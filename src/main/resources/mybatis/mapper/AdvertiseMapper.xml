@@ -13,12 +13,12 @@
         FROM oi_advertise
     </sql>
 
-    <select id="selectById" resultType="AdvertiseEntity">
+    <select id="getById" resultType="AdvertiseEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
 
-    <select id="select" resultType="AdvertiseEntity">
+    <select id="list" resultType="AdvertiseEntity">
         <include refid="Base_Column_Select"/>
         <where>
             <if test="id!=null">

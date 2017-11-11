@@ -2,6 +2,12 @@
 <configuration scan="true">
     <property name="LOG_HOME" value="./log"/>
 
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/logback.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -10,12 +16,6 @@
             <maxHistory>60</maxHistory>
             <totalSizeCap>3GB</totalSizeCap>
         </rollingPolicy>
-        <encoder>
-            <pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>

@@ -14,12 +14,12 @@
         FROM oi_user_info
     </sql>
 
-    <select id="selectById" resultType="UserInfoEntity">
+    <select id="getById" resultType="UserInfoEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
 
-    <select id="select" resultType="UserInfoEntity">
+    <select id="list" resultType="UserInfoEntity">
         <include refid="Base_Column_Select"/>
         <where>
             <if test="id!=null">

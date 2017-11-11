@@ -2,7 +2,6 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.base.BaseController;
-import com.fintech.intellinews.entity.AdvertiseEntity;
 import com.fintech.intellinews.service.AdvertiseService;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.AdvertiseVO;
@@ -35,7 +34,7 @@ public class AdvertiseController extends BaseController {
             @RequestParam(value = "pageSize", defaultValue = "4", required = false) Integer pageSize,
             @ApiParam(name = "active", value = "广告的状态(上架、下架)")
             @RequestParam(value = "active", defaultValue = "true") Boolean active) {
-        return ResultUtil.success(advertiseService.selectAds(pageNum,pageSize,active));
+        return ResultUtil.success(advertiseService.listAds(pageNum,pageSize,active));
     }
 
     @Autowired

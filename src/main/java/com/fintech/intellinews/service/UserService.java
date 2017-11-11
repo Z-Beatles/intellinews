@@ -50,20 +50,20 @@ public class UserService extends BaseService {
         } else {
             userInfo.setUsername(account);
         }
-        List<UserInfoEntity> userInfoEntities = userInfoDao.select(userInfo);
+        List<UserInfoEntity> userInfoEntities = userInfoDao.list(userInfo);
         if (userInfoEntities.isEmpty()) {
             return null;
         }
         UserLoginEntity userLoginEntity = new UserLoginEntity();
         userLoginEntity.setUsername(userInfoEntities.get(0).getUsername());
-        return userLoginDao.select(userLoginEntity).get(0);
+        return userLoginDao.list(userLoginEntity).get(0);
     }
 
     @Transactional
     public Long insertUser(String nickname, String username, String password) {
         UserLoginEntity entity = new UserLoginEntity();
         entity.setUsername(username);
-        List<UserLoginEntity> entities = userLoginDao.select(entity);
+        List<UserLoginEntity> entities = userLoginDao.list(entity);
         if (!entities.isEmpty()) {
             throw new AppException(ResultEnum.ACCOUNT_EXIST_ERROR);
         }
@@ -101,7 +101,7 @@ public class UserService extends BaseService {
     }
 
     public UserInfoVO getUserInfo(Long id) {
-        UserLoginEntity userLoginEntity = userLoginDao.selectById(id);
+        UserLoginEntity userLoginEntity = userLoginDao.getById(id);
         UserInfoVO userInfoVO = new UserInfoVO();
         BeanUtils.copyProperties(userLoginEntity, userInfoVO);
         return userInfoVO;

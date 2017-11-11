@@ -38,7 +38,7 @@ public interface BaseDao<T> {
      * @param t 实体
      * @return 查询结果
      */
-    List<T> select(T t);
+    List<T> list(T t);
 
     /**
      * 根据id查询
@@ -46,7 +46,7 @@ public interface BaseDao<T> {
      * @param id id
      * @return 查询结果
      */
-    T selectById(Long id);
+    T getById(Long id);
 
     /**
      * 通用统计方法

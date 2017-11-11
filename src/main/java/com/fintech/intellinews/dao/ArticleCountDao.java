@@ -13,5 +13,5 @@ public interface ArticleCountDao extends BaseDao<ArticleCountEntity> {
      * @param articleId 文章id
      * @return 统计信息
      */
-    ArticleCountEntity selectByArticleId(Long articleId);
+    ArticleCountEntity getByArticleId(Long articleId);
 }

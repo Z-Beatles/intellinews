@@ -5,13 +5,13 @@
         SELECT
             id,
             section_id,
-            content,
+            item_content,
             gmt_create,
             gmt_modified
         FROM oi_section_item
     </sql>
 
-    <select id="selectById" resultType="SectionItemEntity">
+    <select id="getById" resultType="SectionItemEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>

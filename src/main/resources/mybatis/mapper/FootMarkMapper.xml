@@ -5,14 +5,15 @@
         SELECT
             id,
             user_id,
-            footmark_id,
-            footmark_type,
+            content_id,
+            content_type,
+            source,
             gmt_create,
             gmt_modified
         FROM oi_footmark
     </sql>
 
-    <select id="selectById" resultType="FootmarkEntity">
+    <select id="getById" resultType="FootmarkEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>

@@ -21,7 +21,7 @@ public class ChannelService extends BaseService {
     private ChannelDao channelDao;
 
     public List<ChannelVO> listCannels() {
-        List<ChannelEntity> channelEntities = channelDao.selectAll();
+        List<ChannelEntity> channelEntities = channelDao.listAll();
         List<ChannelVO> channelVOS = new ArrayList<>();
         for (ChannelEntity channelEntity : channelEntities) {
             ChannelVO channelVO = new ChannelVO();
