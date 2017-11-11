@@ -29,7 +29,8 @@
 
     <select id="listSectionsByKeyword" resultType="com.fintech.intellinews.entity.SectionEntity">
         <include refid="Base_Column_Select"/>
-        WHERE name LIKE CONCAT('%',#{keyword},'%')
+        WHERE name LIKE #{keyword}
+        ORDER BY view_count DESC
     </select>
 
 </mapper>

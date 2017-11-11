@@ -52,7 +52,7 @@ public class SectionController {
     @ApiOperation(value = "根据条目id查询条目详情", produces = "application/json")
     public Result<PageInfo<SectionEntity>> getSectionById(
             @ApiParam(name = "sectionId", value = "条目id", required = true)
-            @PathVariable(name = "sectionId") String keyword) {
+            @PathVariable(name = "sectionId") String sectionId) {
         return null;
     }
 
@@ -61,7 +61,7 @@ public class SectionController {
     @ApiOperation(value = "根据条目id查询图谱信息", produces = "application/json")
     public Result<PageInfo<SectionEntity>> getSectionAtlas(
             @ApiParam(name = "sectionId", value = "条目id", required = true)
-            @PathVariable(name = "sectionId") String keyword) {
+            @PathVariable(name = "sectionId") String sectionId) {
         return null;
     }
 

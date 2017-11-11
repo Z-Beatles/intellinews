@@ -2,6 +2,7 @@ package com.fintech.intellinews.service;
 
 import com.fintech.intellinews.dao.SectionDao;
 import com.fintech.intellinews.entity.SectionEntity;
+import com.fintech.intellinews.util.StringUtil;
 import com.fintech.intellinews.vo.ListSectionVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -40,8 +41,9 @@ public class SectionService {
     @SuppressWarnings("unchecked")
     public PageInfo<ListSectionVO> listSectionsByKeyword(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-
-        List<SectionEntity> sectionEntities = sectionDao.listSectionsByKeyword(keyword);
+        // 用 % 分割关键字用于模糊查询
+        String signKeyword = StringUtil.spiltString(keyword);
+        List<SectionEntity> sectionEntities = sectionDao.listSectionsByKeyword(signKeyword);
         if (sectionEntities == null) {
             return new PageInfo<>();
         }
