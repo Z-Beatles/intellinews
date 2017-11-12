@@ -26,12 +26,15 @@ public enum ResultEnum {
     ACCOUNT_EXIST_ERROR(1010, "账号已被注册"),
     WITHOUT_PERMISSION_ERROR(1011, "没有权限查看他人信息"),
 
+    SECTION_NOT_EXIST_ERROR(10000, "指定条目不存在"),
+
     CREATE_MENU_ERROR(40000, "自定义菜单失败"),
     DELETE_MENU_ERROR(40001, "删除自定义菜单失败"),
     ILLEGAL_MENU_TYPES_ERROR(40015, "不合法的菜单类型"),
     ILLEGAL_BUTTONS_NUMBER_ERROR(40016, "不合法的按钮个数"),
     UPDATE_USER_CONFIG_ERROR(40017, "更新用户频道配置失败"),
     ILLEGAL_JSON_FORMAT_ERROR(40018, "Json格式不合法");
+
 
     private Integer code;
     private String message;

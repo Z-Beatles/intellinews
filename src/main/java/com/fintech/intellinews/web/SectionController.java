@@ -4,6 +4,7 @@ import com.fintech.intellinews.Result;
 import com.fintech.intellinews.entity.SectionEntity;
 import com.fintech.intellinews.service.SectionService;
 import com.fintech.intellinews.util.ResultUtil;
+import com.fintech.intellinews.vo.DetailsSectionVO;
 import com.fintech.intellinews.vo.ListSectionVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -50,10 +51,10 @@ public class SectionController {
     @GetMapping("/{sectionId}")
     @ResponseBody
     @ApiOperation(value = "根据条目id查询条目详情", produces = "application/json")
-    public Result<PageInfo<SectionEntity>> getSectionById(
+    public Result<DetailsSectionVO> getSectionById(
             @ApiParam(name = "sectionId", value = "条目id", required = true)
-            @PathVariable(name = "sectionId") String sectionId) {
-        return null;
+            @PathVariable(name = "sectionId") Long sectionId) {
+        return ResultUtil.success(sectionService.getSectionById(sectionId));
     }
 
     @GetMapping("/{sectionId}/atlas")
