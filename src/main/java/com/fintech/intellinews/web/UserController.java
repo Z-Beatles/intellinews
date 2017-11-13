@@ -90,8 +90,8 @@ public class UserController {
             @RequestParam(name = "contentType") String contentType,
             @ApiParam(name = "source", value = "足迹来源(article、home、section)", required = true)
             @RequestParam(name = "source") String source) {
-
-        return null;
+        userService.checkCurrentUser(userId);
+        return ResultUtil.success(footmarkService.addFootmark(userId,contentId,source,contentType));
     }
 
     @GetMapping("/{userId}/footmarks")

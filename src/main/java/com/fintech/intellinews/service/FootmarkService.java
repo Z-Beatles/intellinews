@@ -22,6 +22,13 @@ public class FootmarkService {
 
     private FootmarkDao footmarkDao;
 
+    /**
+     * 获取用户足迹
+     * @param userId 用户id
+     * @param pageNum 搜索页数
+     * @param pageSize 搜索条数
+     * @return 足迹列表
+     */
     public PageInfo<FootmarkVO> getUserFootmarks(Long userId, Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<FootmarkEntity> footmarks = footmarkDao.getUserFootmarks(userId);
@@ -41,8 +48,23 @@ public class FootmarkService {
         return pageInfo;
     }
 
-    public static void main(String[] args){
-        System.out.println(Calendar.getInstance().get(Calendar.DATE));
+    /**
+     * 添加用户足迹
+     * @param userId 用户id
+     * @param contentId 足迹内容id
+     * @param source 足迹来源
+     * @param contentType 足迹内容类型
+     * @return 足迹id
+     */
+    public Long addFootmark(Long userId,Long contentId,String source,String contentType){
+        FootmarkEntity entity = new FootmarkEntity();
+        entity.setUserId(userId);
+        entity.setContentType(contentType);
+        entity.setContentId(contentId);
+        entity.setGmtCreate(Calendar.getInstance().getTime());
+        entity.setSource(source);
+        footmarkDao.insert(entity);
+        return entity.getId();
     }
 
     private void exchangeDate(FootmarkVO footmarkVO,FootmarkEntity entity){

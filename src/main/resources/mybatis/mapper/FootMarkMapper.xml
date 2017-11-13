@@ -5,8 +5,8 @@
         SELECT
             id,
             user_id,
-            footmark_id,
-            footmark_type,
+            content_id,
+            content_type,
             source,
             gmt_create,
             gmt_modified
@@ -23,5 +23,16 @@
         WHERE user_id = #{userId}
         order by gmt_create
     </select>
+
+    <insert id="insert" parameterType="FootmarkEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO oi_footmark(
+            user_id,
+            footmark_id,
+            footmark_type,
+            source,
+            gmt_create)
+        VALUES (#{userId},#{contentId},#{contentType},#{source},#{gmtCreate})
+
+    </insert>
 
 </mapper>
