@@ -16,7 +16,7 @@
             <!-- 指定数据库连接 -->
             <property name="helperDialect" value="mysql"/>
             <!-- 指定查询页数在有效范围 -->
-            <property name="reasonable" value="true"/>
+            <property name="reasonable" value="false"/>
         </plugin>
     </plugins>
 </configuration>
