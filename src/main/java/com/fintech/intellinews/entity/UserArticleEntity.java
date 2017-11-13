@@ -9,7 +9,9 @@ public class UserArticleEntity extends BaseEntity {
 
     private Long userId;
 
-    private Long articleId;
+    private Long resourceId;
+
+    private String resourceType;
 
     private Date collectTime;
 
@@ -29,12 +31,20 @@ public class UserArticleEntity extends BaseEntity {
         this.userId = userId;
     }
 
-    public Long getArticleId() {
-        return articleId;
+    public Long getResourceId() {
+        return resourceId;
     }
 
-    public void setArticleId(Long articleId) {
-        this.articleId = articleId;
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
     }
 
     public Date getCollectTime() {
