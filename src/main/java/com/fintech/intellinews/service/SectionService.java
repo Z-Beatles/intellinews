@@ -1,6 +1,7 @@
 package com.fintech.intellinews.service;
 
 import com.fintech.intellinews.AppException;
+import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.SectionCountDao;
 import com.fintech.intellinews.dao.SectionDao;
 import com.fintech.intellinews.entity.SectionCountEntity;
@@ -23,7 +24,7 @@ import java.util.List;
  * create 2017-11-08 15:06
  **/
 @Service
-public class SectionService {
+public class SectionService extends BaseService {
 
     private SectionDao sectionDao;
 

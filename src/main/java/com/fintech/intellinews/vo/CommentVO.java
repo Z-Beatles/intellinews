@@ -9,6 +9,8 @@ public class CommentVO {
 
     private Long userId;
 
+    private String avatar;
+
     private String nickName;
 
     private Long articleId;
@@ -33,6 +35,14 @@ public class CommentVO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getNickName() {

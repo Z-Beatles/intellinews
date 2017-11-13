@@ -54,6 +54,16 @@
         </where>
     </select>
 
+    <select id="mapUserLoginByIds" parameterType="list" resultType="UserLoginEntity">
+
+        <include refid="Base_Column_Select"/>
+        WHERE id IN
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+
+    </select>
+
     <insert id="insert" parameterType="UserLoginEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO oi_user_login (
             username, nickname, avatar, password_hash,

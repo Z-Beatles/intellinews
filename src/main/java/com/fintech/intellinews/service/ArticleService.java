@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author waynechu
@@ -108,7 +109,7 @@ public class ArticleService extends BaseService {
     public PageInfo<SearchArticleVO> listArticlesByKeyword(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> searchList = articleDao.listArticleByKeyword(keyword);
-        if (searchList == null) {
+        if (searchList == null||searchList.size()==0) {
             return new PageInfo<>();
         }
         List<SearchArticleVO> resultList = new ArrayList<>();
@@ -158,17 +159,23 @@ public class ArticleService extends BaseService {
     public PageInfo<CommentVO> listArticleComments(Long id, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<CommentEntity> comments = commentDao.listArticleComments(id);
-        if (comments==null){
+        if (comments==null||comments.size()==0){
             return new PageInfo<>();
         }
+        List<Long> userIds = new ArrayList<>();
+        for (CommentEntity entity : comments){
+            userIds.add(entity.getUserId());
+        }
+        Map<Long,UserLoginEntity> mapUsers = userLoginDao.mapUserLoginByIds(userIds);
         List<CommentVO> resultComments = new ArrayList<>();
         UserLoginEntity userLoginEntity;
         CommentVO commentVO;
         for (CommentEntity entity : comments){
             commentVO = new CommentVO();
             BeanUtils.copyProperties(entity,commentVO);
-            userLoginEntity = userLoginDao.getById(entity.getUserId());
+            userLoginEntity = mapUsers.get(entity.getUserId());
             commentVO.setNickName(userLoginEntity.getNickname());
+            commentVO.setAvatar(userLoginEntity.getAvatar());
             resultComments.add(commentVO);
         }
         PageInfo pageInfo = new PageInfo(comments);

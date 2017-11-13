@@ -2,6 +2,7 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.enums.ResultEnum;
+import com.fintech.intellinews.service.FootmarkService;
 import com.fintech.intellinews.service.UserArticleService;
 import com.fintech.intellinews.service.UserConfigService;
 import com.fintech.intellinews.service.UserService;
@@ -29,6 +30,8 @@ public class UserController {
     private UserConfigService userConfigService;
 
     private UserArticleService userArticleService;
+
+    private FootmarkService footmarkService;
 
     @PostMapping
     @ResponseBody
@@ -101,8 +104,8 @@ public class UserController {
             @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
             @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum) {
-
-        return null;
+        userService.checkCurrentUser(userId);
+        return ResultUtil.success(footmarkService.getUserFootmarks(userId,pageNum,pageSize));
     }
 
     @PostMapping("/{userId}/articles/{articleId}")
@@ -189,5 +192,10 @@ public class UserController {
     @Autowired
     public void setUserArticleService(UserArticleService userArticleService) {
         this.userArticleService = userArticleService;
+    }
+
+    @Autowired
+    public void setFootmarkService(FootmarkService footmarkService) {
+        this.footmarkService = footmarkService;
     }
 }
