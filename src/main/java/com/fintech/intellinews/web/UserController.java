@@ -119,7 +119,7 @@ public class UserController {
         return ResultUtil.success(userArticleService.insertUserArticle(userId,articleId));
     }
 
-    @PostMapping("/{userId}/articles")
+    @GetMapping("/{userId}/articles")
     @ResponseBody
     @ApiOperation(value = "获取用户收藏文章", produces = "application/json")
     public Result<PageInfo<UserCollectVO>> getCollectArticle(
