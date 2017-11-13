@@ -2,6 +2,7 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.enums.ResultEnum;
+import com.fintech.intellinews.service.UserArticleService;
 import com.fintech.intellinews.service.UserConfigService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -24,6 +25,8 @@ public class UserController {
     private UserService userService;
 
     private UserConfigService userConfigService;
+
+    private UserArticleService userArticleService;
 
     @PostMapping
     @ResponseBody
@@ -108,7 +111,7 @@ public class UserController {
             @PathVariable("userId") Long userId,
             @ApiParam(name = "articleId", value = "文章id", required = true)
             @PathVariable("articleId") Long articleId) {
-        return null;
+        return ResultUtil.success(userArticleService.insertUserArticle(userId,articleId));
     }
 
     @PostMapping("/{userId}/articles")
@@ -120,15 +123,15 @@ public class UserController {
         return null;
     }
 
-    @PostMapping("/{userId}/sections/{sectionId}")
+    @PostMapping("/{userId}/collection")
     @ResponseBody
     @ApiOperation(value = "用户收藏条目", produces = "application/json")
     public Result collectSection(
             @ApiParam(name = "userId", value = "用户id", required = true)
             @PathVariable("userId") Long userId,
             @ApiParam(name = "sectionId", value = "条目id", required = true)
-            @PathVariable("sectionId") Long sectionId) {
-        return null;
+            @RequestParam("sectionId") Long sectionId) {
+        return ResultUtil.success(userService.collectSection(userId,sectionId));
     }
 
     @GetMapping("/{userId}/sections")
@@ -145,7 +148,9 @@ public class UserController {
     @ApiOperation(value = "获取用户发表的所有评论", produces = "application/json")
     public Result getUserComments(
             @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId) {
+            @PathVariable("userId") Long userId,
+            @RequestParam(name = "pageNum",defaultValue = "1",required = false) Integer pageNum,
+            @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize) {
         return null;
     }
 
@@ -168,5 +173,10 @@ public class UserController {
     @Autowired
     public void setUserConfigService(UserConfigService userConfigService) {
         this.userConfigService = userConfigService;
+    }
+
+    @Autowired
+    public void setUserArticleService(UserArticleService userArticleService) {
+        this.userArticleService = userArticleService;
     }
 }

@@ -20,9 +20,25 @@
         WHERE id = #{id}
     </select>
 
+    <select id="listArticlesByIds" resultType="ArticleEntity" parameterType="list">
+        <include refid="Base_Column_Select"/>
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
     <select id="listArticleByKeyword" parameterType="String" resultType="ArticleEntity">
         <include refid="Base_Column_Select"/>
         WHERE title LIKE CONCAT('%',#{keyword},'%')
+    </select>
+
+    <select id="mapArticlesByIds" parameterType="list" resultType="ArticleEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 
     <select id="select" resultType="ArticleEntity">

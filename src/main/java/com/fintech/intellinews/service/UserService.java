@@ -4,13 +4,15 @@ import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.Constant;
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.config.AppProperties;
-import com.fintech.intellinews.dao.UserInfoDao;
-import com.fintech.intellinews.dao.UserLoginDao;
-import com.fintech.intellinews.entity.UserInfoEntity;
-import com.fintech.intellinews.entity.UserLoginEntity;
+import com.fintech.intellinews.dao.*;
+import com.fintech.intellinews.entity.*;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.util.RegexUtil;
+import com.fintech.intellinews.vo.UserCommentVO;
 import com.fintech.intellinews.vo.UserInfoVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -24,8 +26,10 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author waynechu
@@ -40,6 +44,12 @@ public class UserService extends BaseService {
     private UserInfoDao userInfoDao;
 
     private UserLoginDao userLoginDao;
+
+    private UserSectionDao userSectionDao;
+
+    private CommentDao commentDao;
+
+    private ArticleDao articleDao;
 
     public UserLoginEntity getByAccount(String account) {
         UserInfoEntity userInfo = new UserInfoEntity();
@@ -107,6 +117,52 @@ public class UserService extends BaseService {
         return userInfoVO;
     }
 
+    /**
+     * 用户收藏条目
+     * @param userId 用户id
+     * @param sectionId 条目id
+     * @return 收藏记录的条目id
+     */
+    public Long collectSection(Long userId,Long sectionId){
+        UserSectionEntity userSection = new UserSectionEntity();
+        userSectionDao.insert(userSection);
+        return userSection.getId();
+    }
+
+    /**
+     * 获取用户评论
+     * @param userId 用户id
+     * @param pageNum 分页页数
+     * @param pageSize 分页条数
+     * @return 查询评论列表
+     */
+    @SuppressWarnings("unchecked")
+    public PageInfo<UserCommentVO> getUserComments(Long userId,Integer pageNum,Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        List<CommentEntity> userComments = commentDao.listUserComments(userId);
+        if (userComments.size()==0){
+            return new PageInfo(userComments);
+        }
+        List<Long> articleIdList = new ArrayList<>();
+        for (CommentEntity entity : userComments){
+            articleIdList.add(entity.getArticleId());
+        }
+        Map<String,ArticleEntity> articlesMap = articleDao.mapArticlesByIds(articleIdList);
+        List<UserCommentVO> resultList = new ArrayList<>();
+        UserCommentVO userCommentVO ;
+        ArticleEntity articleEntity;
+        for (CommentEntity entity : userComments){
+            userCommentVO = new UserCommentVO();
+            BeanUtils.copyProperties(userCommentVO,userComments);
+            articleEntity = articlesMap.get(entity.getArticleId());
+            userCommentVO.setTitle(articleEntity.getTitle());
+            resultList.add(userCommentVO);
+        }
+        PageInfo pageInfo = new PageInfo(userComments);
+        pageInfo.setList(resultList);
+        return pageInfo;
+    }
+
     @Autowired
     public void setAppProperties(AppProperties appProperties) {
         this.appProperties = appProperties;
@@ -122,5 +178,19 @@ public class UserService extends BaseService {
         this.userLoginDao = userLoginDao;
     }
 
+    @Autowired
+    public void setUserSectionDao(UserSectionDao userSectionDao) {
+        this.userSectionDao = userSectionDao;
+    }
+
+    @Autowired
+    public void setCommentDao(CommentDao commentDao) {
+        this.commentDao = commentDao;
+    }
+
+    @Autowired
+    public void setArticleDao(ArticleDao articleDao) {
+        this.articleDao = articleDao;
+    }
 
 }

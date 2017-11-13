@@ -25,4 +25,9 @@
         WHERE article_id = #{articleId}
     </select>
 
+    <select id="listUserComments" resultType="CommentEntity" parameterType="Long">
+        <include refid="Base_Column_Select"/>
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>

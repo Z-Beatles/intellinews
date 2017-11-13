@@ -17,4 +17,8 @@ public interface CommentDao extends BaseDao<CommentEntity> {
      */
     List<CommentEntity> listArticleComments(@Param("articleId") Long id);
 
+
+
+    List<CommentEntity> listUserComments(Long userId);
+
 }

@@ -5,6 +5,7 @@ import com.fintech.intellinews.dao.ColumnDao;
 import com.fintech.intellinews.vo.ColumnVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,5 +21,10 @@ public class ColumnService extends BaseService {
         PageHelper.startPage(pageNum, pageSize);
         // List<ColumnEntity> columns = columnDao.select();
         return null;
+    }
+
+    @Autowired
+    public void setColumnDao(ColumnDao columnDao) {
+        this.columnDao = columnDao;
     }
 }

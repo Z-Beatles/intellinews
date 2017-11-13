@@ -104,6 +104,13 @@ public class ArticleService extends BaseService {
         return page;
     }
 
+    /**
+     * 通过关键字获取文章列表
+     * @param keyword 关键字
+     * @param pageNum 分页页数
+     * @param pageSize 分页条数
+     * @return 分页文章列表
+     */
     @SuppressWarnings("unchecked")
     public PageInfo<SearchArticleVO> getArticlesByKeyword(String keyword,Integer pageNum,Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);

@@ -17,4 +17,14 @@
         WHERE id = #{id}
     </select>
 
+    <insert id="insert" parameterType="UserArticleEntity">
+        INSERT INTO oi_user_article(user_id,article_id,collect_time)
+        VALUES (#{userId},#{articleId},#{collectTime})
+    </insert>
+
+    <select id="getUserCollectArticles" parameterType="Long" resultType="UserArticleEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>
