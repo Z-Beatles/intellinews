@@ -5,8 +5,8 @@
         SELECT
             id,
             user_id,
-            content_id,
-            content_type,
+            footmark_id,
+            footmark_type,
             source,
             gmt_create,
             gmt_modified
@@ -16,6 +16,12 @@
     <select id="getById" resultType="FootmarkEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
+    </select>
+
+    <select id="getUserFootmarks" resultType="FootmarkEntity" parameterType="long">
+        <include refid="Base_Column_Select"/>
+        WHERE user_id = #{userId}
+        order by gmt_create
     </select>
 
 </mapper>

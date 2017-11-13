@@ -1,17 +1,17 @@
-package com.fintech.intellinews.entity;
+package com.fintech.intellinews.vo;
 
-import com.fintech.intellinews.base.BaseEntity;
-
-public class FootmarkEntity extends BaseEntity {
+/**
+ * @author wanghao
+ * create 2017-11-13 14:54
+ **/
+public class FootmarkVO {
     private Long id;
-
-    private Long userId;
-
     private Long contentId;
-
     private String contentType;
-
     private String source;
+    private String time;
+    private String date;
+    private String year;
 
     public Long getId() {
         return id;
@@ -19,14 +19,6 @@ public class FootmarkEntity extends BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getContentId() {
@@ -51,5 +43,29 @@ public class FootmarkEntity extends BaseEntity {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 }

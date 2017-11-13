@@ -119,14 +119,13 @@ public class ArticleService extends BaseService {
         for (ArticleEntity entity : searchList) {
             articleVO = new SearchArticleVO();
             articleVO.setId(entity.getId());
-            articleVO.setTitle(entity.getContent());
+            articleVO.setTitle(entity.getTitle());
             articleVO.setSource(entity.getSource());
             content = entity.getContent();
             if (content != null) {
                 showContentSize = content.length() > 30 ? 30 : content.length();
             }
             articleVO.setContent(entity.getContent().substring(0, showContentSize));
-            articleVO.setDate(entity.getGmtCreate());
             resultList.add(articleVO);
         }
         PageInfo pageInfo = new PageInfo(searchList);
