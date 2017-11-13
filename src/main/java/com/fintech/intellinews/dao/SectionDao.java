@@ -2,9 +2,11 @@ package com.fintech.intellinews.dao;
 
 import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.entity.SectionEntity;
+import org.apache.ibatis.annotations.MapKey;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface SectionDao extends BaseDao<SectionEntity> {
@@ -22,4 +24,8 @@ public interface SectionDao extends BaseDao<SectionEntity> {
      * @return 条目列表
      */
     List<SectionEntity> listSectionsByKeyword(String keyword);
+
+    @MapKey("id")
+    Map<Long,SectionEntity> listSectionByIds(List<Long> ids);
+
 }

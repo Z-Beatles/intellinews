@@ -2,10 +2,7 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.enums.ResultEnum;
-import com.fintech.intellinews.service.FootmarkService;
-import com.fintech.intellinews.service.UserArticleService;
-import com.fintech.intellinews.service.UserConfigService;
-import com.fintech.intellinews.service.UserService;
+import com.fintech.intellinews.service.*;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.UserCollectVO;
 import com.fintech.intellinews.vo.UserInfoVO;
@@ -32,6 +29,8 @@ public class UserController {
     private UserArticleService userArticleService;
 
     private FootmarkService footmarkService;
+
+    private UserSectionService userSectionService;
 
     @PostMapping
     @ResponseBody
@@ -100,10 +99,10 @@ public class UserController {
     public Result listUserFootmarks(
             @ApiParam(name = "userId", value = "用户id", required = true)
             @PathVariable(value = "userId") Long userId,
-            @ApiParam(name = "pageSize", value = "查询条数")
-            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize,
             @ApiParam(name = "pageNum", value = "查询页数")
-            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum) {
+            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+            @ApiParam(name = "pageSize", value = "查询条数")
+            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
         userService.checkCurrentUser(userId);
         return ResultUtil.success(footmarkService.getUserFootmarks(userId,pageNum,pageSize));
     }
@@ -151,8 +150,13 @@ public class UserController {
     @ApiOperation(value = "获取用户收藏条目", produces = "application/json")
     public Result getCollectSection(
             @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId) {
-        return null;
+            @PathVariable("userId") Long userId,
+            @ApiParam(name = "pageNum", value = "分页页数")
+            @RequestParam(name = "pageNum",defaultValue = "1",required = false)Integer pageNum,
+            @ApiParam(name = "pageSize", value = "分页条数")
+            @RequestParam(name = "pageSize",defaultValue = "10",required = false)Integer pageSize) {
+        userService.checkCurrentUser(userId);
+        return ResultUtil.success(userSectionService.getUserSections(userId,pageNum,pageSize));
     }
 
     @GetMapping("{userId}/comments")
@@ -197,5 +201,10 @@ public class UserController {
     @Autowired
     public void setFootmarkService(FootmarkService footmarkService) {
         this.footmarkService = footmarkService;
+    }
+
+    @Autowired
+    public void setUserSectionService(UserSectionService userSectionService) {
+        this.userSectionService = userSectionService;
     }
 }

@@ -44,4 +44,12 @@
         WHERE name LIKE #{keyword}
     </select>
 
+    <select id="listSectionByIds" parameterType="list" resultType="SectionEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>
