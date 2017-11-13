@@ -5,8 +5,8 @@
         SELECT
             id,
             user_id,
-            article_id,
-            collect_time,
+            resource_id,
+            resource_type,
             gmt_create,
             gmt_modified
         FROM oi_user_article
@@ -18,8 +18,8 @@
     </select>
 
     <insert id="insert" parameterType="UserArticleEntity">
-        INSERT INTO oi_user_article(user_id,article_id,collect_time)
-        VALUES (#{userId},#{articleId},#{collectTime})
+        INSERT INTO oi_user_article(user_id,resource_id,resourceType,gmt_create)
+        VALUES (#{userId},#{resourceId},#{resource_type},#{gmtCreate})
     </insert>
 
     <select id="getUserCollectArticles" parameterType="Long" resultType="UserArticleEntity">

@@ -53,7 +53,10 @@ public class UserArticleService {
         List<UserArticleEntity> userArticles = userArticleDao.getUserCollectArticles(userId);
         List<Long> listId = new ArrayList<>();
         for (UserArticleEntity entity : userArticles){
-            listId.add(entity.getId());
+            listId.add(entity.getResourceId());
+        }
+        if (listId.size()==0){
+            return new PageInfo(userArticles);
         }
         PageHelper.startPage(pageNum,pageSize);
         List<ArticleEntity> articles = articleDao.listArticlesByIds(listId);
@@ -64,6 +67,7 @@ public class UserArticleService {
             articleVO.setId(entity.getId());
             articleVO.setTitle(entity.getTitle());
             articleVO.setType("文章");
+            resultList.add(articleVO);
         }
         PageInfo pageInfo = new PageInfo(articles);
         pageInfo.setList(resultList);

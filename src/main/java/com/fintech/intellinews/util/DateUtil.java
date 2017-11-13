@@ -3,6 +3,8 @@ package com.fintech.intellinews.util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -12,6 +14,11 @@ import java.util.Date;
  * Created 2017-10-19 11:20
  */
 public class DateUtil {
+
+    /**
+     * 计算详情显示时间
+     */
+    private static String[] TIME_UNIT = {"秒", "分钟", "小时"};
 
     private DateUtil() {
     }
@@ -123,5 +130,29 @@ public class DateUtil {
         } else {
             return toStringFromDate(date, "yyyy-MM-dd");
         }
+    }
+
+    public static String toDetailTimeString(Date date){
+        Long current = System.currentTimeMillis();
+        Long interval = current - date.getTime();
+        Long time = interval / 1000;
+        //如果创建时间大于一天则直接显示日期
+        if (time > 60 * 60 * 24) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            return dateFormat.format(date);
+        }
+        //创建时间小于一天
+        StringBuilder timeDesc = new StringBuilder();
+        Long temp;
+        for (int i = 0; i < TIME_UNIT.length; i++) {
+            temp = time % 60;
+            time /= 60;
+            if (temp < 60 && time == 0) {
+                timeDesc.insert(0, temp + TIME_UNIT[i]);
+                break;
+            }
+            timeDesc.insert(0, temp + TIME_UNIT[i]);
+        }
+        return timeDesc.toString();
     }
 }

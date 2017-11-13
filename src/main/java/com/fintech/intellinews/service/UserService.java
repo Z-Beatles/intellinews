@@ -7,6 +7,7 @@ import com.fintech.intellinews.config.AppProperties;
 import com.fintech.intellinews.dao.*;
 import com.fintech.intellinews.entity.*;
 import com.fintech.intellinews.enums.ResultEnum;
+import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.RegexUtil;
 import com.fintech.intellinews.vo.UserCommentVO;
 import com.fintech.intellinews.vo.UserInfoVO;
@@ -146,15 +147,22 @@ public class UserService extends BaseService {
         for (CommentEntity entity : userComments){
             articleIdList.add(entity.getArticleId());
         }
-        Map<String,ArticleEntity> articlesMap = articleDao.mapArticlesByIds(articleIdList);
+        Map<Long,ArticleEntity> articlesMap = articleDao.mapArticlesByIds(articleIdList);
         List<UserCommentVO> resultList = new ArrayList<>();
         UserCommentVO userCommentVO ;
         ArticleEntity articleEntity;
+        String dateDesc;
         for (CommentEntity entity : userComments){
             userCommentVO = new UserCommentVO();
-            BeanUtils.copyProperties(userCommentVO,userComments);
+            BeanUtils.copyProperties(entity,userCommentVO);
             articleEntity = articlesMap.get(entity.getArticleId());
+            if (articleEntity == null){
+                continue;
+            }
             userCommentVO.setTitle(articleEntity.getTitle());
+            userCommentVO.setThumbnail(articleEntity.getThumbnail());
+            dateDesc = DateUtil.toDetailTimeString(articleEntity.getGmtCreate());
+            userCommentVO.setDate(dateDesc);
             resultList.add(userCommentVO);
         }
         PageInfo pageInfo = new PageInfo(userComments);

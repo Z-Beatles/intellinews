@@ -38,6 +38,6 @@ public interface ArticleDao extends BaseDao<ArticleEntity> {
      * @return 文章列表
      */
     @MapKey("id")
-    Map<String,ArticleEntity> mapArticlesByIds(List<Long> list);
+    Map<Long,ArticleEntity> mapArticlesByIds(List<Long> list);
 
 }

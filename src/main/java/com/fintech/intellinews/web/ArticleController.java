@@ -58,7 +58,7 @@ public class ArticleController {
             @PathVariable(value = "articleId") Long id,
             @ApiParam(name = "pageNum", value = "搜索页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-            @ApiParam(name = "pageNum", value = "搜索页数")
+            @ApiParam(name = "pageSize", value = "搜索条数")
             @RequestParam(name = "pageSize", defaultValue = "3", required = false) Integer pageSize) {
         return ResultUtil.success(commentService.listArticleComments(id, pageNum, pageSize));
     }

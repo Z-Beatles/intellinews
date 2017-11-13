@@ -6,7 +6,9 @@ import com.fintech.intellinews.service.UserArticleService;
 import com.fintech.intellinews.service.UserConfigService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
+import com.fintech.intellinews.vo.UserCollectVO;
 import com.fintech.intellinews.vo.UserInfoVO;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -111,16 +113,22 @@ public class UserController {
             @PathVariable("userId") Long userId,
             @ApiParam(name = "articleId", value = "文章id", required = true)
             @PathVariable("articleId") Long articleId) {
+        userService.checkCurrentUser(userId);
         return ResultUtil.success(userArticleService.insertUserArticle(userId,articleId));
     }
 
     @PostMapping("/{userId}/articles")
     @ResponseBody
     @ApiOperation(value = "获取用户收藏文章", produces = "application/json")
-    public Result getCollectArticle(
+    public Result<PageInfo<UserCollectVO>> getCollectArticle(
             @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId) {
-        return null;
+            @PathVariable("userId") Long userId,
+            @ApiParam(name = "pageNum", value = "分页页数")
+            @RequestParam(name = "pageNum",defaultValue = "1",required = false)Integer pageNum,
+            @ApiParam(name = "pageSize", value = "分页条数")
+            @RequestParam(name = "pageSize",defaultValue = "10",required = false)Integer pageSize) {
+        userService.checkCurrentUser(userId);
+        return ResultUtil.success(userArticleService.getUserCollectArticles(userId,pageNum,pageSize));
     }
 
     @PostMapping("/{userId}/collection")
@@ -131,6 +139,7 @@ public class UserController {
             @PathVariable("userId") Long userId,
             @ApiParam(name = "sectionId", value = "条目id", required = true)
             @RequestParam("sectionId") Long sectionId) {
+        userService.checkCurrentUser(userId);
         return ResultUtil.success(userService.collectSection(userId,sectionId));
     }
 
@@ -151,7 +160,8 @@ public class UserController {
             @PathVariable("userId") Long userId,
             @RequestParam(name = "pageNum",defaultValue = "1",required = false) Integer pageNum,
             @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize) {
-        return null;
+        userService.checkCurrentUser(userId);
+        return ResultUtil.success(userService.getUserComments(userId,pageNum,pageSize));
     }
 
     @PostMapping("{userId}/comments")
@@ -161,7 +171,8 @@ public class UserController {
             @ApiParam(name = "userId",value = "用户id",required = true)
             @PathVariable(name = "userId")Long userId,
             @ApiParam(name = "articleId",value = "文章id",required = true)
-            @PathVariable(name = "articleId")Long articleId){
+            @RequestParam(name = "articleId")Long articleId){
+        userService.checkCurrentUser(userId);
         return null;
     }
 

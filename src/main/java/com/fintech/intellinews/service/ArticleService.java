@@ -42,10 +42,6 @@ public class ArticleService extends BaseService {
 
     private CommentDao commentDao;
 
-    /**
-     * 计算文章详情显示时间
-     */
-    private static String[] TIME_UNIT = {"秒", "分钟", "小时"};
 
     @SuppressWarnings("unchecked")
     public PageInfo<ArticleVO> listArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
@@ -150,28 +146,8 @@ public class ArticleService extends BaseService {
         ArticleEntity articleEntity = articleDao.getById(id);
         DetailsArticleVO details = new DetailsArticleVO();
         BeanUtils.copyProperties(articleEntity, details);
-        Long current = System.currentTimeMillis();
-        Long interval = current - articleEntity.getGmtCreate().getTime();
-        Long time = interval / 1000;
-        //如果创建时间大于一天则直接显示日期
-        if (time > 60 * 60 * 24) {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            details.setDate(dateFormat.format(articleEntity.getGmtCreate()));
-            return details;
-        }
-        //创建时间小于一天
-        StringBuilder timeDesc = new StringBuilder();
-        Long temp;
-        for (int i = 0; i < TIME_UNIT.length; i++) {
-            temp = time % 60;
-            time /= 60;
-            if (temp < 60 && time == 0) {
-                timeDesc.insert(0, temp + TIME_UNIT[i]);
-                break;
-            }
-            timeDesc.insert(0, temp + TIME_UNIT[i]);
-        }
-        details.setDate(timeDesc.toString());
+        String dateStr = DateUtil.toDetailTimeString(articleEntity.getGmtCreate());
+        details.setDate(dateStr);
         return details;
     }
 

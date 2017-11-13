@@ -17,6 +17,10 @@ import java.util.Map;
  * @author wanghao
  * create 2017-11-11 20:44
  **/
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
+@ContextConfiguration(locations = {"classpath*:spring/spring-context.xml"})
+@ActiveProfiles("develop")
 public class UserArticleServiceTest {
 
     @Autowired
@@ -27,13 +31,10 @@ public class UserArticleServiceTest {
 
     @Test
     public void testInsert(){
-//        PageInfo<UserCommentVO> result = userService.getUserComments(22L,1,10);
-//        System.out.println(result);
-
-        Map<Long,String> map = new HashMap<>();
-        Long a = new Long("1222");
-        map.put(1222L,"1");
-        System.out.println(map.get(a));
+        PageInfo<UserCommentVO> result = userService.getUserComments(22L,1,10);
+        System.out.println(result.getList().size());
+//        PageInfo pageInfo = userArticleService.getUserCollectArticles(1L,1,10);
+//        System.out.println(pageInfo.getList().size());
     }
 
 }
