@@ -12,7 +12,7 @@
         FROM oi_user_article
     </sql>
 
-    <select id="selectById" resultType="UserArticleEntity">
+    <select id="getById" resultType="UserArticleEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>

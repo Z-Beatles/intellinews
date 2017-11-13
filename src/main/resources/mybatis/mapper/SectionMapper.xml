@@ -4,17 +4,44 @@
     <sql id="Base_Column_Select">
         SELECT
             id,
+            logo,
             name,
             create_by,
             update_by,
+            introduction,
+            basic_corporation,
+            basic_establish_date,
+            basic_name_en,
+            basic_regist_capital,
+            basic_regist_number,
+            basic_organization_code,
+            basic_enterprise_type,
+            basic_industry_type,
+            basic_business_status,
+            basic_registration_authority,
+            basic_business_scope,
+            contact_phone,
+            contact_email,
+            contact_website,
+            contact_postcode,
+            contact_address,
             gmt_create,
             gmt_modified
         FROM oi_section
     </sql>
 
-    <select id="selectById" resultType="SectionEntity">
+    <select id="getById" resultType="SectionEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
+    </select>
+
+    <select id="listAll" resultType="com.fintech.intellinews.entity.SectionEntity">
+        <include refid="Base_Column_Select"/>
+    </select>
+
+    <select id="listSectionsByKeyword" resultType="com.fintech.intellinews.entity.SectionEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE name LIKE #{keyword}
     </select>
 
 </mapper>

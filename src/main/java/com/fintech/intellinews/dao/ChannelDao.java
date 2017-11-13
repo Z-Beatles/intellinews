@@ -13,5 +13,5 @@ public interface ChannelDao extends BaseDao<ChannelEntity> {
      *
      * @return 频道列表
      */
-    List<ChannelEntity> selectAll();
+    List<ChannelEntity> listAll();
 }

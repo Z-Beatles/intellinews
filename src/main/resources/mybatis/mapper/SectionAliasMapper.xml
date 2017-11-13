@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fintech.intellinews.dao.SectionItemDao">
+<mapper namespace="com.fintech.intellinews.dao.SectionAliasDao">
     <sql id="Base_Column_Select">
         SELECT
             id,
             section_id,
-            content,
+            alias,
             gmt_create,
             gmt_modified
-        FROM oi_section_item
+        FROM oi_section_alias
     </sql>
 
-    <select id="selectById" resultType="SectionItemEntity">
+    <select id="getById" resultType="SectionAliasEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>

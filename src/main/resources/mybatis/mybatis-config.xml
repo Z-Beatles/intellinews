@@ -13,7 +13,10 @@
     <plugins>
         <!-- 分页插件 -->
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 指定数据库连接 -->
             <property name="helperDialect" value="mysql"/>
+            <!-- 指定查询页数在有效范围 -->
+            <property name="reasonable" value="true"/>
         </plugin>
     </plugins>
 </configuration>

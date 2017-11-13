@@ -21,11 +21,11 @@ public class AdvertiseService extends BaseService {
 
     private AdvertiseDao advertiseDao;
 
-    public List<AdvertiseVO> selectAds(Integer pageNum, Integer pageSize, Boolean active) {
+    public List<AdvertiseVO> listAds(Integer pageNum, Integer pageSize, Boolean active) {
         AdvertiseEntity entity = new AdvertiseEntity();
         entity.setActive(active);
         PageHelper.startPage(pageNum, pageSize);
-        List<AdvertiseEntity> advertiseEntities = advertiseDao.select(entity);
+        List<AdvertiseEntity> advertiseEntities = advertiseDao.list(entity);
 
         List<AdvertiseVO> advertiseVOS = new ArrayList<>();
         for (AdvertiseEntity advertiseEntity : advertiseEntities) {

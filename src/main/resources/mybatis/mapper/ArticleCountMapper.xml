@@ -13,12 +13,12 @@
         FROM oi_article_count
     </sql>
 
-    <select id="selectById" resultType="ArticleCountEntity">
+    <select id="getById" resultType="ArticleCountEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
 
-    <select id="selectByArticleId" resultType="com.fintech.intellinews.entity.ArticleCountEntity">
+    <select id="getByArticleId" resultType="com.fintech.intellinews.entity.ArticleCountEntity">
         <include refid="Base_Column_Select"/>
         WHERE article_id = #{articleId}
     </select>

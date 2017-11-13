@@ -15,7 +15,7 @@
         FROM oi_article
     </sql>
 
-    <select id="selectById" resultType="ArticleEntity">
+    <select id="getById" resultType="ArticleEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
@@ -33,6 +33,7 @@
         WHERE title LIKE CONCAT('%',#{keyword},'%')
     </select>
 
+<<<<<<< HEAD
     <select id="mapArticlesByIds" parameterType="list" resultType="ArticleEntity">
         <include refid="Base_Column_Select"/>
         WHERE id IN
@@ -42,6 +43,9 @@
     </select>
 
     <select id="select" resultType="ArticleEntity">
+=======
+    <select id="list" resultType="ArticleEntity">
+>>>>>>> origin/master
         <include refid="Base_Column_Select"/>
         <where>
             <if test="id!=null">

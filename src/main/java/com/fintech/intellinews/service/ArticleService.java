@@ -45,12 +45,12 @@ public class ArticleService extends BaseService {
     /**
      * 计算文章详情显示时间
      */
-    private static String[] TIME_UNIT = {"秒","分钟","小时"};
+    private static String[] TIME_UNIT = {"秒", "分钟", "小时"};
 
     @SuppressWarnings("unchecked")
-    public PageInfo<ArticleVO> getArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
+    public PageInfo<ArticleVO> listArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
         if (channelId == 1) {
-            return getLatestArticles(pageNum, pageSize);
+            return listLatestArticles(pageNum, pageSize);
         }
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleChannelEntity> articleChannelEntities = articleChannelDao.listByChannelId(channelId);
@@ -58,8 +58,8 @@ public class ArticleService extends BaseService {
         List<ArticleVO> articleDTOS = new ArrayList<>();
         for (ArticleChannelEntity articleChannelEntity : articleChannelEntities) {
             Long articleId = articleChannelEntity.getArticleId();
-            ArticleEntity articleEntity = articleDao.selectById(articleId);
-            ArticleCountEntity articleCountEntity = articleCountDao.selectByArticleId(articleId);
+            ArticleEntity articleEntity = articleDao.getById(articleId);
+            ArticleCountEntity articleCountEntity = articleCountDao.getByArticleId(articleId);
             String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
             ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
 
@@ -79,13 +79,13 @@ public class ArticleService extends BaseService {
     }
 
     @SuppressWarnings("unchecked")
-    private PageInfo<ArticleVO> getLatestArticles(int pageNum, int pageSize) {
+    private PageInfo<ArticleVO> listLatestArticles(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> articleEntities = articleDao.listLatestArticles();
         List<ArticleVO> articleDTOS = new ArrayList<>();
         for (ArticleEntity articleEntity : articleEntities) {
             Long articleId = articleEntity.getId();
-            ArticleCountEntity articleCountEntity = articleCountDao.selectByArticleId(articleId);
+            ArticleCountEntity articleCountEntity = articleCountDao.getByArticleId(articleId);
             String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
             ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
 
@@ -112,27 +112,26 @@ public class ArticleService extends BaseService {
      * @return 分页文章列表
      */
     @SuppressWarnings("unchecked")
-    public PageInfo<SearchArticleVO> getArticlesByKeyword(String keyword,Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<SearchArticleVO> listArticlesByKeyword(String keyword, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> searchList = articleDao.listArticleByKeyword(keyword);
-        if (searchList == null){
+        if (searchList == null) {
             return new PageInfo<>();
         }
-
         List<SearchArticleVO> resultList = new ArrayList<>();
-        SearchArticleVO articleVO ;
-        String content ;
+        SearchArticleVO articleVO;
+        String content;
         Integer showContentSize = 0;
-        for(ArticleEntity entity : searchList){
+        for (ArticleEntity entity : searchList) {
             articleVO = new SearchArticleVO();
             articleVO.setId(entity.getId());
             articleVO.setTitle(entity.getContent());
             articleVO.setSource(entity.getSource());
             content = entity.getContent();
-            if (content != null){
-                showContentSize = content.length() > 30?30:content.length();
+            if (content != null) {
+                showContentSize = content.length() > 30 ? 30 : content.length();
             }
-            articleVO.setContent(entity.getContent().substring(0,showContentSize));
+            articleVO.setContent(entity.getContent().substring(0, showContentSize));
             articleVO.setDate(entity.getGmtCreate());
             resultList.add(articleVO);
         }
@@ -143,19 +142,19 @@ public class ArticleService extends BaseService {
 
     /**
      * 根据id获取文章详情
+     *
      * @param id 文章id
      * @return 文章详情实体
      */
-    public DetailsArticleVO getDetailsArticleById(Long id){
-        ArticleEntity articleEntity = articleDao.selectById(id);
+    public DetailsArticleVO getDetailsArticleById(Long id) {
+        ArticleEntity articleEntity = articleDao.getById(id);
         DetailsArticleVO details = new DetailsArticleVO();
-        BeanUtils.copyProperties(articleEntity,details);
+        BeanUtils.copyProperties(articleEntity, details);
         Long current = System.currentTimeMillis();
         Long interval = current - articleEntity.getGmtCreate().getTime();
-        System.out.println(interval);
         Long time = interval / 1000;
         //如果创建时间大于一天则直接显示日期
-        if (time > 60*60*24){
+        if (time > 60 * 60 * 24) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             details.setDate(dateFormat.format(articleEntity.getGmtCreate()));
             return details;
@@ -163,14 +162,14 @@ public class ArticleService extends BaseService {
         //创建时间小于一天
         StringBuilder timeDesc = new StringBuilder();
         Long temp;
-        for (int i = 0;i<TIME_UNIT.length;i++){
+        for (int i = 0; i < TIME_UNIT.length; i++) {
             temp = time % 60;
             time /= 60;
-            if (temp < 60 && time == 0){
-                timeDesc.insert(0,temp+TIME_UNIT[i]);
+            if (temp < 60 && time == 0) {
+                timeDesc.insert(0, temp + TIME_UNIT[i]);
                 break;
             }
-            timeDesc.insert(0,temp+TIME_UNIT[i]);
+            timeDesc.insert(0, temp + TIME_UNIT[i]);
         }
         details.setDate(timeDesc.toString());
         return details;
@@ -178,12 +177,13 @@ public class ArticleService extends BaseService {
 
     /**
      * 获取指定文章的评论信息
+     *
      * @param articleId 文章id
-     * @param pageNum 分页索引
-     * @param PageSize 分页椰页容
+     * @param pageNum   分页索引
+     * @param PageSize  分页椰页容
      * @return 评论的分页信息
      */
-    public PageInfo<CommentVO> getArticleComments(Long articleId,Integer pageNum,Integer PageSize){
+    public PageInfo<CommentVO> getArticleComments(Long articleId, Integer pageNum, Integer PageSize) {
         return null;
     }
 

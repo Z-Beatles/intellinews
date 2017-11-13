@@ -1,13 +1,15 @@
 package com.fintech.intellinews.entity;
 
-import com.fintech.intellinews.base.BaseEntity;
-
-public class SectionItemEntity extends BaseEntity {
+/**
+ * @author waynechu
+ * Created 2017-11-12 13:01
+ */
+public class SectionAliasEntity {
     private Long id;
 
     private Long sectionId;
 
-    private String content;
+    private String alias;
 
     public Long getId() {
         return id;
@@ -25,11 +27,11 @@ public class SectionItemEntity extends BaseEntity {
         this.sectionId = sectionId;
     }
 
-    public String getContent() {
-        return content;
+    public String getAlias() {
+        return alias;
     }
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }

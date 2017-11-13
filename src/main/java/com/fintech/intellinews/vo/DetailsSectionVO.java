@@ -1,11 +1,13 @@
-package com.fintech.intellinews.entity;
-
-import com.fintech.intellinews.base.BaseEntity;
+package com.fintech.intellinews.vo;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SectionEntity extends BaseEntity {
+/**
+ * @author waynechu
+ * Created 2017-11-11 23:22
+ */
+public class DetailsSectionVO {
     private Long id;
 
     private String logo;
@@ -16,7 +18,15 @@ public class SectionEntity extends BaseEntity {
 
     private String updateBy;
 
+    private Date updateTime;
+
     private String introduction;
+
+    private Integer viewCount;
+
+    private Integer shareCount;
+
+    private Integer collectCount;
 
     private String basicCorporation;
 
@@ -90,12 +100,44 @@ public class SectionEntity extends BaseEntity {
         this.updateBy = updateBy;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public String getIntroduction() {
         return introduction;
     }
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public Integer getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public Integer getShareCount() {
+        return shareCount;
+    }
+
+    public void setShareCount(Integer shareCount) {
+        this.shareCount = shareCount;
+    }
+
+    public Integer getCollectCount() {
+        return collectCount;
+    }
+
+    public void setCollectCount(Integer collectCount) {
+        this.collectCount = collectCount;
     }
 
     public String getBasicCorporation() {

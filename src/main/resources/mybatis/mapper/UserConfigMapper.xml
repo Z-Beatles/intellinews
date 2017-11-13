@@ -16,7 +16,7 @@
         VALUES (#{userId}, #{channelConfig}, #{gmtCreate})
     </insert>
 
-    <select id="selectById" resultType="UserConfigEntity">
+    <select id="getById" resultType="UserConfigEntity">
         <include refid="Base_Column_Select"/>
         <trim>
             <if test="id != null">

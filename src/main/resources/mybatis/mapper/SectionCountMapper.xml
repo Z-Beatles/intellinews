@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fintech.intellinews.dao.ChannelDao">
+<mapper namespace="com.fintech.intellinews.dao.SectionCountDao">
     <sql id="Base_Column_Select">
         SELECT
             id,
-            name,
-            name_zh,
+            section_id,
+            view_count,
+            share_count,
+            collect_count,
             gmt_create,
             gmt_modified
-        FROM oi_channel
+        FROM oi_section_count
     </sql>
 
-    <select id="getById" resultType="ChannelEntity">
+    <select id="getById" resultType="SectionCountEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
 
-    <select id="listAll" resultType="com.fintech.intellinews.entity.ChannelEntity">
+    <select id="getBySectionId" resultType="com.fintech.intellinews.entity.SectionCountEntity">
         <include refid="Base_Column_Select"/>
-        ORDER BY gmt_create
+        WHERE section_id = #{id}
     </select>
-
 
 </mapper>

@@ -9,7 +9,7 @@
         FROM oi_keyword
     </sql>
 
-    <select id="selectById" resultType="KeywordEntity">
+    <select id="getById" resultType="KeywordEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>

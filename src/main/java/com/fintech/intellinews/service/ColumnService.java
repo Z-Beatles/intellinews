@@ -19,7 +19,7 @@ public class ColumnService extends BaseService {
 
     public PageInfo<ColumnVO> listColumns(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        // List<ColumnEntity> columns = columnDao.select();
+        // List<ColumnEntity> columns = columnDao.list();
         return null;
     }
 

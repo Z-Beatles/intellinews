@@ -38,7 +38,7 @@ public class CommentService {
         for (CommentEntity entity : comments){
             commentVO = new CommentVO();
             BeanUtils.copyProperties(entity,commentVO);
-            userLoginEntity = userLoginDao.selectById(entity.getUserId());
+            userLoginEntity = userLoginDao.getById(entity.getUserId());
             commentVO.setNickName(userLoginEntity.getNickname());
             resultComments.add(commentVO);
         }

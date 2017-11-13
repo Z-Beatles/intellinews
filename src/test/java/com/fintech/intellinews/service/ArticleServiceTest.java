@@ -13,9 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.io.IOException;
-import java.util.List;
-
 /**
  * @author wanghao
  * create 2017-11-10 11:15
@@ -36,7 +33,7 @@ public class ArticleServiceTest {
     }
     @Test
     public void testSearch(){
-        PageInfo<SearchArticleVO> pageInfo = articleService.getArticlesByKeyword("中",1,10);
+        PageInfo<SearchArticleVO> pageInfo = articleService.listArticlesByKeyword("中",1,10);
         System.out.println(pageInfo);
     }
 
