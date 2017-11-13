@@ -47,7 +47,7 @@ public class ArticleController {
         return ResultUtil.success(articleService.getDetailsArticleById(id));
     }
 
-    @PostMapping("/{articleId}/comments")
+    @GetMapping("/{articleId}/comments")
     @ResponseBody
     @ApiOperation(value = "根据文章id获取文章的评论", produces = "application/json")
     public Result<PageInfo<CommentVO>> getArticleComments(
