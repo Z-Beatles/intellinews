@@ -31,11 +31,11 @@ public class UserArticleServiceTest {
 
     @Test
     public void testInsert(){
-//        PageInfo<UserCommentVO> result = userService.getUserComments(22L,1,10);
-//        System.out.println(result.getList().size());
+//      PageInfo<UserCommentVO> result = userService.getUserComments(22L,1,10);
+//      System.out.println(result.getList().size());
         userArticleService.insertUserArticle(27L,1L);
-//        PageInfo pageInfo = userArticleService.getUserCollectArticles(1L,1,10);
-//        System.out.println(pageInfo.getList().size());
+//      PageInfo pageInfo = userArticleService.getUserCollectArticles(1L,1,10);
+//      System.out.println(pageInfo.getList().size());
     }
 
 }

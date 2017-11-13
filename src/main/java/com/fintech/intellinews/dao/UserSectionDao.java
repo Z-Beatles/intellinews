@@ -5,6 +5,7 @@ import com.fintech.intellinews.entity.UserSectionEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface UserSectionDao extends BaseDao<UserSectionEntity> {
@@ -14,4 +15,9 @@ public interface UserSectionDao extends BaseDao<UserSectionEntity> {
      * @return 条目列表
      */
     List<UserSectionEntity> getUserSection(Long userId);
+
+
+    Integer deleteCollectSection(UserSectionEntity entity);
+
+    Integer checkUserSection(Map<String,Long> param);
 }

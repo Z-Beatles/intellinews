@@ -12,13 +12,24 @@
     </sql>
 
     <insert id="insert" parameterType="UserSectionEntity" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO oi_user_section (id,user_id,section_id,gmt_create)
-        VALUES (#{id},#{userId},#{sectionId},#{gmtCreate})
+        INSERT INTO oi_user_section (user_id,section_id,gmt_create)
+        VALUES (#{userId},#{sectionId},#{gmtCreate})
     </insert>
 
     <select id="getUserSection" resultType="UserSectionEntity" parameterType="long">
         <include refid="Base_Column_Select"/>
         WHERE user_id = #{userId}
     </select>
+
+    <select id="checkUserSection" parameterType="map" resultType="integer">
+        SELECT count(id)
+        FROM oi_user_section
+        WHERE user_id = #{userId} and section_id = #{sectionId}
+    </select>
+
+    <delete id="deleteCollectSection" parameterType="map">
+        DELETE FROM oi_user_section
+        WHERE user_id = #{userId} and section_id = #{sectionId}
+    </delete>
 
 </mapper>

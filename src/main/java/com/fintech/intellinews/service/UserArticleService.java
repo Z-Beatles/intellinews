@@ -1,18 +1,18 @@
 package com.fintech.intellinews.service;
 
+import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.dao.ArticleDao;
 import com.fintech.intellinews.dao.UserArticleDao;
 import com.fintech.intellinews.entity.ArticleEntity;
 import com.fintech.intellinews.entity.UserArticleEntity;
+import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.vo.UserCollectVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author wanghao
@@ -28,17 +28,35 @@ public class UserArticleService {
     /**
      * 添加用户收藏文章
      * @param userId 用户id
-     * @param articleId 文章id
+     * @param resourceId 文章id
      * @return 影响行数
      */
-    public Integer insertUserArticle(Long userId,Long articleId){
-        UserArticleEntity userArticle = new UserArticleEntity();
-        userArticle.setUserId(userId);
-        userArticle.setResourceId(articleId);
-        userArticle.setResourceType("文章");
-        userArticle.setCollectTime(Calendar.getInstance().getTime());
-        userArticle.setGmtCreate(Calendar.getInstance().getTime());
-        return userArticleDao.insert(userArticle);
+    public Integer insertUserArticle(Long userId,Long resourceId){
+        Map<String,Long> param = new HashMap<>();
+        param.put("userId",userId);
+        param.put("resourceId",resourceId);
+        Integer count = userArticleDao.checkUserArticle(param);
+        if (count>0){
+            throw new AppException(ResultEnum.FAILED.getCode(),"收藏失败");
+        }
+        UserArticleEntity insertArticle = new UserArticleEntity();
+        insertArticle.setUserId(userId);
+        insertArticle.setResourceId(resourceId);
+        insertArticle.setResourceType("文章");
+        insertArticle.setCollectTime(Calendar.getInstance().getTime());
+        insertArticle.setGmtCreate(Calendar.getInstance().getTime());
+        return userArticleDao.insert(insertArticle);
+    }
+
+    /**
+     * 取消收藏文章
+     * @return
+     */
+    public Integer deleteUserArticle(Long userId,Long articleId){
+        UserArticleEntity article = new UserArticleEntity();
+        article.setUserId(userId);
+        article.setResourceId(articleId);
+        return userArticleDao.deleteCollectArticle(article);
     }
 
     /**

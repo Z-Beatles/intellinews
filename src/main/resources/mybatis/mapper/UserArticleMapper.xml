@@ -27,4 +27,15 @@
         WHERE user_id = #{userId}
     </select>
 
+    <select id="checkUserArticle" parameterType="map" resultType="integer">
+        SELECT count(id)
+        FROM oi_user_article
+        WHERE user_id = #{userId} and resource_id = #{resourceId}
+    </select>
+
+    <delete id="deleteCollectArticle" parameterType="map">
+        DELETE FROM oi_user_article
+        WHERE user_id = #{userId} and resource_id = #{resourceId}
+    </delete>
+
 </mapper>

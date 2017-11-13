@@ -32,6 +32,8 @@ public class UserController {
 
     private UserSectionService userSectionService;
 
+    private CommentService commentService;
+
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户注册", notes = "注册成功返回用户id", produces = "application/json")
@@ -107,16 +109,28 @@ public class UserController {
         return ResultUtil.success(footmarkService.getUserFootmarks(userId,pageNum,pageSize));
     }
 
-    @PostMapping("/{userId}/articles/{articleId}")
+    @PostMapping("/{userId}/articles")
     @ResponseBody
     @ApiOperation(value = "用户收藏文章", produces = "application/json")
     public Result collectArticle(
             @ApiParam(name = "userId", value = "用户id", required = true)
             @PathVariable("userId") Long userId,
             @ApiParam(name = "articleId", value = "文章id", required = true)
-            @PathVariable("articleId") Long articleId) {
+            @RequestParam("articleId") Long articleId) {
         userService.checkCurrentUser(userId);
         return ResultUtil.success(userArticleService.insertUserArticle(userId,articleId));
+    }
+
+    @DeleteMapping("/{userId}/articles")
+    @ResponseBody
+    @ApiOperation(value = "取消收藏文章", produces = "application/json")
+    public Result cancelCollectArticle(
+            @ApiParam(name = "userId", value = "用户id", required = true)
+            @PathVariable("userId") Long userId,
+            @ApiParam(name = "articleId", value = "文章id", required = true)
+            @RequestParam("articleId") Long articleId) {
+        userService.checkCurrentUser(userId);
+        return ResultUtil.success(userArticleService.deleteUserArticle(userId,articleId));
     }
 
     @GetMapping("/{userId}/articles")
@@ -142,7 +156,20 @@ public class UserController {
             @ApiParam(name = "sectionId", value = "条目id", required = true)
             @RequestParam("sectionId") Long sectionId) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(userService.collectSection(userId,sectionId));
+        return ResultUtil.success(userSectionService.insertUserSection(userId,sectionId));
+    }
+
+
+    @DeleteMapping("/{userId}/sections")
+    @ResponseBody
+    @ApiOperation(value = "取消收藏条目", produces = "application/json")
+    public Result cancelCollectSection(
+            @ApiParam(name = "userId", value = "用户id", required = true)
+            @PathVariable("userId") Long userId,
+            @ApiParam(name = "sectionId", value = "条目id", required = true)
+            @RequestParam("sectionId") Long sectionId) {
+        userService.checkCurrentUser(userId);
+        return ResultUtil.success(userSectionService.deleteUserSection(userId,sectionId));
     }
 
     @GetMapping("/{userId}/sections")
@@ -178,9 +205,11 @@ public class UserController {
             @ApiParam(name = "userId",value = "用户id",required = true)
             @PathVariable(name = "userId")Long userId,
             @ApiParam(name = "articleId",value = "文章id",required = true)
-            @RequestParam(name = "articleId")Long articleId){
+            @RequestParam(name = "articleId")Long articleId,
+            @ApiParam(name = "content",value = "评论内容",required = true)
+            @RequestParam(name = "content")String content){
         userService.checkCurrentUser(userId);
-        return null;
+        return ResultUtil.success( commentService.addUserComment(userId,articleId,content));
     }
 
     @Autowired
@@ -206,5 +235,10 @@ public class UserController {
     @Autowired
     public void setUserSectionService(UserSectionService userSectionService) {
         this.userSectionService = userSectionService;
+    }
+
+    @Autowired
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
     }
 }

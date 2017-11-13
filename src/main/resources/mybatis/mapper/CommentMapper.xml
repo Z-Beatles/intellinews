@@ -30,4 +30,13 @@
         WHERE user_id = #{userId}
     </select>
 
+    <insert id="addUserComment" parameterType="CommentEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO oi_comment
+            (user_id,
+            article_id,
+            content,
+            gmt_create)
+        VALUES (#{userId},#{articleId},#{content},#{gmtCreate})
+    </insert>
+
 </mapper>

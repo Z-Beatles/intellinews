@@ -2,6 +2,7 @@ package com.fintech.intellinews.dao;
 
 import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.entity.CommentEntity;
+import com.sun.tools.corba.se.idl.StringGen;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -17,8 +18,8 @@ public interface CommentDao extends BaseDao<CommentEntity> {
      */
     List<CommentEntity> listArticleComments(@Param("articleId") Long id);
 
-
-
     List<CommentEntity> listUserComments(Long userId);
+
+    Integer addUserComment(CommentEntity entity);
 
 }
