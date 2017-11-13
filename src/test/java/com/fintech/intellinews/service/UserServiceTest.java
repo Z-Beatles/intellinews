@@ -25,7 +25,7 @@ public class UserServiceTest {
 
     @Test
     public void register() throws Exception {
-
+         System.out.println(userService.collectSection(27L,1L));
     }
 
 }

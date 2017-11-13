@@ -18,8 +18,8 @@
     </select>
 
     <insert id="insert" parameterType="UserArticleEntity">
-        INSERT INTO oi_user_article(user_id,resource_id,resourceType,gmt_create)
-        VALUES (#{userId},#{resourceId},#{resource_type},#{gmtCreate})
+        INSERT INTO oi_user_article(user_id,resource_id,resource_type,gmt_create)
+        VALUES (#{userId},#{resourceId},#{resourceType},#{gmtCreate})
     </insert>
 
     <select id="getUserCollectArticles" parameterType="Long" resultType="UserArticleEntity">

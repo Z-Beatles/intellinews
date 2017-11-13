@@ -26,10 +26,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author waynechu
@@ -125,6 +122,9 @@ public class UserService extends BaseService {
      */
     public Long collectSection(Long userId,Long sectionId){
         UserSectionEntity userSection = new UserSectionEntity();
+        userSection.setUserId(userId);
+        userSection.setSectionId(sectionId);
+        userSection.setGmtCreate(Calendar.getInstance().getTime());
         userSectionDao.insert(userSection);
         return userSection.getId();
     }

@@ -35,6 +35,7 @@ public class UserArticleService {
         UserArticleEntity userArticle = new UserArticleEntity();
         userArticle.setUserId(userId);
         userArticle.setResourceId(articleId);
+        userArticle.setResourceType("文章");
         userArticle.setCollectTime(Calendar.getInstance().getTime());
         userArticle.setGmtCreate(Calendar.getInstance().getTime());
         return userArticleDao.insert(userArticle);
