@@ -21,41 +21,4 @@ import java.util.List;
 @Service
 public class CommentService {
 
-    private CommentDao commentDao;
-    private UserLoginDao userLoginDao;
-
-    @SuppressWarnings("unchecked")
-    public PageInfo<CommentVO> listArticleComments(Long id, Integer pageNum, Integer pageSize){
-
-        PageHelper.startPage(pageNum,pageSize);
-        List<CommentEntity> comments = commentDao.listArticleComments(id);
-        if (comments==null){
-            return new PageInfo<>();
-        }
-        List<CommentVO> resultComments = new ArrayList<>();
-        UserLoginEntity userLoginEntity;
-        CommentVO commentVO;
-        for (CommentEntity entity : comments){
-            commentVO = new CommentVO();
-            BeanUtils.copyProperties(entity,commentVO);
-            userLoginEntity = userLoginDao.getById(entity.getUserId());
-            commentVO.setNickName(userLoginEntity.getNickname());
-            resultComments.add(commentVO);
-        }
-        PageInfo pageInfo = new PageInfo(comments);
-        pageInfo.setList(resultComments);
-        return pageInfo;
-
-    }
-
-
-    @Autowired
-    public void setCommentDao(CommentDao commentDao) {
-        this.commentDao = commentDao;
-    }
-
-    @Autowired
-    public void setUserLoginDao(UserLoginDao userLoginDao) {
-        this.userLoginDao = userLoginDao;
-    }
 }

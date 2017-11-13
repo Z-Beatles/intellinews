@@ -3,14 +3,9 @@ package com.fintech.intellinews.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fintech.intellinews.base.BaseService;
-import com.fintech.intellinews.dao.ArticleChannelDao;
-import com.fintech.intellinews.dao.ArticleCountDao;
-import com.fintech.intellinews.dao.ArticleDao;
-import com.fintech.intellinews.dao.CommentDao;
+import com.fintech.intellinews.dao.*;
+import com.fintech.intellinews.entity.*;
 import com.fintech.intellinews.vo.*;
-import com.fintech.intellinews.entity.ArticleChannelEntity;
-import com.fintech.intellinews.entity.ArticleCountEntity;
-import com.fintech.intellinews.entity.ArticleEntity;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.vo.ArticleVO;
@@ -41,6 +36,8 @@ public class ArticleService extends BaseService {
     private ArticleCountDao articleCountDao;
 
     private CommentDao commentDao;
+
+    private UserLoginDao userLoginDao;
 
 
     @SuppressWarnings("unchecked")
@@ -153,14 +150,30 @@ public class ArticleService extends BaseService {
 
     /**
      * 获取指定文章的评论信息
-     *
-     * @param articleId 文章id
+     * @param id 文章id
      * @param pageNum   分页索引
-     * @param PageSize  分页椰页容
+     * @param pageSize  分页椰页容
      * @return 评论的分页信息
      */
-    public PageInfo<CommentVO> getArticleComments(Long articleId, Integer pageNum, Integer PageSize) {
-        return null;
+    public PageInfo<CommentVO> listArticleComments(Long id, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<CommentEntity> comments = commentDao.listArticleComments(id);
+        if (comments==null){
+            return new PageInfo<>();
+        }
+        List<CommentVO> resultComments = new ArrayList<>();
+        UserLoginEntity userLoginEntity;
+        CommentVO commentVO;
+        for (CommentEntity entity : comments){
+            commentVO = new CommentVO();
+            BeanUtils.copyProperties(entity,commentVO);
+            userLoginEntity = userLoginDao.getById(entity.getUserId());
+            commentVO.setNickName(userLoginEntity.getNickname());
+            resultComments.add(commentVO);
+        }
+        PageInfo pageInfo = new PageInfo(comments);
+        pageInfo.setList(resultComments);
+        return pageInfo;
     }
 
     @Autowired
@@ -186,5 +199,10 @@ public class ArticleService extends BaseService {
     @Autowired
     public void setCommentDao(CommentDao commentDao) {
         this.commentDao = commentDao;
+    }
+
+    @Autowired
+    public void setUserLoginDao(UserLoginDao userLoginDao) {
+        this.userLoginDao = userLoginDao;
     }
 }

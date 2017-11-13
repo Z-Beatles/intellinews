@@ -2,7 +2,6 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.service.ArticleService;
-import com.fintech.intellinews.service.CommentService;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.CommentVO;
 import com.fintech.intellinews.vo.DetailsArticleVO;
@@ -25,8 +24,6 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleController {
 
     private ArticleService articleService;
-
-    private CommentService commentService;
 
     @GetMapping("/search")
     @ResponseBody
@@ -60,16 +57,11 @@ public class ArticleController {
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
             @ApiParam(name = "pageSize", value = "搜索条数")
             @RequestParam(name = "pageSize", defaultValue = "3", required = false) Integer pageSize) {
-        return ResultUtil.success(commentService.listArticleComments(id, pageNum, pageSize));
+        return ResultUtil.success(articleService.listArticleComments(id, pageNum, pageSize));
     }
 
     @Autowired
     public void setArticleService(ArticleService articleService) {
         this.articleService = articleService;
-    }
-
-    @Autowired
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
     }
 }
