@@ -33,7 +33,6 @@
         WHERE title LIKE CONCAT('%',#{keyword},'%')
     </select>
 
-<<<<<<< HEAD
     <select id="mapArticlesByIds" parameterType="list" resultType="ArticleEntity">
         <include refid="Base_Column_Select"/>
         WHERE id IN
@@ -42,10 +41,7 @@
         </foreach>
     </select>
 
-    <select id="select" resultType="ArticleEntity">
-=======
     <select id="list" resultType="ArticleEntity">
->>>>>>> origin/master
         <include refid="Base_Column_Select"/>
         <where>
             <if test="id!=null">

@@ -12,7 +12,6 @@ import com.fintech.intellinews.vo.UserCommentVO;
 import com.fintech.intellinews.vo.UserInfoVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;

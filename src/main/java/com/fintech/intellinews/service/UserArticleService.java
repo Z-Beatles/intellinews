@@ -34,7 +34,7 @@ public class UserArticleService {
     public Integer insertUserArticle(Long userId,Long articleId){
         UserArticleEntity userArticle = new UserArticleEntity();
         userArticle.setUserId(userId);
-        userArticle.setArticleId(articleId);
+        userArticle.setResourceId(articleId);
         userArticle.setCollectTime(Calendar.getInstance().getTime());
         userArticle.setGmtCreate(Calendar.getInstance().getTime());
         return userArticleDao.insert(userArticle);
