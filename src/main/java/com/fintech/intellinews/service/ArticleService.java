@@ -26,6 +26,7 @@ import java.util.Map;
  * Created 2017-10-30 17:29
  */
 @Service
+@SuppressWarnings("unchecked")
 public class ArticleService extends BaseService {
 
     private ObjectMapper objectMapper;
@@ -40,8 +41,6 @@ public class ArticleService extends BaseService {
 
     private UserLoginDao userLoginDao;
 
-
-    @SuppressWarnings("unchecked")
     public PageInfo<ArticleVO> listArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
         if (channelId == 1) {
             return listLatestArticles(pageNum, pageSize);
@@ -72,7 +71,6 @@ public class ArticleService extends BaseService {
         return page;
     }
 
-    @SuppressWarnings("unchecked")
     private PageInfo<ArticleVO> listLatestArticles(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> articleEntities = articleDao.listLatestArticles();
@@ -106,7 +104,6 @@ public class ArticleService extends BaseService {
      * @param pageSize 分页条数
      * @return 分页文章列表
      */
-    @SuppressWarnings("unchecked")
     public PageInfo<SearchArticleVO> listArticlesByKeyword(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> searchList = articleDao.listArticleByKeyword(keyword);
@@ -157,7 +154,6 @@ public class ArticleService extends BaseService {
      * @param pageSize 分页椰页容
      * @return 评论的分页信息
      */
-    @SuppressWarnings("unchecked")
     public PageInfo<CommentVO> listArticleComments(Long id, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<CommentEntity> comments = commentDao.listArticleComments(id);

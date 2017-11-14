@@ -18,29 +18,31 @@ import java.util.List;
  * create 2017-11-13 13:14
  **/
 @Service
+@SuppressWarnings("unchecked")
 public class FootmarkService {
 
     private FootmarkDao footmarkDao;
 
     /**
      * 获取用户足迹
-     * @param userId 用户id
-     * @param pageNum 搜索页数
+     *
+     * @param userId   用户id
+     * @param pageNum  搜索页数
      * @param pageSize 搜索条数
      * @return 足迹列表
      */
-    public PageInfo<FootmarkVO> getUserFootmarks(Long userId, Integer pageNum, Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<FootmarkVO> getUserFootmarks(Long userId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<FootmarkEntity> footmarks = footmarkDao.getUserFootmarks(userId);
-        if (footmarks==null||footmarks.size()==0){
+        if (footmarks == null || footmarks.isEmpty()) {
             return new PageInfo(footmarks);
         }
         List<FootmarkVO> footmarkVOS = new ArrayList<>();
         FootmarkVO footmarkVO;
-        for (FootmarkEntity entity : footmarks){
+        for (FootmarkEntity entity : footmarks) {
             footmarkVO = new FootmarkVO();
-            BeanUtils.copyProperties(entity,footmarkVO);
-            exchangeDate(footmarkVO,entity);
+            BeanUtils.copyProperties(entity, footmarkVO);
+            exchangeDate(footmarkVO, entity);
             footmarkVOS.add(footmarkVO);
         }
         PageInfo pageInfo = new PageInfo(footmarks);
@@ -50,13 +52,14 @@ public class FootmarkService {
 
     /**
      * 添加用户足迹
-     * @param userId 用户id
-     * @param contentId 足迹内容id
-     * @param source 足迹来源
+     *
+     * @param userId      用户id
+     * @param contentId   足迹内容id
+     * @param source      足迹来源
      * @param contentType 足迹内容类型
      * @return 足迹id
      */
-    public Long addFootmark(Long userId,Long contentId,String source,String contentType){
+    public Long addFootmark(Long userId, Long contentId, String source, String contentType) {
         FootmarkEntity entity = new FootmarkEntity();
         entity.setUserId(userId);
         entity.setContentType(contentType);
@@ -67,15 +70,15 @@ public class FootmarkService {
         return entity.getId();
     }
 
-    private void exchangeDate(FootmarkVO footmarkVO,FootmarkEntity entity){
+    private void exchangeDate(FootmarkVO footmarkVO, FootmarkEntity entity) {
         Calendar date = Calendar.getInstance();
         int year = date.get(Calendar.YEAR);
         int month = date.get(Calendar.MONTH);
         int day = date.get(Calendar.DATE);
         date.setTime(entity.getGmtCreate());
         footmarkVO.setYear(String.valueOf(date.get(Calendar.YEAR)));
-        if (year == date.get(Calendar.YEAR)&&month == date.get(Calendar.MONTH)){
-            switch (day-date.get(Calendar.DATE)){
+        if (year == date.get(Calendar.YEAR) && month == date.get(Calendar.MONTH)) {
+            switch (day - date.get(Calendar.DATE)) {
                 case 0:
                     footmarkVO.setDate("今天");
                     break;
@@ -86,13 +89,13 @@ public class FootmarkService {
                     footmarkVO.setDate("前天");
                     break;
                 default:
-                    footmarkVO.setDate(month+"-"+date.get(Calendar.DATE));
+                    footmarkVO.setDate(month + "-" + date.get(Calendar.DATE));
                     break;
             }
-        }else{
-            footmarkVO.setDate(date.get(Calendar.MONTH)+"-"+date.get(Calendar.DATE));
+        } else {
+            footmarkVO.setDate(date.get(Calendar.MONTH) + "-" + date.get(Calendar.DATE));
         }
-        footmarkVO.setTime(date.get(Calendar.HOUR)+"-"+date.get(Calendar.MINUTE));
+        footmarkVO.setTime(date.get(Calendar.HOUR) + "-" + date.get(Calendar.MINUTE));
     }
 
     @Autowired
