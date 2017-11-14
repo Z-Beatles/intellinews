@@ -10,6 +10,7 @@ import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.util.StringUtil;
 import com.fintech.intellinews.vo.DetailsSectionVO;
 import com.fintech.intellinews.vo.ListSectionVO;
+import com.fintech.intellinews.vo.SearchSectionVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wanghao
@@ -58,12 +60,12 @@ public class SectionService extends BaseService {
         if (sectionEntities == null) {
             return new PageInfo<>();
         }
-        List<ListSectionVO> resultList = new ArrayList<>();
-        ListSectionVO listSectionVO;
+        List<SearchSectionVO> resultList= new ArrayList<>();
+        SearchSectionVO searchSectionVO;
         for (SectionEntity sectionEntity : sectionEntities) {
-            listSectionVO = new ListSectionVO();
-            BeanUtils.copyProperties(sectionEntity, listSectionVO);
-            resultList.add(listSectionVO);
+            searchSectionVO = new SearchSectionVO();
+            BeanUtils.copyProperties(sectionEntity, searchSectionVO);
+            resultList.add(searchSectionVO);
         }
         PageInfo pageInfo = new PageInfo(sectionEntities);
         pageInfo.setList(resultList);
