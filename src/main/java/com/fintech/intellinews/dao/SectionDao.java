@@ -25,6 +25,13 @@ public interface SectionDao extends BaseDao<SectionEntity> {
      */
     List<SectionEntity> listSectionsByKeyword(String keyword);
 
+    /**
+     * 根据首字母查询条目（条目导航）
+     * @param startWith 首字母
+     * @return 条目列表
+     */
+    List<SectionEntity> listSectionsByStartWith(String startWith);
+
     @MapKey("id")
     Map<Long,SectionEntity> listSectionByIds(List<Long> ids);
 

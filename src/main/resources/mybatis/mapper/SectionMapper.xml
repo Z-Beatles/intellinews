@@ -35,5 +35,8 @@
             #{id}
         </foreach>
     </select>
+    <select id="listSectionsByStartWith" resultType="com.fintech.intellinews.entity.SectionEntity">
+        <include refid="Base_Column_Select"/>
+    </select>
 
 </mapper>

@@ -1,8 +1,6 @@
 package com.fintech.intellinews.vo;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-
-import java.util.Date;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * @author waynechu
@@ -17,9 +15,11 @@ public class DetailsSectionVO {
 
     private String createBy;
 
+    private String createTime;
+
     private String updateBy;
 
-    private Date updateTime;
+    private String updateTime;
 
     private String introduction;
 
@@ -29,7 +29,7 @@ public class DetailsSectionVO {
 
     private Integer collectCount;
 
-    private ArrayNode itemInfo;
+    private ObjectNode itemInfo;
 
     public Long getId() {
         return id;
@@ -63,6 +63,14 @@ public class DetailsSectionVO {
         this.createBy = createBy;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     public String getUpdateBy() {
         return updateBy;
     }
@@ -71,11 +79,11 @@ public class DetailsSectionVO {
         this.updateBy = updateBy;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -111,11 +119,11 @@ public class DetailsSectionVO {
         this.collectCount = collectCount;
     }
 
-    public ArrayNode getItemInfo() {
+    public ObjectNode getItemInfo() {
         return itemInfo;
     }
 
-    public void setItemInfo(ArrayNode itemInfo) {
+    public void setItemInfo(ObjectNode itemInfo) {
         this.itemInfo = itemInfo;
     }
 }

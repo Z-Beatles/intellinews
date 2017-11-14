@@ -2,8 +2,10 @@ package com.fintech.intellinews.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.base.BaseService;
+import com.fintech.intellinews.dao.SectionAliasDao;
 import com.fintech.intellinews.dao.SectionCountDao;
 import com.fintech.intellinews.dao.SectionDao;
 import com.fintech.intellinews.dao.SectionItemDao;
@@ -11,7 +13,9 @@ import com.fintech.intellinews.entity.SectionCountEntity;
 import com.fintech.intellinews.entity.SectionEntity;
 import com.fintech.intellinews.entity.SectionItemEntity;
 import com.fintech.intellinews.enums.ResultEnum;
+import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
+import com.fintech.intellinews.util.RegexUtil;
 import com.fintech.intellinews.util.StringUtil;
 import com.fintech.intellinews.vo.DetailsSectionVO;
 import com.fintech.intellinews.vo.ListSectionVO;
@@ -40,6 +44,8 @@ public class SectionService extends BaseService {
 
     private SectionItemDao sectionItemDao;
 
+    private SectionAliasDao sectionAliasDao;
+
     @SuppressWarnings("unchecked")
     public PageInfo<ListSectionVO> listSections(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -61,6 +67,9 @@ public class SectionService extends BaseService {
 
     @SuppressWarnings("unchecked")
     public PageInfo<ListSectionVO> listSectionsByKeyword(String keyword, Integer pageNum, Integer pageSize) {
+        if (RegexUtil.matchStartWith(keyword)) {
+            return listSectionsByStartWith(keyword, pageNum, pageSize);
+        }
         PageHelper.startPage(pageNum, pageSize);
         // 用 % 分割关键字用于模糊查询
         String signKeyword = StringUtil.spiltString(keyword);
@@ -80,6 +89,12 @@ public class SectionService extends BaseService {
         return pageInfo;
     }
 
+    private PageInfo<ListSectionVO> listSectionsByStartWith(String startWith, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        // List<SectionEntity> sectionEntities = sectionItemDao.listSectionsB`yStartWith(startWith);
+        return null;
+    }
+
     public DetailsSectionVO getSectionById(Long sectionId) {
         SectionEntity sectionEntity = sectionDao.getById(sectionId);
         if (sectionEntity == null) {
@@ -87,10 +102,13 @@ public class SectionService extends BaseService {
         }
         SectionCountEntity sectionCountEntity = sectionCountDao.getBySectionId(sectionId);
         SectionItemEntity sectionItemEntity = sectionItemDao.getBySectionId(sectionId);
-        ArrayNode itemInfo = JacksonUtil.toArrayNodeFromString(objectMapper, sectionItemEntity.getItemInfo());
-        // 返回最新的修改时间
-        Date updateTime = sectionEntity.getGmtModified().after(sectionItemEntity.getGmtModified()) ? sectionEntity
+        ObjectNode itemInfo = JacksonUtil.toObjectNodeFromString(objectMapper, sectionItemEntity.getItemInfo());
+        // 创建时间为section主表的创建时间
+        String createTime = DateUtil.toCustomStringFromDate(sectionEntity.getGmtCreate());
+        // 修改时间为section主表和item扩展信息表中选择最新修改的为修改时间
+        Date date = sectionEntity.getGmtModified().after(sectionItemEntity.getGmtModified()) ? sectionEntity
                 .getGmtModified() : sectionItemEntity.getGmtModified();
+        String updateTime = DateUtil.toCustomStringFromDate(date);
 
         DetailsSectionVO detailsSectionVO = new DetailsSectionVO();
         BeanUtils.copyProperties(sectionEntity, detailsSectionVO);
@@ -98,6 +116,7 @@ public class SectionService extends BaseService {
         detailsSectionVO.setShareCount(sectionCountEntity.getShareCount());
         detailsSectionVO.setCollectCount(sectionCountEntity.getCollectCount());
         detailsSectionVO.setItemInfo(itemInfo);
+        detailsSectionVO.setCreateTime(createTime);
         detailsSectionVO.setUpdateTime(updateTime);
         return detailsSectionVO;
     }
@@ -120,5 +139,9 @@ public class SectionService extends BaseService {
     @Autowired
     public void setObjectMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+    }
+
+    public void setSectionAliasDao(SectionAliasDao sectionAliasDao) {
+        this.sectionAliasDao = sectionAliasDao;
     }
 }
