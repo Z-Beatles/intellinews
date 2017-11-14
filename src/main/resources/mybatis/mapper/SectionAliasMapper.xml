@@ -16,4 +16,11 @@
         WHERE id = #{id}
     </select>
 
+    <select id="listByStartWith" resultType="java.lang.Long">
+        SELECT DISTINCT section_id
+        FROM oi_section_alias
+        WHERE alias LIKE CONCAT(#{startWith}, '%')
+        ORDER BY alias
+    </select>
+
 </mapper>

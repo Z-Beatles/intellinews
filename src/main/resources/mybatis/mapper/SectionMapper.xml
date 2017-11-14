@@ -28,15 +28,12 @@
         WHERE name LIKE #{keyword}
     </select>
 
-    <select id="listSectionByIds" parameterType="list" resultType="SectionEntity">
+    <select id="mapSectionByIds" parameterType="list" resultType="SectionEntity">
         <include refid="Base_Column_Select"/>
         WHERE id IN
         <foreach collection="list" item="id" open="(" close=")" separator=",">
             #{id}
         </foreach>
-    </select>
-    <select id="listSectionsByStartWith" resultType="com.fintech.intellinews.entity.SectionEntity">
-        <include refid="Base_Column_Select"/>
     </select>
 
 </mapper>

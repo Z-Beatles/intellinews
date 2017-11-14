@@ -43,7 +43,7 @@ public class UserSectionService {
         for (UserSectionEntity entity : userSections){
             idList.add(entity.getSectionId());
         }
-        Map<Long,SectionEntity> mapList = sectionDao.listSectionByIds(idList);
+        Map<Long,SectionEntity> mapList = sectionDao.mapSectionByIds(idList);
         List<UserSectionVO> list = new ArrayList<>();
         UserSectionVO userSectionVO;
         SectionEntity sectionEntity;

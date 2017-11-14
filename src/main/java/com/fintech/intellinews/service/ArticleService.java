@@ -110,7 +110,7 @@ public class ArticleService extends BaseService {
     public PageInfo<SearchArticleVO> listArticlesByKeyword(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> searchList = articleDao.listArticleByKeyword(keyword);
-        if (searchList == null || searchList.size() == 0) {
+        if (searchList == null || searchList.isEmpty()) {
             return new PageInfo<>();
         }
         List<SearchArticleVO> resultList = new ArrayList<>();
@@ -157,10 +157,11 @@ public class ArticleService extends BaseService {
      * @param pageSize 分页椰页容
      * @return 评论的分页信息
      */
+    @SuppressWarnings("unchecked")
     public PageInfo<CommentVO> listArticleComments(Long id, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<CommentEntity> comments = commentDao.listArticleComments(id);
-        if (comments == null || comments.size() == 0) {
+        if (comments == null || comments.isEmpty()) {
             return new PageInfo<>();
         }
         List<Long> userIds = new ArrayList<>();
@@ -213,4 +214,5 @@ public class ArticleService extends BaseService {
     public void setUserLoginDao(UserLoginDao userLoginDao) {
         this.userLoginDao = userLoginDao;
     }
+
 }

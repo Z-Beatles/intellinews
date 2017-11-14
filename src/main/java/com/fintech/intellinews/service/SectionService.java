@@ -1,7 +1,6 @@
 package com.fintech.intellinews.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.base.BaseService;
@@ -15,7 +14,6 @@ import com.fintech.intellinews.entity.SectionItemEntity;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
-import com.fintech.intellinews.util.RegexUtil;
 import com.fintech.intellinews.util.StringUtil;
 import com.fintech.intellinews.vo.DetailsSectionVO;
 import com.fintech.intellinews.vo.ListSectionVO;
@@ -29,12 +27,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wanghao
  * create 2017-11-08 15:06
  **/
 @Service
+@SuppressWarnings("unchecked")
 public class SectionService extends BaseService {
     private ObjectMapper objectMapper;
 
@@ -46,7 +46,6 @@ public class SectionService extends BaseService {
 
     private SectionAliasDao sectionAliasDao;
 
-    @SuppressWarnings("unchecked")
     public PageInfo<ListSectionVO> listSections(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<SectionEntity> sectionEntities = sectionDao.listAll();
@@ -65,11 +64,7 @@ public class SectionService extends BaseService {
         return pageInfo;
     }
 
-    @SuppressWarnings("unchecked")
-    public PageInfo<ListSectionVO> listSectionsByKeyword(String keyword, Integer pageNum, Integer pageSize) {
-        if (RegexUtil.matchStartWith(keyword)) {
-            return listSectionsByStartWith(keyword, pageNum, pageSize);
-        }
+    public PageInfo<ListSectionVO> listByKeyword(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         // 用 % 分割关键字用于模糊查询
         String signKeyword = StringUtil.spiltString(keyword);
@@ -89,10 +84,23 @@ public class SectionService extends BaseService {
         return pageInfo;
     }
 
-    private PageInfo<ListSectionVO> listSectionsByStartWith(String startWith, Integer pageNum, Integer pageSize) {
+    public PageInfo<SearchSectionVO> listByStartWith(String startWith, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        // List<SectionEntity> sectionEntities = sectionItemDao.listSectionsB`yStartWith(startWith);
-        return null;
+        List<Long> sectionIds = sectionAliasDao.listByStartWith(startWith);
+        if (sectionIds == null ||sectionIds.isEmpty()) {
+            return new PageInfo<>();
+        }
+        Map<Long, SectionEntity> result = sectionDao.mapSectionByIds(sectionIds);
+        List<SearchSectionVO> searchSectionVOS = new ArrayList<>();
+        SearchSectionVO searchSectionVO;
+        for (SectionEntity sectionEntity : result.values()) {
+            searchSectionVO = new SearchSectionVO();
+            BeanUtils.copyProperties(sectionEntity, searchSectionVO);
+            searchSectionVOS.add(searchSectionVO);
+        }
+        PageInfo pageInfo = new PageInfo(sectionIds);
+        pageInfo.setList(searchSectionVOS);
+        return pageInfo;
     }
 
     public DetailsSectionVO getSectionById(Long sectionId) {
@@ -141,6 +149,7 @@ public class SectionService extends BaseService {
         this.objectMapper = objectMapper;
     }
 
+    @Autowired
     public void setSectionAliasDao(SectionAliasDao sectionAliasDao) {
         this.sectionAliasDao = sectionAliasDao;
     }
