@@ -207,7 +207,7 @@ public class UserController {
             @ApiParam(name = "articleId",value = "文章id",required = true)
             @RequestParam(name = "articleId")Long articleId,
             @ApiParam(name = "content",value = "评论内容",required = true)
-            @RequestParam(name = "content")String content){
+            @RequestBody String content){
         userService.checkCurrentUser(userId);
         return ResultUtil.success( commentService.addUserComment(userId,articleId,content));
     }
