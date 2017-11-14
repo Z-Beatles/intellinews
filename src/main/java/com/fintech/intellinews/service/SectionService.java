@@ -41,7 +41,7 @@ public class SectionService extends BaseService {
             listSectionVO = new ListSectionVO();
             sectionCountEntity = sectionCountDao.getBySectionId(sectionEntity.getId());
             BeanUtils.copyProperties(sectionEntity, listSectionVO);
-            BeanUtils.copyProperties(sectionCountEntity, listSectionVO);
+            listSectionVO.setViewCount(sectionCountEntity.getViewCount());
             resultList.add(listSectionVO);
         }
         PageInfo pageInfo = new PageInfo(sectionEntities);
