@@ -1,12 +1,17 @@
 package com.fintech.intellinews.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.SectionCountDao;
 import com.fintech.intellinews.dao.SectionDao;
+import com.fintech.intellinews.dao.SectionItemDao;
 import com.fintech.intellinews.entity.SectionCountEntity;
 import com.fintech.intellinews.entity.SectionEntity;
+import com.fintech.intellinews.entity.SectionItemEntity;
 import com.fintech.intellinews.enums.ResultEnum;
+import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.util.StringUtil;
 import com.fintech.intellinews.vo.DetailsSectionVO;
 import com.fintech.intellinews.vo.ListSectionVO;
@@ -18,8 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author wanghao
@@ -27,10 +32,13 @@ import java.util.Map;
  **/
 @Service
 public class SectionService extends BaseService {
+    private ObjectMapper objectMapper;
 
     private SectionDao sectionDao;
 
     private SectionCountDao sectionCountDao;
+
+    private SectionItemDao sectionItemDao;
 
     @SuppressWarnings("unchecked")
     public PageInfo<ListSectionVO> listSections(Integer pageNum, Integer pageSize) {
@@ -60,7 +68,7 @@ public class SectionService extends BaseService {
         if (sectionEntities == null) {
             return new PageInfo<>();
         }
-        List<SearchSectionVO> resultList= new ArrayList<>();
+        List<SearchSectionVO> resultList = new ArrayList<>();
         SearchSectionVO searchSectionVO;
         for (SectionEntity sectionEntity : sectionEntities) {
             searchSectionVO = new SearchSectionVO();
@@ -78,12 +86,19 @@ public class SectionService extends BaseService {
             throw new AppException(ResultEnum.SECTION_NOT_EXIST_ERROR);
         }
         SectionCountEntity sectionCountEntity = sectionCountDao.getBySectionId(sectionId);
+        SectionItemEntity sectionItemEntity = sectionItemDao.getBySectionId(sectionId);
+        ArrayNode itemInfo = JacksonUtil.toArrayNodeFromString(objectMapper, sectionItemEntity.getItemInfo());
+        // 返回最新的修改时间
+        Date updateTime = sectionEntity.getGmtModified().after(sectionItemEntity.getGmtModified()) ? sectionEntity
+                .getGmtModified() : sectionItemEntity.getGmtModified();
+
         DetailsSectionVO detailsSectionVO = new DetailsSectionVO();
         BeanUtils.copyProperties(sectionEntity, detailsSectionVO);
-        detailsSectionVO.setUpdateTime(sectionEntity.getGmtModified());
         detailsSectionVO.setViewCount(sectionCountEntity.getViewCount());
         detailsSectionVO.setShareCount(sectionCountEntity.getShareCount());
         detailsSectionVO.setCollectCount(sectionCountEntity.getCollectCount());
+        detailsSectionVO.setItemInfo(itemInfo);
+        detailsSectionVO.setUpdateTime(updateTime);
         return detailsSectionVO;
     }
 
@@ -95,5 +110,15 @@ public class SectionService extends BaseService {
     @Autowired
     public void setSectionCountDao(SectionCountDao sectionCountDao) {
         this.sectionCountDao = sectionCountDao;
+    }
+
+    @Autowired
+    public void setSectionItemDao(SectionItemDao sectionItemDao) {
+        this.sectionItemDao = sectionItemDao;
+    }
+
+    @Autowired
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 }

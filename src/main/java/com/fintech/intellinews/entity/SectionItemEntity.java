@@ -1,10 +1,12 @@
 package com.fintech.intellinews.entity;
 
+import com.fintech.intellinews.base.BaseEntity;
+
 /**
  * @author waynechu
  * Created 2017-11-14 11:06
  */
-public class SectionItemEntity {
+public class SectionItemEntity extends BaseEntity {
     private Long id;
 
     private Long sectionId;
