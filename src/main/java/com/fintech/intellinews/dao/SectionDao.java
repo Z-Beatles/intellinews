@@ -26,6 +26,5 @@ public interface SectionDao extends BaseDao<SectionEntity> {
     List<SectionEntity> listSectionsByKeyword(String keyword);
 
     @MapKey("id")
-    Map<Long,SectionEntity> mapSectionByIds(List<Long> ids);
-
+    Map<Long, SectionEntity> mapSectionByIds(List<Long> ids);
 }

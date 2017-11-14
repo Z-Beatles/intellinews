@@ -46,6 +46,13 @@ public class SectionService extends BaseService {
 
     private SectionAliasDao sectionAliasDao;
 
+    /**
+     * 获取所有条目列表
+     *
+     * @param pageNum  页数
+     * @param pageSize 页大小
+     * @return 条目列表
+     */
     public PageInfo<ListSectionVO> listSections(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<SectionEntity> sectionEntities = sectionDao.listAll();
@@ -64,7 +71,15 @@ public class SectionService extends BaseService {
         return pageInfo;
     }
 
-    public PageInfo<ListSectionVO> listByKeyword(String keyword, Integer pageNum, Integer pageSize) {
+    /**
+     * 根据关键字查询搜索条目列表
+     *
+     * @param keyword  关键字
+     * @param pageNum  页数
+     * @param pageSize 页大小
+     * @return 搜索条目列表
+     */
+    public PageInfo<SearchSectionVO> listByKeyword(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         // 用 % 分割关键字用于模糊查询
         String signKeyword = StringUtil.spiltString(keyword);
@@ -84,25 +99,43 @@ public class SectionService extends BaseService {
         return pageInfo;
     }
 
-    public PageInfo<SearchSectionVO> listByStartWith(String startWith, Integer pageNum, Integer pageSize) {
+    /**
+     * 根据拼音首字母查询导航条目列表（导航查询）
+     *
+     * @param startWith 拼音首字母
+     * @param pageNum   页数
+     * @param pageSize  页大小
+     * @return 导航条目列表
+     */
+    public PageInfo<ListSectionVO> listByStartWith(String startWith, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Long> sectionIds = sectionAliasDao.listByStartWith(startWith);
-        if (sectionIds == null ||sectionIds.isEmpty()) {
+        if (sectionIds == null || sectionIds.isEmpty()) {
             return new PageInfo<>();
         }
-        Map<Long, SectionEntity> result = sectionDao.mapSectionByIds(sectionIds);
-        List<SearchSectionVO> searchSectionVOS = new ArrayList<>();
-        SearchSectionVO searchSectionVO;
-        for (SectionEntity sectionEntity : result.values()) {
-            searchSectionVO = new SearchSectionVO();
-            BeanUtils.copyProperties(sectionEntity, searchSectionVO);
-            searchSectionVOS.add(searchSectionVO);
+        Map<Long, SectionEntity> sectionMap = sectionDao.mapSectionByIds(sectionIds);
+        Map<Long, SectionCountEntity> sectionCountMap = sectionCountDao.mapSectionCountByIds(sectionIds);
+        List<ListSectionVO> listSectionVOS = new ArrayList<>();
+        ListSectionVO listSectionVO;
+        SectionCountEntity sectionCountEntity;
+        for (SectionEntity sectionEntity : sectionMap.values()) {
+            listSectionVO = new ListSectionVO();
+            sectionCountEntity = sectionCountMap.get(sectionEntity.getId());
+            BeanUtils.copyProperties(sectionEntity, listSectionVO);
+            BeanUtils.copyProperties(sectionCountEntity, listSectionVO);
+            listSectionVOS.add(listSectionVO);
         }
         PageInfo pageInfo = new PageInfo(sectionIds);
-        pageInfo.setList(searchSectionVOS);
+        pageInfo.setList(listSectionVOS);
         return pageInfo;
     }
 
+    /**
+     * 根据id查询条目详情
+     *
+     * @param sectionId 条目id
+     * @return 条目详情
+     */
     public DetailsSectionVO getSectionById(Long sectionId) {
         SectionEntity sectionEntity = sectionDao.getById(sectionId);
         if (sectionEntity == null) {

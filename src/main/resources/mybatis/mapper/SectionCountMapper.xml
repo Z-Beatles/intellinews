@@ -23,4 +23,12 @@
         WHERE section_id = #{id}
     </select>
 
+    <select id="mapSectionCountByIds" resultType="SectionCountEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>
