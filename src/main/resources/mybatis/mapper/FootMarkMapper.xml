@@ -27,12 +27,11 @@
     <insert id="insert" parameterType="FootmarkEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO oi_footmark(
             user_id,
-            footmark_id,
-            footmark_type,
+            content_id,
+            content_type,
             source,
             gmt_create)
         VALUES (#{userId},#{contentId},#{contentType},#{source},#{gmtCreate})
-
     </insert>
 
 </mapper>
