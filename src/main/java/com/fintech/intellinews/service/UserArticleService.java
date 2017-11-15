@@ -43,7 +43,6 @@ public class UserArticleService {
         insertArticle.setUserId(userId);
         insertArticle.setResourceId(resourceId);
         insertArticle.setResourceType("文章");
-        insertArticle.setCollectTime(Calendar.getInstance().getTime());
         insertArticle.setGmtCreate(Calendar.getInstance().getTime());
         return userArticleDao.insert(insertArticle);
     }

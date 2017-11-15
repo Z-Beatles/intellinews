@@ -38,11 +38,13 @@
     <select id="listArticleComments" resultType="CommentEntity" parameterType="Long">
         <include refid="Base_Column_Select"/>
         WHERE article_id = #{articleId}
+        ORDER BY gmt_create DESC
     </select>
 
     <select id="listUserComments" resultType="CommentEntity" parameterType="Long">
         <include refid="Base_Column_Select"/>
         WHERE user_id = #{userId}
+        ORDER BY gmt_create DESC
     </select>
 
     <insert id="addUserComment" parameterType="CommentEntity" useGeneratedKeys="true" keyProperty="id">

@@ -2,8 +2,6 @@ package com.fintech.intellinews.entity;
 
 import com.fintech.intellinews.base.BaseEntity;
 
-import java.util.Date;
-
 public class UserArticleEntity extends BaseEntity {
     private Long id;
 
@@ -12,8 +10,6 @@ public class UserArticleEntity extends BaseEntity {
     private Long resourceId;
 
     private String resourceType;
-
-    private Date collectTime;
 
     public Long getId() {
         return id;
@@ -45,13 +41,5 @@ public class UserArticleEntity extends BaseEntity {
 
     public void setResourceType(String resourceType) {
         this.resourceType = resourceType;
-    }
-
-    public Date getCollectTime() {
-        return collectTime;
-    }
-
-    public void setCollectTime(Date collectTime) {
-        this.collectTime = collectTime;
     }
 }
