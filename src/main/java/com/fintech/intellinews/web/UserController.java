@@ -5,6 +5,7 @@ import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.*;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.UserCollectVO;
+import com.fintech.intellinews.vo.UserCommentVO;
 import com.fintech.intellinews.vo.UserInfoVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -92,7 +93,7 @@ public class UserController {
             @ApiParam(name = "source", value = "足迹来源(article、home、section)", required = true)
             @RequestParam(name = "source") String source) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(footmarkService.addFootmark(userId,contentId,source,contentType));
+        return ResultUtil.success(footmarkService.addFootmark(userId, contentId, source, contentType));
     }
 
     @GetMapping("/{userId}/footmarks")
@@ -106,7 +107,7 @@ public class UserController {
             @ApiParam(name = "pageSize", value = "查询条数")
             @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(footmarkService.getUserFootmarks(userId,pageNum,pageSize));
+        return ResultUtil.success(footmarkService.getUserFootmarks(userId, pageNum, pageSize));
     }
 
     @PostMapping("/{userId}/articles")
@@ -118,7 +119,7 @@ public class UserController {
             @ApiParam(name = "articleId", value = "文章id", required = true)
             @RequestParam("articleId") Long articleId) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(userArticleService.insertUserArticle(userId,articleId));
+        return ResultUtil.success(userArticleService.insertUserArticle(userId, articleId));
     }
 
     @DeleteMapping("/{userId}/articles")
@@ -130,7 +131,7 @@ public class UserController {
             @ApiParam(name = "articleId", value = "文章id", required = true)
             @RequestParam("articleId") Long articleId) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(userArticleService.deleteUserArticle(userId,articleId));
+        return ResultUtil.success(userArticleService.deleteUserArticle(userId, articleId));
     }
 
     @GetMapping("/{userId}/articles")
@@ -140,11 +141,11 @@ public class UserController {
             @ApiParam(name = "userId", value = "用户id", required = true)
             @PathVariable("userId") Long userId,
             @ApiParam(name = "pageNum", value = "分页页数")
-            @RequestParam(name = "pageNum",defaultValue = "1",required = false)Integer pageNum,
+            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
             @ApiParam(name = "pageSize", value = "分页条数")
-            @RequestParam(name = "pageSize",defaultValue = "10",required = false)Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(userArticleService.getUserCollectArticles(userId,pageNum,pageSize));
+        return ResultUtil.success(userArticleService.getUserCollectArticles(userId, pageNum, pageSize));
     }
 
     @PostMapping("/{userId}/collection")
@@ -156,7 +157,7 @@ public class UserController {
             @ApiParam(name = "sectionId", value = "条目id", required = true)
             @RequestParam("sectionId") Long sectionId) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(userSectionService.insertUserSection(userId,sectionId));
+        return ResultUtil.success(userSectionService.insertUserSection(userId, sectionId));
     }
 
 
@@ -169,7 +170,7 @@ public class UserController {
             @ApiParam(name = "sectionId", value = "条目id", required = true)
             @RequestParam("sectionId") Long sectionId) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(userSectionService.deleteUserSection(userId,sectionId));
+        return ResultUtil.success(userSectionService.deleteUserSection(userId, sectionId));
     }
 
     @GetMapping("/{userId}/sections")
@@ -179,37 +180,37 @@ public class UserController {
             @ApiParam(name = "userId", value = "用户id", required = true)
             @PathVariable("userId") Long userId,
             @ApiParam(name = "pageNum", value = "分页页数")
-            @RequestParam(name = "pageNum",defaultValue = "1",required = false)Integer pageNum,
+            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
             @ApiParam(name = "pageSize", value = "分页条数")
-            @RequestParam(name = "pageSize",defaultValue = "10",required = false)Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(userSectionService.getUserSections(userId,pageNum,pageSize));
+        return ResultUtil.success(userSectionService.getUserSections(userId, pageNum, pageSize));
     }
 
     @GetMapping("{userId}/comments")
     @ResponseBody
     @ApiOperation(value = "获取用户发表的所有评论", produces = "application/json")
-    public Result getUserComments(
+    public Result<PageInfo<UserCommentVO>> getUserComments(
             @ApiParam(name = "userId", value = "用户id", required = true)
             @PathVariable("userId") Long userId,
-            @RequestParam(name = "pageNum",defaultValue = "1",required = false) Integer pageNum,
-            @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize) {
+            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(userService.getUserComments(userId,pageNum,pageSize));
+        return ResultUtil.success(userService.getUserComments(userId, pageNum, pageSize));
     }
 
     @PostMapping("{userId}/comments")
     @ResponseBody
     @ApiOperation(value = "创建用户文章评论", produces = "application/json")
     public Result insertComment(
-            @ApiParam(name = "userId",value = "用户id",required = true)
-            @PathVariable(name = "userId")Long userId,
-            @ApiParam(name = "articleId",value = "文章id",required = true)
-            @RequestParam(name = "articleId")Long articleId,
-            @ApiParam(name = "content",value = "评论内容",required = true)
-            @RequestBody String content){
+            @ApiParam(name = "userId", value = "用户id", required = true)
+            @PathVariable(name = "userId") Long userId,
+            @ApiParam(name = "articleId", value = "文章id", required = true)
+            @RequestParam(name = "articleId") Long articleId,
+            @ApiParam(name = "content", value = "评论内容", required = true)
+            @RequestBody String content) {
         userService.checkCurrentUser(userId);
-        return ResultUtil.success( commentService.addUserComment(userId,articleId,content));
+        return ResultUtil.success(commentService.addUserComment(userId, articleId, content));
     }
 
     @Autowired

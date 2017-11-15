@@ -42,8 +42,6 @@ public class UserService extends BaseService {
 
     private UserLoginDao userLoginDao;
 
-    private UserSectionDao userSectionDao;
-
     private CommentDao commentDao;
 
     private ArticleDao articleDao;
@@ -115,21 +113,6 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 用户收藏条目
-     * @param userId 用户id
-     * @param sectionId 条目id
-     * @return 收藏记录的条目id
-     */
-    public Long collectSection(Long userId,Long sectionId){
-        UserSectionEntity userSection = new UserSectionEntity();
-        userSection.setUserId(userId);
-        userSection.setSectionId(sectionId);
-        userSection.setGmtCreate(Calendar.getInstance().getTime());
-        userSectionDao.insert(userSection);
-        return userSection.getId();
-    }
-
-    /**
      * 获取用户评论
      * @param userId 用户id
      * @param pageNum 分页页数
@@ -186,11 +169,6 @@ public class UserService extends BaseService {
     }
 
     @Autowired
-    public void setUserSectionDao(UserSectionDao userSectionDao) {
-        this.userSectionDao = userSectionDao;
-    }
-
-    @Autowired
     public void setCommentDao(CommentDao commentDao) {
         this.commentDao = commentDao;
     }
@@ -199,5 +177,7 @@ public class UserService extends BaseService {
     public void setArticleDao(ArticleDao articleDao) {
         this.articleDao = articleDao;
     }
+
+
 
 }

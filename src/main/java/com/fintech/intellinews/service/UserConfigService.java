@@ -23,7 +23,7 @@ import java.util.Date;
  **/
 @Service
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserConfigService {
+public class UserConfigService{
 
     private ObjectMapper objectMapper;
 

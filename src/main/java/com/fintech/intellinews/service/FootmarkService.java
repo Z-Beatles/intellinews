@@ -29,6 +29,7 @@ public class FootmarkService {
      * @param pageSize 搜索条数
      * @return 足迹列表
      */
+    @SuppressWarnings("unchecked")
     public PageInfo<FootmarkVO> getUserFootmarks(Long userId, Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<FootmarkEntity> footmarks = footmarkDao.getUserFootmarks(userId);

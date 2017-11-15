@@ -19,7 +19,7 @@ import java.util.*;
  * create 2017-11-13 16:10
  **/
 @Service
-public class UserSectionService {
+public class UserSectionService{
 
     private UserSectionDao userSectionDao;
 

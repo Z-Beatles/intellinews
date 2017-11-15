@@ -21,30 +21,4 @@ import java.util.List;
 @Api(tags = "评论资源接口")
 @RequestMapping("/v1/comments")
 public class CommentController {
-
-    private UserService userService;
-
-    private CommentService commentService;
-
-    @GetMapping
-    @ResponseBody
-    @ApiOperation(value = "获取指定文章下的指定用户评论",notes = "需要验证用户登录",produces = "application/json")
-    public Result<List<CommentEntity>> getComment(
-            @ApiParam(name = "userId",value = "用户id",required = true)
-            @RequestParam Long userId,
-            @ApiParam(name = "articleId",value = "文章id",required = true)
-            @RequestParam Long articleId){
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(commentService.getComment(userId,articleId));
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
-    }
 }

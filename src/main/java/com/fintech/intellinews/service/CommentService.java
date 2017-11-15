@@ -2,27 +2,18 @@ package com.fintech.intellinews.service;
 
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.dao.CommentDao;
-import com.fintech.intellinews.dao.UserLoginDao;
 import com.fintech.intellinews.entity.CommentEntity;
-import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.enums.ResultEnum;
-import com.fintech.intellinews.vo.CommentVO;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * @author wanghao
  * create 2017-11-10 17:23
  **/
 @Service
-public class CommentService {
+public class CommentService{
 
     private CommentDao commentDao;
 
@@ -44,19 +35,6 @@ public class CommentService {
             throw new AppException(ResultEnum.FAILED.getCode(),"评论文章失败");
         }
         return entity.getId();
-    }
-
-    /**
-     * 根据用户id和文章id获取评论
-     * @param userId 用户id
-     * @param articleId 文章id
-     * @return 用户评论列表
-     */
-    public List<CommentEntity> getComment(Long userId,Long articleId){
-        CommentEntity comment = new CommentEntity();
-        comment.setUserId(userId);
-        comment.setArticleId(articleId);
-        return commentDao.list(comment);
     }
 
     @Autowired
