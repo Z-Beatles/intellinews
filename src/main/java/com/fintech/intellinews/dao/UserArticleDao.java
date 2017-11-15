@@ -16,4 +16,6 @@ public interface UserArticleDao extends BaseDao<UserArticleEntity> {
 
     Integer deleteCollectArticle(UserArticleEntity entity);
 
+    UserArticleEntity getUserArticle(UserArticleEntity userArticleEntity);
+
 }

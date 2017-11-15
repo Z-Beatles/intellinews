@@ -14,7 +14,19 @@
 
     <select id="getById" resultType="UserArticleEntity">
         <include refid="Base_Column_Select"/>
-        WHERE id = #{id}
+        WHERE id=#{id}
+    </select>
+
+    <select id="getUserArticle" resultType="UserArticleEntity" parameterType="UserArticleEntity">
+        <include refid="Base_Column_Select"/>
+        <where>
+            <if test="id!=null and id>0">
+                AND id=#{id}
+            </if>
+            <if test="userId!=null and userId>0">
+                AND user_id = #{userId}
+            </if>
+        </where>
     </select>
 
     <insert id="insert" parameterType="UserArticleEntity">

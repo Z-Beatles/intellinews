@@ -50,7 +50,7 @@ public class UserArticleService {
 
     /**
      * 取消收藏文章
-     * @return
+     * @return 影响行数
      */
     public Integer deleteUserArticle(Long userId,Long articleId){
         UserArticleEntity article = new UserArticleEntity();
@@ -59,12 +59,26 @@ public class UserArticleService {
         return userArticleDao.deleteCollectArticle(article);
     }
 
+
+    /**
+     * 获取文章指定用户的收藏
+     * @param userId 用户id
+     * @param articleId 文章id
+     * @return 收藏文章对象
+     */
+    public UserArticleEntity getUserArticle(Long userId,Long articleId){
+        UserArticleEntity userArticleEntity = new UserArticleEntity();
+        userArticleEntity.setUserId(userId);
+        userArticleEntity.setId(articleId);
+        return userArticleDao.getUserArticle(userArticleEntity);
+    }
+
     /**
      * 获取用户收藏文章
-     * @param userId
-     * @param pageNum
-     * @param pageSize
-     * @return
+     * @param userId 用户id
+     * @param pageNum 分页页数
+     * @param pageSize 分页条数
+     * @return 用户收藏分页列表
      */
     @SuppressWarnings("unchecked")
     public PageInfo<UserCollectVO> getUserCollectArticles(Long userId, Integer pageNum, Integer pageSize){
