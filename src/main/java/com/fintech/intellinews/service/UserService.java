@@ -100,7 +100,7 @@ public class UserService extends BaseService {
     public void checkCurrentUser(Long id) {
         Subject currentUser = SecurityUtils.getSubject();
         UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
-        if (!principal.getId().equals(id)) {
+        if (principal == null || !principal.getId().equals(id)) {
             throw new AppException(ResultEnum.WITHOUT_PERMISSION_ERROR);
         }
     }
@@ -114,32 +114,33 @@ public class UserService extends BaseService {
 
     /**
      * 获取用户评论
-     * @param userId 用户id
-     * @param pageNum 分页页数
+     *
+     * @param userId   用户id
+     * @param pageNum  分页页数
      * @param pageSize 分页条数
      * @return 查询评论列表
      */
     @SuppressWarnings("unchecked")
-    public PageInfo<UserCommentVO> getUserComments(Long userId,Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<UserCommentVO> getUserComments(Long userId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<CommentEntity> userComments = commentDao.listUserComments(userId);
-        if (userComments.size()==0){
+        if (userComments.size() == 0) {
             return new PageInfo(userComments);
         }
         List<Long> articleIdList = new ArrayList<>();
-        for (CommentEntity entity : userComments){
+        for (CommentEntity entity : userComments) {
             articleIdList.add(entity.getArticleId());
         }
-        Map<Long,ArticleEntity> articlesMap = articleDao.mapArticlesByIds(articleIdList);
+        Map<Long, ArticleEntity> articlesMap = articleDao.mapArticlesByIds(articleIdList);
         List<UserCommentVO> resultList = new ArrayList<>();
-        UserCommentVO userCommentVO ;
+        UserCommentVO userCommentVO;
         ArticleEntity articleEntity;
         String dateDesc;
-        for (CommentEntity entity : userComments){
+        for (CommentEntity entity : userComments) {
             userCommentVO = new UserCommentVO();
-            BeanUtils.copyProperties(entity,userCommentVO);
+            BeanUtils.copyProperties(entity, userCommentVO);
             articleEntity = articlesMap.get(entity.getArticleId());
-            if (articleEntity == null){
+            if (articleEntity == null) {
                 continue;
             }
             userCommentVO.setTitle(articleEntity.getTitle());
@@ -177,7 +178,6 @@ public class UserService extends BaseService {
     public void setArticleDao(ArticleDao articleDao) {
         this.articleDao = articleDao;
     }
-
 
 
 }

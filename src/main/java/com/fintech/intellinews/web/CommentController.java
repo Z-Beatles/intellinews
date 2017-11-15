@@ -1,17 +1,7 @@
 package com.fintech.intellinews.web;
 
-import com.fintech.intellinews.Result;
-import com.fintech.intellinews.entity.CommentEntity;
-import com.fintech.intellinews.service.CommentService;
-import com.fintech.intellinews.service.UserService;
-import com.fintech.intellinews.util.ResultUtil;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author wanghao
