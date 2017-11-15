@@ -3,6 +3,7 @@ package com.fintech.intellinews.web;
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.entity.SectionEntity;
 import com.fintech.intellinews.service.SectionService;
+import com.fintech.intellinews.util.RegexUtil;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.DetailsSectionVO;
 import com.fintech.intellinews.vo.ListSectionVO;
@@ -37,15 +38,18 @@ public class SectionController {
 
     @GetMapping("/search")
     @ResponseBody
-    @ApiOperation(value = "通过关键字搜索条目", produces = "application/json")
-    public Result<PageInfo<ListSectionVO>> getSectionByKeyword(
-            @ApiParam(name = "keyword", value = "搜索关键字", required = true)
+    @ApiOperation(value = "按条件搜索条目", notes = "可以按照关键字和首字母搜索，首字母格式为a~z", produces = "application/json")
+    public Result<PageInfo> getSectionByKeyword(
+            @ApiParam(name = "keyword", value = "搜索条件", required = true)
             @RequestParam(name = "keyword") String keyword,
             @ApiParam(name = "pageNum", value = "搜索页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
             @ApiParam(name = "pageSize", value = "搜索条数")
             @RequestParam(name = "pageSize", defaultValue = "3", required = false) Integer pageSize) {
-        return ResultUtil.success(sectionService.listSectionsByKeyword(keyword,pageNum,pageSize));
+        if (RegexUtil.matchStartWith(keyword)) {
+            return ResultUtil.success(sectionService.listByStartWith(keyword, pageNum, pageSize));
+        }
+        return ResultUtil.success(sectionService.listByKeyword(keyword, pageNum, pageSize));
     }
 
     @GetMapping("/{sectionId}")

@@ -5,18 +5,18 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.*;
 import com.fintech.intellinews.entity.*;
-import com.fintech.intellinews.vo.*;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.vo.ArticleVO;
+import com.fintech.intellinews.vo.CommentVO;
+import com.fintech.intellinews.vo.DetailsArticleVO;
+import com.fintech.intellinews.vo.SearchArticleVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +26,7 @@ import java.util.Map;
  * Created 2017-10-30 17:29
  */
 @Service
+@SuppressWarnings("unchecked")
 public class ArticleService extends BaseService {
 
     private ObjectMapper objectMapper;
@@ -40,8 +41,6 @@ public class ArticleService extends BaseService {
 
     private UserLoginDao userLoginDao;
 
-
-    @SuppressWarnings("unchecked")
     public PageInfo<ArticleVO> listArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
         if (channelId == 1) {
             return listLatestArticles(pageNum, pageSize);
@@ -72,7 +71,6 @@ public class ArticleService extends BaseService {
         return page;
     }
 
-    @SuppressWarnings("unchecked")
     private PageInfo<ArticleVO> listLatestArticles(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> articleEntities = articleDao.listLatestArticles();
@@ -100,16 +98,16 @@ public class ArticleService extends BaseService {
 
     /**
      * 通过关键字获取文章列表
-     * @param keyword 关键字
-     * @param pageNum 分页页数
+     *
+     * @param keyword  关键字
+     * @param pageNum  分页页数
      * @param pageSize 分页条数
      * @return 分页文章列表
      */
-    @SuppressWarnings("unchecked")
     public PageInfo<SearchArticleVO> listArticlesByKeyword(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> searchList = articleDao.listArticleByKeyword(keyword);
-        if (searchList == null||searchList.size()==0) {
+        if (searchList == null || searchList.isEmpty()) {
             return new PageInfo<>();
         }
         List<SearchArticleVO> resultList = new ArrayList<>();
@@ -150,28 +148,29 @@ public class ArticleService extends BaseService {
 
     /**
      * 获取指定文章的评论信息
-     * @param id 文章id
-     * @param pageNum   分页索引
-     * @param pageSize  分页椰页容
+     *
+     * @param id       文章id
+     * @param pageNum  分页索引
+     * @param pageSize 分页椰页容
      * @return 评论的分页信息
      */
     public PageInfo<CommentVO> listArticleComments(Long id, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<CommentEntity> comments = commentDao.listArticleComments(id);
-        if (comments==null||comments.size()==0){
+        if (comments == null || comments.isEmpty()) {
             return new PageInfo<>();
         }
         List<Long> userIds = new ArrayList<>();
-        for (CommentEntity entity : comments){
+        for (CommentEntity entity : comments) {
             userIds.add(entity.getUserId());
         }
-        Map<Long,UserLoginEntity> mapUsers = userLoginDao.mapUserLoginByIds(userIds);
+        Map<Long, UserLoginEntity> mapUsers = userLoginDao.mapUserLoginByIds(userIds);
         List<CommentVO> resultComments = new ArrayList<>();
         UserLoginEntity userLoginEntity;
         CommentVO commentVO;
-        for (CommentEntity entity : comments){
+        for (CommentEntity entity : comments) {
             commentVO = new CommentVO();
-            BeanUtils.copyProperties(entity,commentVO);
+            BeanUtils.copyProperties(entity, commentVO);
             userLoginEntity = mapUsers.get(entity.getUserId());
             commentVO.setNickName(userLoginEntity.getNickname());
             commentVO.setAvatar(userLoginEntity.getAvatar());
@@ -211,4 +210,5 @@ public class ArticleService extends BaseService {
     public void setUserLoginDao(UserLoginDao userLoginDao) {
         this.userLoginDao = userLoginDao;
     }
+
 }

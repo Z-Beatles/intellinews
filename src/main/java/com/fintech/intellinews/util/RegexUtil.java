@@ -15,17 +15,24 @@ public class RegexUtil {
 
     private static final String REGEX_EMAIL = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
     private static final String REGEX_MOBILE = "^1(3[0-9]|4[57]|5[0-35-9]|7[01678]|8[0-9])[0-9]{8}$";
+    private static final String REGEX_STARTWITH = "^[a-z]";
 
-    private static Pattern PATTERN_EMAIL = Pattern.compile(REGEX_EMAIL);
+    private static Pattern patternEmail = Pattern.compile(REGEX_EMAIL);
 
     public static boolean matchEmail(String str) {
-        return PATTERN_EMAIL.matcher(str).matches();
+        return patternEmail.matcher(str).matches();
     }
 
-    private static Pattern PATTERN_MOBILE = Pattern.compile(REGEX_MOBILE);
+    private static Pattern patternMobile = Pattern.compile(REGEX_MOBILE);
 
     public static boolean matchMobile(String str) {
-        return PATTERN_MOBILE.matcher(str).matches();
+        return patternMobile.matcher(str).matches();
+    }
+
+    private static Pattern patternStartWith = Pattern.compile(REGEX_STARTWITH);
+
+    public static boolean matchStartWith(String str) {
+        return patternStartWith.matcher(str).matches();
     }
 
     public static boolean match(String pattern, String str) {

@@ -110,8 +110,8 @@ public class UserController {
         return ResultUtil.success(footmarkService.getUserFootmarks(userId, pageNum, pageSize));
     }
 
-    @PostMapping("/{userId}/articles")
     @ResponseBody
+    @PostMapping("/{userId}/articles")
     @ApiOperation(value = "用户收藏文章", produces = "application/json")
     public Result collectArticle(
             @ApiParam(name = "userId", value = "用户id", required = true)
