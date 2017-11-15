@@ -19,11 +19,11 @@
         WHERE id = #{id}
     </select>
 
-    <select id="listAll" resultType="com.fintech.intellinews.entity.SectionEntity">
+    <select id="listAll" resultType="SectionEntity">
         <include refid="Base_Column_Select"/>
     </select>
 
-    <select id="listSectionsByKeyword" resultType="com.fintech.intellinews.entity.SectionEntity">
+    <select id="listSectionsByKeyword" parameterType="map" resultType="SectionEntity">
         <include refid="Base_Column_Select"/>
         WHERE name LIKE #{keyword}
     </select>

@@ -15,6 +15,21 @@
         FROM oi_comment
     </sql>
 
+    <select id="select" parameterType="CommentEntity">
+        <include refid="Base_Column_Select"/>
+        <where>
+            <if test="id!=null and id > 0">
+                AND id = #{id}
+            </if>
+            <if test="userId!=null and userId > 0">
+                AND user_id = #{userId}
+            </if>
+            <if test="articleId!=null and articleId > 0">
+                AND article_id = #{articleId}
+            </if>
+        </where>
+    </select>
+
     <select id="getById" resultType="CommentEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}

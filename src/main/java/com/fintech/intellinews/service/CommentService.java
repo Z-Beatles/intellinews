@@ -46,6 +46,19 @@ public class CommentService {
         return entity.getId();
     }
 
+    /**
+     * 根据用户id和文章id获取评论
+     * @param userId 用户id
+     * @param articleId 文章id
+     * @return 用户评论列表
+     */
+    public List<CommentEntity> getComment(Long userId,Long articleId){
+        CommentEntity comment = new CommentEntity();
+        comment.setUserId(userId);
+        comment.setArticleId(articleId);
+        return commentDao.list(comment);
+    }
+
     @Autowired
     public void setCommentDao(CommentDao commentDao) {
         this.commentDao = commentDao;
