@@ -21,6 +21,21 @@
         WHERE user_id = #{userId}
     </select>
 
+    <select id="getUserSectionCollect" resultType="UserSectionEntity" parameterType="UserSectionEntity">
+        <include refid="Base_Column_Select"/>
+        <where>
+            <if test="id!=null and id>0">
+                AND id = #{id}
+            </if>
+            <if test="userId!=null and userId>0">
+                AND user_id = #{userId}
+            </if>
+            <if test="sectionId!=null and sectionId>0">
+                AND section_id = #{sectionId}
+            </if>
+        </where>
+    </select>
+
     <select id="checkUserSection" parameterType="map" resultType="integer">
         SELECT count(id)
         FROM oi_user_section

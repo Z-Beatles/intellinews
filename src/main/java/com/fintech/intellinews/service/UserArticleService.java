@@ -63,13 +63,13 @@ public class UserArticleService {
     /**
      * 获取文章指定用户的收藏
      * @param userId 用户id
-     * @param articleId 文章id
+     * @param resourceId 文章id
      * @return 收藏文章对象
      */
-    public UserArticleEntity getUserArticle(Long userId,Long articleId){
+    public UserArticleEntity getUserArticle(Long userId,Long resourceId){
         UserArticleEntity userArticleEntity = new UserArticleEntity();
         userArticleEntity.setUserId(userId);
-        userArticleEntity.setId(articleId);
+        userArticleEntity.setResourceId(resourceId);
         return userArticleDao.getUserArticle(userArticleEntity);
     }
 

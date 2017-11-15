@@ -1,7 +1,8 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
-import com.fintech.intellinews.service.UserArticleService;
+import com.fintech.intellinews.entity.UserSectionEntity;
+import com.fintech.intellinews.service.UserSectionService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
 import io.swagger.annotations.Api;
@@ -12,27 +13,28 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author wanghao
- * create 2017-11-15 9:45
+ * create 2017-11-15 10:01
  **/
 @RestController
 @Api(tags = "用户文章收藏资源")
-@RequestMapping("/v1/user_articles")
-public class UserArticleController {
+@RequestMapping("/v1/user_sections")
+public class UserSectionController {
 
     private UserService userService;
 
-    private UserArticleService userArticleService;
+    private UserSectionService userSectionService;
 
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取指定用户指定文章的收藏",notes = "需要验证用户身份",produces = "application/json")
-    public Result getUserArticles(
+    @ApiOperation(value = "获取条目指定用户的收藏",notes = "需要用户身份验证",produces = "application/json")
+    public Result<UserSectionEntity> getUserSection(
             @ApiParam(name = "userId",value = "用户id",required = true)
             @RequestParam Long userId,
-            @ApiParam(name = "resourceId",value = "资源id",required = true)
-            @RequestParam Long resourceId){
+            @ApiParam(name = "sectionId",value = "条目id",required = true)
+            @RequestParam Long sectionId){
+
         userService.checkCurrentUser(userId);
-        return ResultUtil.success(userArticleService.getUserArticle(userId,resourceId));
+        return ResultUtil.success(userSectionService.getUserSectionCollect(userId,sectionId));
     }
 
     @Autowired
@@ -41,7 +43,7 @@ public class UserArticleController {
     }
 
     @Autowired
-    public void setUserArticleService(UserArticleService userArticleService) {
-        this.userArticleService = userArticleService;
+    public void setUserSectionService(UserSectionService userSectionService) {
+        this.userSectionService = userSectionService;
     }
 }

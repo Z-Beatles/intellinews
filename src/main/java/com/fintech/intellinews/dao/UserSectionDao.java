@@ -16,6 +16,7 @@ public interface UserSectionDao extends BaseDao<UserSectionEntity> {
      */
     List<UserSectionEntity> getUserSection(Long userId);
 
+    UserSectionEntity getUserSectionCollect(UserSectionEntity entity);
 
     Integer deleteCollectSection(UserSectionEntity entity);
 

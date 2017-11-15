@@ -26,6 +26,19 @@ public class UserSectionService {
     private SectionDao sectionDao;
 
     /**
+     * 获取条目指定用户的收藏
+     * @param userId 用户id
+     * @param sectionId 条目id
+     * @return 收藏资源
+     */
+    public UserSectionEntity getUserSectionCollect(Long userId,Long sectionId){
+        UserSectionEntity userSectionEntity = new UserSectionEntity();
+        userSectionEntity.setSectionId(sectionId);
+        userSectionEntity.setUserId(userId);
+        return userSectionDao.getUserSectionCollect(userSectionEntity);
+    }
+
+    /**
      * 获取用户收藏条目
      * @param userId 用户id
      * @param pageNum 搜索页数

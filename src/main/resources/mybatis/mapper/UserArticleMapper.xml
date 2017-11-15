@@ -26,6 +26,9 @@
             <if test="userId!=null and userId>0">
                 AND user_id = #{userId}
             </if>
+            <if test="resourceId!=null and resourceId>0">
+                AND resource_id = #{resourceId}
+            </if>
         </where>
     </select>
 
