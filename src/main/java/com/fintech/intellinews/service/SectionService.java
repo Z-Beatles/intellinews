@@ -84,7 +84,7 @@ public class SectionService extends BaseService {
         // 用 % 分割关键字用于模糊查询
         String signKeyword = StringUtil.spiltString(keyword);
         List<SectionEntity> sectionEntities = sectionDao.listSectionsByKeyword(signKeyword);
-        if (sectionEntities == null) {
+        if (sectionEntities == null || sectionEntities.isEmpty()) {
             return new PageInfo<>();
         }
         List<SearchSectionVO> resultList = new ArrayList<>();
