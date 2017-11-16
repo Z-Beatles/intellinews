@@ -84,8 +84,8 @@ public class SectionService extends BaseService {
         // 用 % 分割关键字用于模糊查询
         String signKeyword = StringUtil.spiltString(keyword);
         List<SectionEntity> sectionEntities = sectionDao.listSectionsByKeyword(signKeyword);
-        if (sectionEntities == null) {
-            return new PageInfo<>();
+        if (sectionEntities.isEmpty()) {
+            return new PageInfo(sectionEntities);
         }
         List<SearchSectionVO> resultList = new ArrayList<>();
         SearchSectionVO searchSectionVO;
@@ -110,8 +110,8 @@ public class SectionService extends BaseService {
     public PageInfo<ListSectionVO> listByStartWith(String startWith, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Long> sectionIds = sectionAliasDao.listByStartWith(startWith);
-        if (sectionIds == null || sectionIds.isEmpty()) {
-            return new PageInfo<>();
+        if (sectionIds.isEmpty()) {
+            return new PageInfo(sectionIds);
         }
         Map<Long, SectionEntity> sectionMap = sectionDao.mapSectionByIds(sectionIds);
         Map<Long, SectionCountEntity> sectionCountMap = sectionCountDao.mapSectionCountByIds(sectionIds);

@@ -124,7 +124,7 @@ public class UserService extends BaseService {
     public PageInfo<UserCommentVO> getUserComments(Long userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<CommentEntity> userComments = commentDao.listUserComments(userId);
-        if (userComments.size() == 0) {
+        if (userComments.isEmpty()) {
             return new PageInfo(userComments);
         }
         List<Long> articleIdList = new ArrayList<>();

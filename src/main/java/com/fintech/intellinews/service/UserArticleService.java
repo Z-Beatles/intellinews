@@ -87,7 +87,7 @@ public class UserArticleService {
         for (UserArticleEntity entity : userArticles){
             listId.add(entity.getResourceId());
         }
-        if (listId.size()==0){
+        if (listId.isEmpty()){
             return new PageInfo(userArticles);
         }
         PageHelper.startPage(pageNum,pageSize);

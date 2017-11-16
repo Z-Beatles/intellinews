@@ -47,6 +47,9 @@ public class ArticleService extends BaseService {
         }
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleChannelEntity> articleChannelEntities = articleChannelDao.listByChannelId(channelId);
+        if (articleChannelEntities.isEmpty()) {
+            return new PageInfo(articleChannelEntities);
+        }
 
         List<ArticleVO> articleDTOS = new ArrayList<>();
         for (ArticleChannelEntity articleChannelEntity : articleChannelEntities) {
@@ -74,6 +77,9 @@ public class ArticleService extends BaseService {
     private PageInfo<ArticleVO> listLatestArticles(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> articleEntities = articleDao.listLatestArticles();
+        if (articleEntities.isEmpty()) {
+            return new PageInfo(articleEntities);
+        }
         List<ArticleVO> articleDTOS = new ArrayList<>();
         for (ArticleEntity articleEntity : articleEntities) {
             Long articleId = articleEntity.getId();
@@ -107,8 +113,8 @@ public class ArticleService extends BaseService {
     public PageInfo<SearchArticleVO> listArticlesByKeyword(String keyword, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> searchList = articleDao.listArticleByKeyword(keyword);
-        if (searchList == null || searchList.isEmpty()) {
-            return new PageInfo<>();
+        if (searchList.isEmpty()) {
+            return new PageInfo(searchList);
         }
         List<SearchArticleVO> resultList = new ArrayList<>();
         SearchArticleVO articleVO;
@@ -157,8 +163,8 @@ public class ArticleService extends BaseService {
     public PageInfo<CommentVO> listArticleComments(Long id, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<CommentEntity> comments = commentDao.listArticleComments(id);
-        if (comments == null || comments.isEmpty()) {
-            return new PageInfo<>();
+        if (comments.isEmpty()) {
+            return new PageInfo(comments);
         }
         List<Long> userIds = new ArrayList<>();
         for (CommentEntity entity : comments) {
