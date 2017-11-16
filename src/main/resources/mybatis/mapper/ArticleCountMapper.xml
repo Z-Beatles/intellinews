@@ -22,4 +22,10 @@
         <include refid="Base_Column_Select"/>
         WHERE article_id = #{articleId}
     </select>
+
+    <update id="updateViewCountByArticleId">
+        UPDATE oi_article_count
+        SET view_count = view_count + 1
+        WHERE article_id = #{articleId}
+    </update>
 </mapper>
