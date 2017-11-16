@@ -21,7 +21,7 @@
     <select id="getUserFootmarks" resultType="FootmarkEntity" parameterType="long">
         <include refid="Base_Column_Select"/>
         WHERE user_id = #{userId}
-        order by gmt_create
+        order by gmt_create DESC
     </select>
 
     <insert id="insert" parameterType="FootmarkEntity" useGeneratedKeys="true" keyProperty="id">
