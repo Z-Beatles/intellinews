@@ -69,7 +69,11 @@ public class UserArticleService {
         UserArticleEntity userArticleEntity = new UserArticleEntity();
         userArticleEntity.setUserId(userId);
         userArticleEntity.setResourceId(resourceId);
-        return userArticleDao.getUserArticle(userArticleEntity);
+        UserArticleEntity userArticle = userArticleDao.getUserArticle(userArticleEntity);
+        if (userArticle == null){
+            throw new AppException(ResultEnum.FAILED.getCode(),"未收藏");
+        }
+        return userArticle;
     }
 
     /**
