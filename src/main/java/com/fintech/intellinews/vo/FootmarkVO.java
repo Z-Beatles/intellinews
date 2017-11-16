@@ -8,6 +8,7 @@ public class FootmarkVO {
     private Long id;
     private Long contentId;
     private String contentType;
+    private String content;
     private String source;
     private String time;
     private String date;
@@ -35,6 +36,14 @@ public class FootmarkVO {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getSource() {
