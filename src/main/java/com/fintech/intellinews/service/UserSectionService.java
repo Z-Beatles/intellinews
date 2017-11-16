@@ -35,7 +35,11 @@ public class UserSectionService{
         UserSectionEntity userSectionEntity = new UserSectionEntity();
         userSectionEntity.setSectionId(sectionId);
         userSectionEntity.setUserId(userId);
-        return userSectionDao.getUserSectionCollect(userSectionEntity);
+        UserSectionEntity userSection = userSectionDao.getUserSectionCollect(userSectionEntity);
+        if (userSection == null){
+            throw new AppException(ResultEnum.FAILED.getCode(),"未收藏");
+        }
+        return userSection;
     }
 
     /**
