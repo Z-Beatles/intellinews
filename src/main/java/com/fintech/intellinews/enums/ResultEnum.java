@@ -28,6 +28,7 @@ public enum ResultEnum {
 
     SECTION_NOT_EXIST_ERROR(10000, "指定条目不存在"),
 
+
     CREATE_MENU_ERROR(40000, "自定义菜单失败"),
     DELETE_MENU_ERROR(40001, "删除自定义菜单失败"),
     ILLEGAL_MENU_TYPES_ERROR(40015, "不合法的菜单类型"),
