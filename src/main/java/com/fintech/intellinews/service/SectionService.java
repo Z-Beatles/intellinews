@@ -22,7 +22,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +38,7 @@ import java.util.Map;
  * create 2017-11-08 15:06
  **/
 @Service
+@Scope(scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @SuppressWarnings("unchecked")
 public class SectionService extends BaseService {
     private ObjectMapper objectMapper;
@@ -136,6 +141,7 @@ public class SectionService extends BaseService {
      * @param sectionId 条目id
      * @return 条目详情
      */
+    @Transactional
     public DetailsSectionVO getSectionById(Long sectionId) {
         SectionEntity sectionEntity = sectionDao.getById(sectionId);
         if (sectionEntity == null) {
@@ -159,6 +165,8 @@ public class SectionService extends BaseService {
         detailsSectionVO.setItemInfo(itemInfo);
         detailsSectionVO.setCreateTime(createTime);
         detailsSectionVO.setUpdateTime(updateTime);
+        // 更新条目浏览量
+        sectionCountDao.updateViewCountBySectionId(sectionId);
         return detailsSectionVO;
     }
 

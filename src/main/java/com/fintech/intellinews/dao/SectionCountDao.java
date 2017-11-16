@@ -20,4 +20,11 @@ public interface SectionCountDao extends BaseDao<SectionCountEntity> {
 
     @MapKey("sectionId")
     Map<Long, SectionCountEntity> mapSectionCountByIds(List<Long> sectionIds);
+
+    /**
+     * 更新条目浏览量
+     *
+     * @param sectionId 条目id
+     */
+    void updateViewCountBySectionId(Long sectionId);
 }

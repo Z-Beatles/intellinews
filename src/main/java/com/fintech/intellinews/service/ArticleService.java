@@ -15,7 +15,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,7 @@ import java.util.Map;
  * Created 2017-10-30 17:29
  */
 @Service
+@Scope(scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @SuppressWarnings("unchecked")
 public class ArticleService extends BaseService {
 
@@ -41,6 +46,14 @@ public class ArticleService extends BaseService {
 
     private UserLoginDao userLoginDao;
 
+    /**
+     * 根据频道id获取文章
+     *
+     * @param channelId 频道id
+     * @param pageNum   页数
+     * @param pageSize  页大小
+     * @return 分页后的文章
+     */
     public PageInfo<ArticleVO> listArticlesByChannelId(Long channelId, int pageNum, int pageSize) {
         if (channelId == 1) {
             return listLatestArticles(pageNum, pageSize);
@@ -74,6 +87,13 @@ public class ArticleService extends BaseService {
         return page;
     }
 
+    /**
+     * 获取最新文章
+     *
+     * @param pageNum  页数
+     * @param pageSize 页大小
+     * @return 分页后的最新文章
+     */
     private PageInfo<ArticleVO> listLatestArticles(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ArticleEntity> articleEntities = articleDao.listLatestArticles();
@@ -143,12 +163,15 @@ public class ArticleService extends BaseService {
      * @param id 文章id
      * @return 文章详情实体
      */
+    @Transactional
     public DetailsArticleVO getDetailsArticleById(Long id) {
         ArticleEntity articleEntity = articleDao.getById(id);
         DetailsArticleVO details = new DetailsArticleVO();
         BeanUtils.copyProperties(articleEntity, details);
         String dateStr = DateUtil.toDetailTimeString(articleEntity.getGmtCreate());
         details.setDate(dateStr);
+        // 更新文章浏览量
+        articleCountDao.updateViewCountByArticleId(id);
         return details;
     }
 
