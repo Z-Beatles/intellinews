@@ -4,17 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.base.BaseService;
-import com.fintech.intellinews.dao.SectionAliasDao;
-import com.fintech.intellinews.dao.SectionCountDao;
-import com.fintech.intellinews.dao.SectionDao;
-import com.fintech.intellinews.dao.SectionItemDao;
-import com.fintech.intellinews.entity.SectionCountEntity;
-import com.fintech.intellinews.entity.SectionEntity;
-import com.fintech.intellinews.entity.SectionItemEntity;
+import com.fintech.intellinews.dao.*;
+import com.fintech.intellinews.entity.*;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.util.StringUtil;
+import com.fintech.intellinews.vo.AtlasVO;
 import com.fintech.intellinews.vo.DetailsSectionVO;
 import com.fintech.intellinews.vo.ListSectionVO;
 import com.fintech.intellinews.vo.SearchSectionVO;
@@ -28,10 +24,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wanghao
@@ -50,6 +43,12 @@ public class SectionService extends BaseService {
     private SectionItemDao sectionItemDao;
 
     private SectionAliasDao sectionAliasDao;
+
+    private AtlasDao atlasDao;
+
+    private ArticleDao articleDao;
+
+    private ArticleCountDao articleCountDao;
 
     /**
      * 获取所有条目列表
@@ -170,6 +169,80 @@ public class SectionService extends BaseService {
         return detailsSectionVO;
     }
 
+    /**
+     * 根据条目id查询图谱信息
+     *
+     * @param sectionId 条目id
+     * @return 图谱信息
+     */
+    public Map<String, Object> listAtlasBySectionId(Long sectionId) {
+        Map<String, Object> result = new HashMap();
+        List<AtlasEntity> atlasSectionEntities = atlasDao.listBySectionIdAndType(sectionId, "section", 3);
+        List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 5);
+
+        List<Long> sectionIds = new ArrayList<>();
+        List<Long> articleIds = new ArrayList<>();
+        for (AtlasEntity entity : atlasSectionEntities) {
+            sectionIds.add(entity.getRelationId());
+        }
+        for (AtlasEntity entity : atlasArticleEntities) {
+            articleIds.add(entity.getRelationId());
+        }
+        Map<Long, SectionEntity> sectionMap = new HashMap<>();
+        Map<Long, SectionCountEntity> sectionCountMap = new HashMap<>();
+        Map<Long, ArticleEntity> articleMap = new HashMap<>();
+        Map<Long, ArticleCountEntity> articleCountMap = new HashMap<>();
+        if (!sectionIds.isEmpty()) {
+            sectionMap = sectionDao.mapSectionByIds(sectionIds);
+            sectionCountMap = sectionCountDao.mapSectionCountByIds(sectionIds);
+        }
+        if (!articleIds.isEmpty()) {
+            articleMap = articleDao.mapArticlesByIds(articleIds);
+            articleCountMap = articleCountDao.mapArticleCountByIds(articleIds);
+        }
+        List<AtlasVO> atlasSectionVOS = new ArrayList<>();
+        List<AtlasVO> atlasArticleVOS = new ArrayList<>();
+
+        Integer maxSectionViewCount = sectionCountDao.getMaxViewCount();
+        Integer maxArticleViewCount = articleCountDao.getMaxViewCount();
+        for (AtlasEntity atlasSectionEntity : atlasSectionEntities) {
+            AtlasVO atlasSectionVO = new AtlasVO();
+            atlasSectionVO.setId(atlasSectionEntity.getRelationId());
+            atlasSectionVO.setTitle(sectionMap.get(atlasSectionEntity.getRelationId()).getName());
+            atlasSectionVO.setDistance(atlasSectionEntity.getRelationDegree());
+            Integer viewCount = sectionCountMap.get(atlasSectionEntity.getRelationId()).getViewCount();
+            Integer weight = convertToWeight(viewCount, maxSectionViewCount);
+            atlasSectionVO.setWeight(weight);
+            atlasSectionVOS.add(atlasSectionVO);
+        }
+        for (AtlasEntity atlasArticleEntity : atlasArticleEntities) {
+            AtlasVO atlasArticleVO = new AtlasVO();
+            atlasArticleVO.setId(atlasArticleEntity.getRelationId());
+            atlasArticleVO.setTitle(articleMap.get(atlasArticleEntity.getRelationId()).getTitle());
+            atlasArticleVO.setDistance(atlasArticleEntity.getRelationDegree());
+            Integer viewCount = articleCountMap.get(atlasArticleEntity.getRelationId()).getViewCount();
+            Integer weight = convertToWeight(viewCount, maxArticleViewCount);
+            atlasArticleVO.setWeight(weight);
+            atlasArticleVOS.add(atlasArticleVO);
+        }
+        result.put("section", atlasSectionVOS);
+        result.put("articles", atlasArticleVOS);
+        return result;
+    }
+
+    /**
+     * 浏览量转化为权重
+     *
+     * @param viewCount 浏览量
+     * @return 权重
+     */
+    private Integer convertToWeight(Integer viewCount, Integer maxViewCount) {
+        if (viewCount == 0) {
+            return 1;
+        }
+        return viewCount * 50 / maxViewCount;
+    }
+
     @Autowired
     public void setSectionDao(SectionDao sectionDao) {
         this.sectionDao = sectionDao;
@@ -193,5 +266,20 @@ public class SectionService extends BaseService {
     @Autowired
     public void setSectionAliasDao(SectionAliasDao sectionAliasDao) {
         this.sectionAliasDao = sectionAliasDao;
+    }
+
+    @Autowired
+    public void setAtlasDao(AtlasDao atlasDao) {
+        this.atlasDao = atlasDao;
+    }
+
+    @Autowired
+    public void setArticleDao(ArticleDao articleDao) {
+        this.articleDao = articleDao;
+    }
+
+    @Autowired
+    public void setArticleCountDao(ArticleCountDao articleCountDao) {
+        this.articleCountDao = articleCountDao;
     }
 }

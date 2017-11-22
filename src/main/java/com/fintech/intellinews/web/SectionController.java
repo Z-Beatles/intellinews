@@ -1,7 +1,6 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
-import com.fintech.intellinews.entity.SectionEntity;
 import com.fintech.intellinews.service.SectionService;
 import com.fintech.intellinews.util.RegexUtil;
 import com.fintech.intellinews.util.ResultUtil;
@@ -13,6 +12,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author wanghao
@@ -64,10 +66,10 @@ public class SectionController {
     @GetMapping("/{sectionId}/atlas")
     @ResponseBody
     @ApiOperation(value = "根据条目id查询图谱信息", produces = "application/json")
-    public Result<PageInfo<SectionEntity>> getSectionAtlas(
+    public Result<Map<String, Object>> getSectionAtlas(
             @ApiParam(name = "sectionId", value = "条目id", required = true)
-            @PathVariable(name = "sectionId") String sectionId) {
-        return null;
+            @PathVariable(name = "sectionId") Long sectionId) {
+        return ResultUtil.success(sectionService.listAtlasBySectionId(sectionId));
     }
 
     @Autowired

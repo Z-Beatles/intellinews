@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fintech.intellinews.dao.AtlasDao">
+    <sql id="Base_Column_Select">
+        SELECT
+            id,
+            section_id,
+            relation_id,
+            relation_degree,
+            relation_type,
+            relation_degree,
+            gmt_create,
+            gmt_modified
+        FROM oi_atlas
+    </sql>
+
+    <select id="getById" resultType="AtlasEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE id = #{id}
+    </select>
+
+    <select id="listBySectionIdAndType" resultType="AtlasEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE section_id = #{sectionId}
+        AND relation_type = #{relationType}
+        ORDER BY rand()
+        LIMIT #{limit}
+    </select>
+</mapper>
