@@ -49,11 +49,21 @@
 
     <insert id="addUserComment" parameterType="CommentEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO oi_comment
-            (user_id,
-            article_id,
-            content,
-            gmt_create)
-        VALUES (#{userId},#{articleId},#{content},#{gmtCreate})
+        (user_id,
+         article_id,
+         content,
+         gmt_create)
+        VALUES (#{userId}, #{articleId}, #{content}, #{gmtCreate})
     </insert>
 
+    <update id="updateWithLike">
+        UPDATE oi_comment
+        SET like_count = like_count + 1
+        WHERE id = #{id}
+    </update>
+    <update id="updateWithDislike">
+        UPDATE oi_comment
+        SET dislike_count = dislike_count + 1
+        WHERE id = #{id}
+    </update>
 </mapper>
