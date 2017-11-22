@@ -126,7 +126,7 @@ public class FootmarkService {
                     footmarkVO.setDate("前天");
                     break;
                 default:
-                    footmarkVO.setDate(month + "-" + date.get(Calendar.DATE));
+                    footmarkVO.setDate(month + ":" + date.get(Calendar.DATE));
                     break;
             }
         } else {
