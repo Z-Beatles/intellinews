@@ -132,7 +132,7 @@ public class FootmarkService {
         } else {
             footmarkVO.setDate(date.get(Calendar.MONTH) + "-" + date.get(Calendar.DATE));
         }
-        footmarkVO.setTime(date.get(Calendar.HOUR) + "-" + date.get(Calendar.MINUTE));
+        footmarkVO.setTime(date.get(Calendar.HOUR) + ":" + date.get(Calendar.MINUTE));
     }
 
     @Autowired
