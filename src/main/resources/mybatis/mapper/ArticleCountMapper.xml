@@ -23,6 +23,19 @@
         WHERE article_id = #{articleId}
     </select>
 
+    <select id="mapArticleCountByIds" resultType="ArticleCountEntity">
+        <include refid="Base_Column_Select"/>
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getMaxViewCount" resultType="_int">
+        SELECT max(view_count)
+        FROM oi_article_count
+    </select>
+
     <update id="updateViewCountByArticleId">
         UPDATE oi_article_count
         SET view_count = view_count + 1

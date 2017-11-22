@@ -18,6 +18,12 @@ public interface SectionCountDao extends BaseDao<SectionCountEntity> {
      */
     SectionCountEntity getBySectionId(Long id);
 
+    /**
+     * 根据条目id列表获取条目统计信息列表
+     *
+     * @param sectionIds 条目id列表
+     * @return 条目统计信息列表
+     */
     @MapKey("sectionId")
     Map<Long, SectionCountEntity> mapSectionCountByIds(List<Long> sectionIds);
 
@@ -27,4 +33,11 @@ public interface SectionCountDao extends BaseDao<SectionCountEntity> {
      * @param sectionId 条目id
      */
     void updateViewCountBySectionId(Long sectionId);
+
+    /**
+     * 获取最大浏览量
+     *
+     * @return
+     */
+    Integer getMaxViewCount();
 }

@@ -12,7 +12,7 @@
             gmt_modified
         FROM oi_section_count
     </sql>
-    
+
     <select id="getById" resultType="SectionCountEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
@@ -30,7 +30,12 @@
             #{id}
         </foreach>
     </select>
-    
+
+    <select id="getMaxViewCount" resultType="_int">
+        SELECT max(view_count)
+        FROM oi_section_count
+    </select>
+
     <update id="updateViewCountBySectionId">
         UPDATE oi_section_count
         SET view_count = view_count + 1
