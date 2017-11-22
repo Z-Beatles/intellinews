@@ -177,8 +177,8 @@ public class SectionService extends BaseService {
      */
     public Map<String, Object> listAtlasBySectionId(Long sectionId) {
         Map<String, Object> result = new HashMap();
-        List<AtlasEntity> atlasSectionEntities = atlasDao.listBySectionIdAndType(sectionId, "section", 3);
-        List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 5);
+        List<AtlasEntity> atlasSectionEntities = atlasDao.listBySectionIdAndType(sectionId, "section", 5);
+        List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 3);
 
         List<Long> sectionIds = new ArrayList<>();
         List<Long> articleIds = new ArrayList<>();
@@ -225,6 +225,12 @@ public class SectionService extends BaseService {
             atlasArticleVO.setWeight(weight);
             atlasArticleVOS.add(atlasArticleVO);
         }
+        SectionEntity sectionEntity = sectionDao.getById(sectionId);
+        Map<String, Object> centerInfo = new HashMap<>(2);
+        centerInfo.put("id", sectionEntity.getId());
+        centerInfo.put("title", sectionEntity.getName());
+
+        result.put("center", centerInfo);
         result.put("section", atlasSectionVOS);
         result.put("articles", atlasArticleVOS);
         return result;
