@@ -21,16 +21,10 @@
 
     <!-- 静态资源 -->
     <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>
+    <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
     <!-- Swagger resources -->
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
-
-    <!-- Swagger resources -->
-    <mvc:resources mapping="index.html" location="/WEB-INF/"/>
-    <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
-    <mvc:resources mapping="/image/**" location="/WEB-INF/views/image/"/>
-
-
 
     <!-- 文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
