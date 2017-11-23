@@ -20,8 +20,8 @@
     </mvc:annotation-driven>
 
     <!-- 静态资源 -->
-    <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>
-    <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
+    <mvc:resources mapping="/v1/resources/**" location="/WEB-INF/resources/"/>
+    <mvc:resources mapping="/v1/static/**" location="/WEB-INF/static/"/>
     <!-- Swagger resources -->
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
