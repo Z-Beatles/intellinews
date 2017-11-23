@@ -9,9 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author wanghao
@@ -54,6 +52,25 @@ public class UserKeywordService {
         Integer count = userKeywordDao.addUserKeyword(entity);
         if (count == 0){
             throw new AppException(ResultEnum.FAILED.getCode(),"添加用户偏好失败");
+        }
+        UserKeywordVO userKeywordVO = new UserKeywordVO();
+        BeanUtils.copyProperties(entity,userKeywordVO);
+        return userKeywordVO;
+    }
+
+    /**
+     * 更新用户偏好关注度
+     * @param userId 用户id
+     * @param keyword 偏好关键字
+     * @return 成功返回用户添加对象，失败抛出异常
+     */
+    public UserKeywordVO updateHobbyAttention(Long userId,String keyword){
+        UserKeywordEntity entity = new UserKeywordEntity();
+        entity.setUserId(userId);
+        entity.setKeyword(keyword);
+        Integer updateCount = userKeywordDao.updateHobbyAttention(entity);
+        if (updateCount == 0){
+            return addUserKeyword(userId,keyword);
         }
         UserKeywordVO userKeywordVO = new UserKeywordVO();
         BeanUtils.copyProperties(entity,userKeywordVO);

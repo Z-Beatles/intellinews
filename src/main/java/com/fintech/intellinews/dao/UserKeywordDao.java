@@ -5,6 +5,7 @@ import com.fintech.intellinews.entity.UserKeywordEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wanghao
@@ -16,4 +17,5 @@ public interface UserKeywordDao extends BaseDao<UserKeywordEntity> {
 
     Integer addUserKeyword(UserKeywordEntity entity);
 
+    Integer updateHobbyAttention(UserKeywordEntity entity);
 }
