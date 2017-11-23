@@ -30,7 +30,7 @@
     <update id="updateHobbyAttention" parameterType="UserKeywordEntity">
         UPDATE oi_user_keyword
         SET attention = attention + 1
-        user_id = #{userId}
+        WHERE user_id = #{userId}
         AND keyword = #{keyword}
     </update>
 
