@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fintech.intellinews.dao.UserKeywordDao">
+    <sql id="Base_Column_Select">
+        SELECT
+            id,
+            user_id,
+            keyword,
+            attention,
+            gmt_create,
+            gmt_modified
+        FROM oi_user_keyword
+    </sql>
+
+    <select id="getUserKeywords" parameterType="long" resultType="UserKeywordEntity">
+        <include refid="Base_Column_Select"/>
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addUserKeyword" parameterType="UserKeywordEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO oi_user_keyword(user_id,keyword,attention,gmt_create)
+        VALUES (#{userId},#{keyword},1,#{gmtCreate})
+    </insert>
+
+</mapper>
