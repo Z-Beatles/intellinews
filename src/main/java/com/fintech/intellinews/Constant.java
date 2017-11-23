@@ -16,7 +16,7 @@ public class Constant {
     public static final String DELETE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
 
     /** 用户默认头像 */
-    public static final String DEFAULT_USER_AVATAR = "https://ss0.bdstatic.com/7Ls0a8Sm1A5BphGlnYG/sys/portrait/item/1a67313538323337363237ab06";
+    public static final String DEFAULT_USER_AVATAR = "/static/img/avatar_default.jpg";
     /** 用户默认频道配置 */
     public static final String DEFAULT_USER_CHANNEL_CONFIG ="[{\"id\":1,\"name\":\"latest\",\"nameZh\":\"最新\"}," +
             "{\"id\":2,\"name\":\"policy\",\"nameZh\":\"政策\"},{\"id\":3,\"name\":\"industry\",\"nameZh\":\"行业\"}," +
