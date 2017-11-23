@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.entity.UserKeywordEntity;
 import com.fintech.intellinews.service.UserKeywordService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -26,12 +27,24 @@ public class UserKeywordController {
 
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取用户偏好", produces = "application/json")
+    @ApiOperation(value = "获取用户偏好关键字", produces = "application/json")
     public Result<List<UserKeywordVO>> getUserHobby(
             @ApiParam(value = "userId",name="用户id",required = true)
             @RequestParam Long userId){
         userService.checkCurrentUser(userId);
         return ResultUtil.success(userKeywordService.getUserKeyWords(userId));
+    }
+
+    @PostMapping
+    @ResponseBody
+    @ApiOperation(value = "添加用户偏好关键字", produces = "application/json")
+    public Result<UserKeywordVO> addUserHobby(
+            @ApiParam(value = "userId",name="用户id",required = true)
+            @RequestParam Long userId,
+            @ApiParam(value = "keyword",name="用户偏好关键字",required = true)
+            @RequestParam String keyword){
+        userService.checkCurrentUser(userId);
+        return ResultUtil.success(userKeywordService.addUserKeyword(userId,keyword));
     }
 
     @Autowired
