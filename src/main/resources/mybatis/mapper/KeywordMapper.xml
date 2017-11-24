@@ -4,6 +4,8 @@
     <sql id="Base_Column_Select">
         SELECT
             id,
+            name,
+            count,
             gmt_create,
             gmt_modified
         FROM oi_keyword
@@ -13,5 +15,19 @@
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
+
+    <select id="listHotKeywords" resultType="keywordEntity">
+        <include refid="Base_Column_Select"/>
+    </select>
+
+    <insert id="insert" parameterType="KeywordEntity">
+        INSERT INTO oi_keyword (name, count, gmt_create) VALUES (#{name}, #{count}, #{gmtCreate})
+    </insert>
+
+    <update id="updateKeywordCount">
+        UPDATE oi_keyword
+        SET count = count + 1
+        WHERE name = #{keyword}
+    </update>
 
 </mapper>
