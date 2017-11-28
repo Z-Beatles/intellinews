@@ -50,6 +50,8 @@ public class SectionService extends BaseService {
 
     private ArticleCountDao articleCountDao;
 
+    private KeywordService keywordService;
+
     /**
      * 获取所有条目列表
      *
@@ -90,6 +92,8 @@ public class SectionService extends BaseService {
         List<SectionEntity> sectionEntities = sectionDao.listSectionsByKeyword(signKeyword);
         if (sectionEntities.isEmpty()) {
             return new PageInfo(sectionEntities);
+        } else {
+            keywordService.addKeyword(keyword);
         }
         List<SearchSectionVO> resultList = new ArrayList<>();
         SearchSectionVO searchSectionVO;
@@ -287,5 +291,10 @@ public class SectionService extends BaseService {
     @Autowired
     public void setArticleCountDao(ArticleCountDao articleCountDao) {
         this.articleCountDao = articleCountDao;
+    }
+
+    @Autowired
+    public void setKeywordService(KeywordService keywordService) {
+        this.keywordService = keywordService;
     }
 }

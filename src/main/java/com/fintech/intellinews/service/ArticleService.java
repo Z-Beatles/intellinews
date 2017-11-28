@@ -46,6 +46,8 @@ public class ArticleService extends BaseService {
 
     private UserLoginDao userLoginDao;
 
+    private KeywordService keywordService;
+
     /**
      * 根据频道id获取文章
      *
@@ -135,6 +137,8 @@ public class ArticleService extends BaseService {
         List<ArticleEntity> searchList = articleDao.listArticleByKeyword(keyword);
         if (searchList.isEmpty()) {
             return new PageInfo(searchList);
+        } else {
+            keywordService.addKeyword(keyword);
         }
         List<SearchArticleVO> resultList = new ArrayList<>();
         SearchArticleVO articleVO;
@@ -240,4 +244,8 @@ public class ArticleService extends BaseService {
         this.userLoginDao = userLoginDao;
     }
 
+    @Autowired
+    public void setKeywordService(KeywordService keywordService) {
+        this.keywordService = keywordService;
+    }
 }
