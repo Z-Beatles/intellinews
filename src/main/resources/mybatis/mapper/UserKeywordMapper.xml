@@ -19,7 +19,7 @@
                 user_id = #{userId}
             </if>
         </where>
-        ORDER BY attention
+        ORDER BY attention DESC
     </select>
 
     <insert id="addUserKeyword" parameterType="UserKeywordEntity" useGeneratedKeys="true" keyProperty="id">
