@@ -2,12 +2,9 @@ package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
 import com.fintech.intellinews.enums.ResultEnum;
-import com.fintech.intellinews.service.*;
+import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
-import com.fintech.intellinews.vo.UserCollectVO;
-import com.fintech.intellinews.vo.UserCommentVO;
 import com.fintech.intellinews.vo.UserInfoVO;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -25,16 +22,6 @@ public class UserController {
 
     private UserService userService;
 
-    private UserConfigService userConfigService;
-
-    private UserArticleService userArticleService;
-
-    private FootmarkService footmarkService;
-
-    private UserSectionService userSectionService;
-
-    private CommentService commentService;
-
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户注册", notes = "注册成功返回用户id", produces = "application/json")
@@ -48,198 +35,16 @@ public class UserController {
         return ResultUtil.success(ResultEnum.REGIST_SUCCESS_INFO, userService.insertUser(nickname, username, password));
     }
 
-    @GetMapping("{userId}/channels")
+    @GetMapping("/me")
     @ResponseBody
-    @ApiOperation(value = "获取指定用户频道配置", notes = "只能拿到当前登录用户的频道设置", produces = "application/json")
-    public Result getUserChannels(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable(name = "userId") Long id) {
-        userService.checkCurrentUser(id);
-        return ResultUtil.success(userConfigService.getUserChannelConfig(id));
-    }
-
-    @PutMapping("{userId}/channels")
-    @ResponseBody
-    @ApiOperation(value = "更新指定用户频道配置", produces = "application/json")
-    public Result updateUserChannels(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable(name = "userId") Long id,
-            @ApiParam(name = "config", value = "Json用户配置", required = true)
-            @RequestBody String config) {
-        userService.checkCurrentUser(id);
-        return ResultUtil.success(userConfigService.updateUserChannelConfig(id, config));
-    }
-
-    @GetMapping("/{userId}")
-    @ResponseBody
-    @ApiOperation(value = "获取指定用户信息", produces = "application/json")
-    public Result<UserInfoVO> getUser(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long id) {
-        userService.checkCurrentUser(id);
-        return ResultUtil.success(userService.getUserInfo(id));
-    }
-
-    @PostMapping("/{userId}/footmarks")
-    @ResponseBody
-    @ApiOperation(value = "添加用户足迹", produces = "application/json")
-    public Result createUserFootmarks(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable(value = "userId") Long userId,
-            @ApiParam(name = "contentId", value = "足迹内容id", required = true)
-            @RequestParam(name = "contentId") Long contentId,
-            @ApiParam(name = "contentType", value = "足迹内容类型(article、section)", required = true)
-            @RequestParam(name = "contentType") String contentType,
-            @ApiParam(name = "source", value = "足迹来源(article、home、section)", required = true)
-            @RequestParam(name = "source") String source) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(footmarkService.addFootmark(userId, contentId, source, contentType));
-    }
-
-    @GetMapping("/{userId}/footmarks")
-    @ResponseBody
-    @ApiOperation(value = "查询用户足迹", produces = "application/json")
-    public Result listUserFootmarks(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable(value = "userId") Long userId,
-            @ApiParam(name = "pageNum", value = "查询页数")
-            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-            @ApiParam(name = "pageSize", value = "查询条数")
-            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(footmarkService.getUserFootmarks(userId, pageNum, pageSize));
-    }
-
-    @ResponseBody
-    @PostMapping("/{userId}/articles")
-    @ApiOperation(value = "用户收藏文章", produces = "application/json")
-    public Result collectArticle(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId,
-            @ApiParam(name = "articleId", value = "文章id", required = true)
-            @RequestParam("articleId") Long articleId) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userArticleService.insertUserArticle(userId, articleId));
-    }
-
-    @DeleteMapping("/{userId}/articles")
-    @ResponseBody
-    @ApiOperation(value = "取消收藏文章", produces = "application/json")
-    public Result cancelCollectArticle(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId,
-            @ApiParam(name = "articleId", value = "文章id", required = true)
-            @RequestParam("articleId") Long articleId) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userArticleService.deleteUserArticle(userId, articleId));
-    }
-
-    @GetMapping("/{userId}/articles")
-    @ResponseBody
-    @ApiOperation(value = "获取用户收藏文章", produces = "application/json")
-    public Result<PageInfo<UserCollectVO>> getCollectArticle(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId,
-            @ApiParam(name = "pageNum", value = "分页页数")
-            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-            @ApiParam(name = "pageSize", value = "分页条数")
-            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userArticleService.getUserCollectArticles(userId, pageNum, pageSize));
-    }
-
-    @PostMapping("/{userId}/collection")
-    @ResponseBody
-    @ApiOperation(value = "用户收藏条目", produces = "application/json")
-    public Result collectSection(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId,
-            @ApiParam(name = "sectionId", value = "条目id", required = true)
-            @RequestParam("sectionId") Long sectionId) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userSectionService.insertUserSection(userId, sectionId));
-    }
-
-
-    @DeleteMapping("/{userId}/sections")
-    @ResponseBody
-    @ApiOperation(value = "取消收藏条目", produces = "application/json")
-    public Result cancelCollectSection(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId,
-            @ApiParam(name = "sectionId", value = "条目id", required = true)
-            @RequestParam("sectionId") Long sectionId) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userSectionService.deleteUserSection(userId, sectionId));
-    }
-
-    @GetMapping("/{userId}/sections")
-    @ResponseBody
-    @ApiOperation(value = "获取用户收藏条目", produces = "application/json")
-    public Result getCollectSection(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId,
-            @ApiParam(name = "pageNum", value = "分页页数")
-            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-            @ApiParam(name = "pageSize", value = "分页条数")
-            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userSectionService.getUserSections(userId, pageNum, pageSize));
-    }
-
-    @GetMapping("{userId}/comments")
-    @ResponseBody
-    @ApiOperation(value = "获取用户发表的所有评论", produces = "application/json")
-    public Result<PageInfo<UserCommentVO>> getUserComments(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable("userId") Long userId,
-            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userService.getUserComments(userId, pageNum, pageSize));
-    }
-
-    @PostMapping("{userId}/comments")
-    @ResponseBody
-    @ApiOperation(value = "创建用户文章评论", produces = "application/json")
-    public Result insertComment(
-            @ApiParam(name = "userId", value = "用户id", required = true)
-            @PathVariable(name = "userId") Long userId,
-            @ApiParam(name = "articleId", value = "文章id", required = true)
-            @RequestParam(name = "articleId") Long articleId,
-            @ApiParam(name = "content", value = "评论内容", required = true)
-            @RequestBody String content) {
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(commentService.addUserComment(userId, articleId, content));
+    @ApiOperation(value = "获取当前用户的个人信息", produces = "application/json")
+    public Result<UserInfoVO> getUserInfo() {
+        Long currentUserId = userService.getCurrentUserId();
+        return ResultUtil.success(userService.getUserInfo(currentUserId));
     }
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setUserConfigService(UserConfigService userConfigService) {
-        this.userConfigService = userConfigService;
-    }
-
-    @Autowired
-    public void setUserArticleService(UserArticleService userArticleService) {
-        this.userArticleService = userArticleService;
-    }
-
-    @Autowired
-    public void setFootmarkService(FootmarkService footmarkService) {
-        this.footmarkService = footmarkService;
-    }
-
-    @Autowired
-    public void setUserSectionService(UserSectionService userSectionService) {
-        this.userSectionService = userSectionService;
-    }
-
-    @Autowired
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
     }
 }

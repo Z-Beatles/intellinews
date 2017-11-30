@@ -19,7 +19,7 @@ import java.util.List;
  **/
 @RestController
 @Api(tags = "用户偏好关键字资源")
-@RequestMapping("/v1/user/keywords")
+@RequestMapping("/v1/users/keywords")
 public class UserKeywordController {
 
     private UserService userService;
@@ -28,38 +28,20 @@ public class UserKeywordController {
 
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取用户偏好关键字", produces = "application/json")
-    public Result<List<UserKeywordVO>> getUserHobby(
-            @ApiParam(name="userId",value = "用户id",required = true)
-            @RequestParam Long userId){
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userKeywordService.getUserKeyWords(userId));
+    @ApiOperation(value = "获取当前用户的所有偏好关键字", produces = "application/json")
+    public Result<List<UserKeywordVO>> getUserHobby() {
+        Long currentUserId = userService.getCurrentUserId();
+        return ResultUtil.success(userKeywordService.getUserKeyWords(currentUserId));
     }
 
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "添加用户偏好关键字", produces = "application/json")
     public Result<UserKeywordVO> addUserHobby(
-            @ApiParam(name="userId",value = "用户id",required = true)
-            @RequestParam Long userId,
-            @ApiParam(name="keyword",value = "用户偏好关键字",required = true)
-            @RequestParam String keyword,
-            @ApiParam(name="source",value = "用户关键字来源(home,article,search)",required = true)
-            @RequestParam String source){
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userKeywordService.addUserKeyword(userId,keyword));
-    }
-
-    @PutMapping
-    @ResponseBody
-    @ApiOperation(value = "更新用户偏好关键字", produces = "application/json")
-    public Result<UserKeywordVO> updateUserHobby(
-            @ApiParam(name="userId",value = "用户id",required = true)
-            @RequestParam Long userId,
-            @ApiParam(name="keyword",value = "用户偏好关键字",required = true)
-            @RequestParam String keyword){
-        userService.checkCurrentUser(userId);
-        return ResultUtil.success(userKeywordService.updateHobbyAttention(userId,keyword));
+            @ApiParam(name = "keyword", value = "用户偏好关键字", required = true)
+            @RequestParam String keyword) {
+        Long currentUserId = userService.getCurrentUserId();
+        return ResultUtil.success(userKeywordService.addUserKeyword(currentUserId, keyword));
     }
 
     @Autowired

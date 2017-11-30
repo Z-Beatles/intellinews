@@ -25,22 +25,9 @@ public class ArticleController {
 
     private ArticleService articleService;
 
-    @GetMapping("/search")
-    @ResponseBody
-    @ApiOperation(value = "通过关键字搜索文章", notes = "默认返回3条搜索结果，按发布时间、浏览数排序", produces = "application/json")
-    public Result<PageInfo<SearchArticleVO>> getArticlesByKeyword(
-            @ApiParam(name = "keyword", value = "搜索关键字", required = true)
-            @RequestParam(value = "keyword") String keyword,
-            @ApiParam(name = "pageNum", value = "查询页数")
-            @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-            @ApiParam(name = "pageSize", value = "查询条数")
-            @RequestParam(value = "pageSize", defaultValue = "3", required = false) Integer pageSize) {
-        return ResultUtil.success(articleService.listArticlesByKeyword(keyword, pageNum, pageSize));
-    }
-
     @GetMapping("/{articleId}")
     @ResponseBody
-    @ApiOperation(value = "根据文章id获取文章内容详情", notes = "标题、图片、关键字、文章来源、日期、阅读数", produces = "application/json")
+    @ApiOperation(value = "根据文章id获取文章内容详情", produces = "application/json")
     public Result<DetailsArticleVO> getDetailsArticle(
             @ApiParam(name = "articleId", value = "文章id", required = true)
             @PathVariable(value = "articleId") Long id) {
@@ -53,11 +40,24 @@ public class ArticleController {
     public Result<PageInfo<CommentVO>> getArticleComments(
             @ApiParam(name = "articleId", value = "文章id", required = true)
             @PathVariable(value = "articleId") Long id,
-            @ApiParam(name = "pageNum", value = "搜索页数")
+            @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-            @ApiParam(name = "pageSize", value = "搜索条数")
+            @ApiParam(name = "pageSize", value = "查询条数")
             @RequestParam(name = "pageSize", defaultValue = "3", required = false) Integer pageSize) {
         return ResultUtil.success(articleService.listArticleComments(id, pageNum, pageSize));
+    }
+
+    @GetMapping("/search")
+    @ResponseBody
+    @ApiOperation(value = "通过关键字搜索文章", notes = "默认返回3条搜索结果，按发布时间、浏览数排序", produces = "application/json")
+    public Result<PageInfo<SearchArticleVO>> getArticlesByKeyword(
+            @ApiParam(name = "keyword", value = "搜索关键字", required = true)
+            @RequestParam(value = "keyword") String keyword,
+            @ApiParam(name = "pageNum", value = "查询页数")
+            @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum,
+            @ApiParam(name = "pageSize", value = "查询条数")
+            @RequestParam(value = "pageSize", defaultValue = "3", required = false) Integer pageSize) {
+        return ResultUtil.success(articleService.listArticlesByKeyword(keyword, pageNum, pageSize));
     }
 
     @Autowired

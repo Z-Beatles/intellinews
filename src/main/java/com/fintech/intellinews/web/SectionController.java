@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,36 +30,36 @@ public class SectionController {
     @ResponseBody
     @ApiOperation(value = "获取所有条目列表", produces = "application/json")
     public Result<PageInfo<ListSectionVO>> getSections(
-            @ApiParam(name = "pageNum", value = "搜索页数")
+            @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-            @ApiParam(name = "pageSize", value = "搜索条数")
+            @ApiParam(name = "pageSize", value = "查询条数")
             @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
         return ResultUtil.success(sectionService.listSections(pageNum, pageSize));
+    }
+
+    @GetMapping("/{sectionId}")
+    @ResponseBody
+    @ApiOperation(value = "根据条目id获取条目详情", produces = "application/json")
+    public Result<DetailsSectionVO> getSectionById(
+            @ApiParam(name = "sectionId", value = "条目id", required = true)
+            @PathVariable(name = "sectionId") Long sectionId) {
+        return ResultUtil.success(sectionService.getSectionById(sectionId));
     }
 
     @GetMapping("/search")
     @ResponseBody
     @ApiOperation(value = "按条件搜索条目", notes = "可以按照关键字和首字母搜索，首字母格式为a~z", produces = "application/json")
     public Result<PageInfo> getSectionByKeyword(
-            @ApiParam(name = "keyword", value = "搜索条件", required = true)
+            @ApiParam(name = "keyword", value = "查询条件", required = true)
             @RequestParam(name = "keyword") String keyword,
-            @ApiParam(name = "pageNum", value = "搜索页数")
+            @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
-            @ApiParam(name = "pageSize", value = "搜索条数")
+            @ApiParam(name = "pageSize", value = "查询条数")
             @RequestParam(name = "pageSize", defaultValue = "3", required = false) Integer pageSize) {
         if (RegexUtil.matchStartWith(keyword)) {
             return ResultUtil.success(sectionService.listByStartWith(keyword, pageNum, pageSize));
         }
         return ResultUtil.success(sectionService.listByKeyword(keyword, pageNum, pageSize));
-    }
-
-    @GetMapping("/{sectionId}")
-    @ResponseBody
-    @ApiOperation(value = "根据条目id查询条目详情", produces = "application/json")
-    public Result<DetailsSectionVO> getSectionById(
-            @ApiParam(name = "sectionId", value = "条目id", required = true)
-            @PathVariable(name = "sectionId") Long sectionId) {
-        return ResultUtil.success(sectionService.getSectionById(sectionId));
     }
 
     @GetMapping("/{sectionId}/atlas")

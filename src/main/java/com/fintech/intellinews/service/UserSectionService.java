@@ -37,7 +37,7 @@ public class UserSectionService{
         userSectionEntity.setUserId(userId);
         UserSectionEntity userSection = userSectionDao.getUserSectionCollect(userSectionEntity);
         if (userSection == null){
-            throw new AppException(ResultEnum.FAILED.getCode(),"未收藏");
+            throw new AppException(ResultEnum.SECTION_NOT_COLLECTION_ERROR);
         }
         return userSection;
     }
@@ -53,7 +53,7 @@ public class UserSectionService{
     public PageInfo<UserSectionVO> getUserSections(Long userId,Integer pageNum,Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<UserSectionEntity> userSections = userSectionDao.getUserSection(userId);
-        if (userSections==null||userSections.size()==0){
+        if (userSections==null||userSections.isEmpty()){
             return new PageInfo(userSections);
         }
         List<Long> idList = new ArrayList<>();

@@ -97,11 +97,13 @@ public class UserService extends BaseService {
         return userLoginEntity.getId();
     }
 
-    public void checkCurrentUser(Long id) {
+    public Long getCurrentUserId() {
         Subject currentUser = SecurityUtils.getSubject();
         UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
-        if (principal == null || !principal.getId().equals(id)) {
-            throw new AppException(ResultEnum.WITHOUT_PERMISSION_ERROR);
+        if (principal == null) {
+            throw new AppException(ResultEnum.NOT_LOGIN_ERROR);
+        }else{
+            return principal.getId();
         }
     }
 

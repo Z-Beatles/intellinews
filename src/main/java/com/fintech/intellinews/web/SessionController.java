@@ -20,10 +20,22 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @Api(tags = "会话管理接口")
-@RequestMapping("/v1/session")
+@RequestMapping("/v1/sessions")
 public class SessionController extends BaseController {
 
     private SessionService sessionService;
+
+    @GetMapping
+    @ResponseBody
+    @ApiOperation(value = "判读用户是否登录", produces = "application/json")
+    public Result isLogin() {
+        Subject currentUser = SecurityUtils.getSubject();
+        if (!currentUser.isAuthenticated()) {
+            return ResultUtil.error(ResultEnum.NOT_LOGIN_ERROR);
+        }
+        UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
+        return ResultUtil.success(ResultEnum.HAS_LOGGED_IN_INFO, principal.getId());
+    }
 
     @PostMapping
     @ResponseBody
@@ -36,13 +48,11 @@ public class SessionController extends BaseController {
             @RequestParam String account,
             @ApiParam(name = "password", value = "密码", required = true)
             @RequestParam String password,
-            @ApiParam(name = "rememberMe", value = "记住我", defaultValue = "false")
-            @RequestParam(defaultValue = "false") boolean rememberMe,
             @ApiParam(name = "host", value = "登陆IP")
             @RequestParam(required = false) String host) {
         Subject currentUser = SecurityUtils.getSubject();
         if (!currentUser.isAuthenticated()) {
-            Long userId = sessionService.doLogin(loginType, account, password, rememberMe, host, currentUser);
+            Long userId = sessionService.doLogin(loginType, account, password, false, host, currentUser);
             return ResultUtil.success(ResultEnum.LOGIN_SUCCEED_INFO, userId);
         }
         UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
@@ -51,21 +61,9 @@ public class SessionController extends BaseController {
 
     @DeleteMapping
     @ResponseBody
-    @ApiOperation(value = "用户退出", notes = "退出登录‘sid’Cookie将被删除，但保留‘rememberMe’", produces = "application/json")
+    @ApiOperation(value = "用户退出", produces = "application/json")
     public Result logoutAction() {
         return ResultUtil.success(ResultEnum.LOGOUT_SUCCEED_INFO, sessionService.doLogout());
-    }
-
-    @GetMapping
-    @ResponseBody
-    @ApiOperation(value = "判读用户是否登录", produces = "application/json")
-    public Result isLogin() {
-        Subject currentUser = SecurityUtils.getSubject();
-        if (!currentUser.isAuthenticated()) {
-            return ResultUtil.error(ResultEnum.NOT_LOGIN_ERROR);
-        }
-        UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
-        return ResultUtil.success(ResultEnum.HAS_LOGGED_IN_INFO, principal.getId());
     }
 
     @Autowired

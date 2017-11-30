@@ -31,7 +31,7 @@ public class ChannelController extends BaseController {
 
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取所有频道", produces = "application/json")
+    @ApiOperation(value = "获取所有频道列表", produces = "application/json")
     public Result<List<ChannelVO>> listChannels() {
         return ResultUtil.success(channelService.listCannels());
     }
