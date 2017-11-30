@@ -25,18 +25,6 @@ public class SessionController extends BaseController {
 
     private SessionService sessionService;
 
-    @GetMapping
-    @ResponseBody
-    @ApiOperation(value = "判读用户是否登录", produces = "application/json")
-    public Result isLogin() {
-        Subject currentUser = SecurityUtils.getSubject();
-        if (!currentUser.isAuthenticated()) {
-            return ResultUtil.error(ResultEnum.NOT_LOGIN_ERROR);
-        }
-        UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
-        return ResultUtil.success(ResultEnum.HAS_LOGGED_IN_INFO, principal.getId());
-    }
-
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户登录", notes = "登录类型暂时可不填写，登陆成功返回用户id和一个名为‘sid’的Cookie，如果设置记住我会返回一个" +
