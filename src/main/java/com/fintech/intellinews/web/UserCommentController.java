@@ -25,7 +25,7 @@ public class UserCommentController {
 
     private CommentService commentService;
 
-    @GetMapping("/comments")
+    @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户发表的所有评论", produces = "application/json")
     public Result<PageInfo<UserCommentVO>> getUserComments(
@@ -37,7 +37,7 @@ public class UserCommentController {
         return ResultUtil.success(userService.getUserComments(currentUserId, pageNum, pageSize));
     }
 
-    @PostMapping("/comments")
+    @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户发表文章评论", produces = "application/json")
     public Result insertComment(

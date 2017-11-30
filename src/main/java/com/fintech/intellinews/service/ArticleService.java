@@ -167,7 +167,7 @@ public class ArticleService extends BaseService {
      * @param id 文章id
      * @return 文章详情实体
      */
-    @Transactional
+    @Transactional(rollbackFor = {RuntimeException.class})
     public DetailsArticleVO getDetailsArticleById(Long id) {
         ArticleEntity articleEntity = articleDao.getById(id);
         DetailsArticleVO details = new DetailsArticleVO();

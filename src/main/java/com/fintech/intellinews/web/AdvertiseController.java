@@ -34,7 +34,7 @@ public class AdvertiseController extends BaseController {
             @RequestParam(value = "pageSize", defaultValue = "4", required = false) Integer pageSize,
             @ApiParam(name = "active", value = "广告的状态(上架、下架)")
             @RequestParam(value = "active", defaultValue = "true") Boolean active) {
-        return ResultUtil.success(advertiseService.listAds(pageNum,pageSize,active));
+        return ResultUtil.success(advertiseService.listAds(pageNum, pageSize, active));
     }
 
     @Autowired
