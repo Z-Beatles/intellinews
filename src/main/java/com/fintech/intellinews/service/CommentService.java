@@ -46,10 +46,14 @@ public class CommentService {
      * @param type      类型：type > 0 like;type < 0 dislike
      */
     public void updateComment(Long commentId, int type) {
+        Integer flag;
         if (type > 0) {
-            commentDao.updateWithLike(commentId);
+            flag = commentDao.updateWithLike(commentId);
         } else {
-            commentDao.updateWithDislike(commentId);
+            flag = commentDao.updateWithDislike(commentId);
+        }
+        if (flag ==0){
+            throw new AppException(ResultEnum.COMMENT_NOT_EXIST_ERROR);
         }
     }
 

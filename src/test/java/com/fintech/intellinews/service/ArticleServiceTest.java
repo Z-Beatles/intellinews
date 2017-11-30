@@ -28,25 +28,26 @@ public class ArticleServiceTest {
     private Long start = 0L;
 
     @Before
-    public void beforeTest(){
+    public void beforeTest() {
         start = System.currentTimeMillis();
     }
+
     @Test
-    public void testSearch(){
-        PageInfo<SearchArticleVO> pageInfo = articleService.listArticlesByKeyword("中",1,10);
+    public void testSearch() {
+        PageInfo<SearchArticleVO> pageInfo = articleService.listArticlesByKeyword("中", 1, 10);
         System.out.println(pageInfo);
     }
 
-    public void testDetails(){
+    public void testDetails() {
         DetailsArticleVO detailsArticleVO = articleService.getDetailsArticleById(16L);
         System.out.println(detailsArticleVO);
     }
 
 
     @After
-    public void afterTest(){
+    public void afterTest() {
         Long end = System.currentTimeMillis();
-        System.out.println((end - start) +"毫秒");
+        System.out.println((end - start) + "毫秒");
     }
 
 }

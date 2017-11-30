@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @Api(tags = "广告资源接口")
-@RequestMapping("/v1/ads")
+@RequestMapping("/v1/advertise")
 public class AdvertiseController extends BaseController {
 
     private AdvertiseService advertiseService;

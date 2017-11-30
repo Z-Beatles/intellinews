@@ -39,12 +39,12 @@ public interface CommentDao extends BaseDao<CommentEntity> {
      *
      * @param commentId 评论id
      */
-    void updateWithLike(@Param("id") Long commentId);
+    Integer updateWithLike(@Param("id") Long commentId);
 
     /**
      * 为指定评论点踩
      *
      * @param commentId 评论id
      */
-    void updateWithDislike(@Param("id") Long commentId);
+    Integer updateWithDislike(@Param("id") Long commentId);
 }
