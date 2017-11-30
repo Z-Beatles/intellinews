@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * Created 2017-11-30 10:49
  */
 @RestController
-@Api(tags = "用户频道资源接口")
+@Api(tags = "用户条目资源接口")
 @RequestMapping("/v1/users/sections")
 public class UserSectionController {
 
