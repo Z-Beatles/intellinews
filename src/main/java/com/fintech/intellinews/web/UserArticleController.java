@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * create 2017-11-15 9:45
  **/
 @RestController
-@Api(tags = "用户文章收藏资源")
+@Api(tags = "用户文章收藏资源接口")
 @RequestMapping("/v1/users/articles")
 public class UserArticleController {
 
