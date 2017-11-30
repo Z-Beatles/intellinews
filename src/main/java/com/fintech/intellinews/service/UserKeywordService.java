@@ -7,7 +7,12 @@ import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.vo.UserKeywordVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -16,6 +21,7 @@ import java.util.*;
  * create 2017-11-23 11:21
  **/
 @Service
+@Scope(scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserKeywordService {
 
     private UserKeywordDao userKeywordDao;
@@ -43,11 +49,12 @@ public class UserKeywordService {
      * @param keyword 偏好关键字
      * @return 成功返回用户添加对象，失败抛出异常
      */
+    @Transactional
     public UserKeywordVO addUserKeyword(Long userId,String keyword){
         UserKeywordEntity entity = new UserKeywordEntity();
+        entity.setAttention(1);
         entity.setUserId(userId);
         entity.setKeyword(keyword);
-        entity.setAttention(1);
         entity.setGmtCreate(Calendar.getInstance().getTime());
         Integer count = userKeywordDao.addUserKeyword(entity);
         if (count == 0){
@@ -64,6 +71,7 @@ public class UserKeywordService {
      * @param keyword 偏好关键字
      * @return 成功返回用户添加对象，失败抛出异常
      */
+    @Transactional
     public UserKeywordVO updateHobbyAttention(Long userId,String keyword){
         UserKeywordEntity entity = new UserKeywordEntity();
         entity.setUserId(userId);
@@ -74,6 +82,9 @@ public class UserKeywordService {
         }
         UserKeywordVO userKeywordVO = new UserKeywordVO();
         BeanUtils.copyProperties(entity,userKeywordVO);
+        if (true){
+            throw new AppException(ResultEnum.FAILED.getCode(),"测试事物");
+        }
         return userKeywordVO;
     }
 

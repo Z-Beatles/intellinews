@@ -43,7 +43,9 @@ public class UserKeywordController {
             @ApiParam(name="userId",value = "用户id",required = true)
             @RequestParam Long userId,
             @ApiParam(name="keyword",value = "用户偏好关键字",required = true)
-            @RequestParam String keyword){
+            @RequestParam String keyword,
+            @ApiParam(name="source",value = "用户关键字来源(home,article,search)",required = true)
+            @RequestParam String source){
         userService.checkCurrentUser(userId);
         return ResultUtil.success(userKeywordService.addUserKeyword(userId,keyword));
     }
