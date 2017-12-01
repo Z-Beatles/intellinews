@@ -27,7 +27,7 @@ public class UserArticleController {
 
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取当前用户收藏的文章", produces = "application/json")
+    @ApiOperation(value = "获取当前用户收藏的所有文章", produces = "application/json")
     public Result<PageInfo<UserCollectVO>> getCollectArticle(
             @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
@@ -60,7 +60,7 @@ public class UserArticleController {
 
     @DeleteMapping("/{articleId}")
     @ResponseBody
-    @ApiOperation(value = "取消收藏文章", produces = "application/json")
+    @ApiOperation(value = "用户取消收藏文章", produces = "application/json")
     public Result cancelCollectArticle(
             @ApiParam(name = "articleId", value = "文章id", required = true)
             @PathVariable("articleId") Long articleId) {

@@ -61,16 +61,22 @@ public class ArticleService extends BaseService {
             return listLatestArticles(pageNum, pageSize);
         }
         PageHelper.startPage(pageNum, pageSize);
-        List<ArticleChannelEntity> articleChannelEntities = articleChannelDao.listByChannelId(channelId);
-        if (articleChannelEntities.isEmpty()) {
-            return new PageInfo(articleChannelEntities);
+        List<ArticleChannelEntity> articleChannelEntityList = articleChannelDao.listByChannelId(channelId);
+        if (articleChannelEntityList.isEmpty()) {
+            return new PageInfo(articleChannelEntityList);
+        }
+        List<Long> ids = new ArrayList<>();
+        for (ArticleChannelEntity entity : articleChannelEntityList) {
+            ids.add(entity.getArticleId());
         }
 
         List<ArticleVO> articleDTOS = new ArrayList<>();
-        for (ArticleChannelEntity articleChannelEntity : articleChannelEntities) {
+        Map<Long, ArticleEntity> articleEntityMap = articleDao.mapArticlesByIds(ids);
+        Map<Long, ArticleCountEntity> articleCountEntityMap = articleCountDao.mapArticleCountByIds(ids);
+        for (ArticleChannelEntity articleChannelEntity : articleChannelEntityList) {
             Long articleId = articleChannelEntity.getArticleId();
-            ArticleEntity articleEntity = articleDao.getById(articleId);
-            ArticleCountEntity articleCountEntity = articleCountDao.getByArticleId(articleId);
+            ArticleEntity articleEntity = articleEntityMap.get(articleId);
+            ArticleCountEntity articleCountEntity = articleCountEntityMap.get(articleId);
             String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
             ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
 
@@ -84,7 +90,7 @@ public class ArticleService extends BaseService {
             articleDTO.setThumbnail(articleEntity.getThumbnail());
             articleDTOS.add(articleDTO);
         }
-        PageInfo page = new PageInfo(articleChannelEntities);
+        PageInfo page = new PageInfo(articleChannelEntityList);
         page.setList(articleDTOS);
         return page;
     }
@@ -98,14 +104,20 @@ public class ArticleService extends BaseService {
      */
     private PageInfo<ArticleVO> listLatestArticles(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<ArticleEntity> articleEntities = articleDao.listLatestArticles();
-        if (articleEntities.isEmpty()) {
-            return new PageInfo(articleEntities);
+        List<ArticleEntity> articleEntityList = articleDao.listLatestArticles();
+        if (articleEntityList.isEmpty()) {
+            return new PageInfo(articleEntityList);
         }
+        List<Long> ids = new ArrayList<>();
+        for (ArticleEntity entity : articleEntityList) {
+            ids.add(entity.getId());
+        }
+
+        Map<Long, ArticleCountEntity> articleCountEntityMap = articleCountDao.mapArticleCountByIds(ids);
         List<ArticleVO> articleDTOS = new ArrayList<>();
-        for (ArticleEntity articleEntity : articleEntities) {
+        for (ArticleEntity articleEntity : articleEntityList) {
             Long articleId = articleEntity.getId();
-            ArticleCountEntity articleCountEntity = articleCountDao.getByArticleId(articleId);
+            ArticleCountEntity articleCountEntity = articleCountEntityMap.get(articleId);
             String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
             ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
 
@@ -119,7 +131,7 @@ public class ArticleService extends BaseService {
             articleDTO.setThumbnail(articleEntity.getThumbnail());
             articleDTOS.add(articleDTO);
         }
-        PageInfo page = new PageInfo(articleEntities);
+        PageInfo page = new PageInfo(articleEntityList);
         page.setList(articleDTOS);
         return page;
     }

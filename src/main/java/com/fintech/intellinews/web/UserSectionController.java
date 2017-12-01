@@ -26,7 +26,7 @@ public class UserSectionController {
 
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取当前用户收藏的条目", produces = "application/json")
+    @ApiOperation(value = "获取当前用户收藏的所有条目", produces = "application/json")
     public Result getCollectSection(
             @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
