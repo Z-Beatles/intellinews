@@ -4,6 +4,8 @@ import com.fintech.intellinews.Result;
 import com.fintech.intellinews.service.FootmarkService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
+import com.fintech.intellinews.vo.FootmarkVO;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -26,7 +28,7 @@ public class UserFootmarkController {
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户的所有浏览足迹", produces = "application/json")
-    public Result listUserFootmarks(
+    public Result<PageInfo<FootmarkVO>> listUserFootmarks(
             @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
             @ApiParam(name = "pageSize", value = "查询条数")

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * Created 2017-11-30 10:49
  */
 @RestController
-@Api(tags = "用户频道资源接口")
+@Api(tags = "用户条目收藏资源接口")
 @RequestMapping("/v1/users/sections")
 public class UserSectionController {
 
@@ -26,7 +26,7 @@ public class UserSectionController {
 
     @GetMapping
     @ResponseBody
-    @ApiOperation(value = "获取当前用户收藏的条目", produces = "application/json")
+    @ApiOperation(value = "获取当前用户收藏的所有条目", produces = "application/json")
     public Result getCollectSection(
             @ApiParam(name = "pageNum", value = "查询页数")
             @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,

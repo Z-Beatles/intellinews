@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @Api(tags = "广告资源接口")
-@RequestMapping("/v1/advertise")
+@RequestMapping("/v1/advertises")
 public class AdvertiseController extends BaseController {
 
     private AdvertiseService advertiseService;
@@ -34,7 +34,7 @@ public class AdvertiseController extends BaseController {
             @RequestParam(value = "pageSize", defaultValue = "4", required = false) Integer pageSize,
             @ApiParam(name = "active", value = "广告的状态(上架、下架)")
             @RequestParam(value = "active", defaultValue = "true") Boolean active) {
-        return ResultUtil.success(advertiseService.listAds(pageNum,pageSize,active));
+        return ResultUtil.success(advertiseService.listAds(pageNum, pageSize, active));
     }
 
     @Autowired

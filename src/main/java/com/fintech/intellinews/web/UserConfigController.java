@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * Created 2017-11-30 10:42
  */
 @RestController
-@Api(tags = "用户配置资源接口")
+@Api(tags = "用户频道配置资源接口")
 @RequestMapping("/v1/users/channels")
 public class UserConfigController {
 
@@ -35,7 +35,7 @@ public class UserConfigController {
     @ResponseBody
     @ApiOperation(value = "更新当前用户的频道配置", produces = "application/json")
     public Result updateUserChannels(
-            @ApiParam(name = "config", value = "用户配置Json", required = true)
+            @ApiParam(name = "config", value = "用户Json配置", required = true)
             @RequestBody String config) {
         Long currentUserId = userService.getCurrentUserId();
         return ResultUtil.success(userConfigService.updateUserChannelConfig(currentUserId, config));
