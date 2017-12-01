@@ -36,6 +36,11 @@
         FROM oi_article_count
     </select>
 
+    <insert id="insert" parameterType="ArticleCountEntity">
+        INSERT INTO oi_article_count (article_id, like_count, dislike_count, view_count, gmt_create)
+        VALUES (#{articleId}, #{likeCount}, #{dislikeCount}, #{viewCount}, #{gmtCreate})
+    </insert>
+
     <update id="updateViewCountByArticleId">
         UPDATE oi_article_count
         SET view_count = view_count + 1

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -77,6 +78,12 @@ public class ArticleService extends BaseService {
             Long articleId = articleChannelEntity.getArticleId();
             ArticleEntity articleEntity = articleEntityMap.get(articleId);
             ArticleCountEntity articleCountEntity = articleCountEntityMap.get(articleId);
+            // 初始化文章统计信息
+            if (articleCountEntity == null) {
+                initArticleCount(articleId);
+                articleCountEntity = new ArticleCountEntity();
+                articleCountEntity.setViewCount(0);
+            }
             String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
             ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
 
@@ -93,6 +100,21 @@ public class ArticleService extends BaseService {
         PageInfo page = new PageInfo(articleChannelEntityList);
         page.setList(articleDTOS);
         return page;
+    }
+
+    /**
+     * 初始化文章统计信息
+     *
+     * @param articleId 文章id
+     */
+    private void initArticleCount(Long articleId) {
+        ArticleCountEntity initArticleCountEntity = new ArticleCountEntity();
+        initArticleCountEntity.setArticleId(articleId);
+        initArticleCountEntity.setLikeCount(0);
+        initArticleCountEntity.setDislikeCount(0);
+        initArticleCountEntity.setViewCount(0);
+        initArticleCountEntity.setGmtCreate(new Date());
+        articleCountDao.insert(initArticleCountEntity);
     }
 
     /**

@@ -29,7 +29,7 @@ public enum ResultEnum {
     SECTION_NOT_EXIST_ERROR(10000, "指定条目不存在"),
     SECTION_NOT_COLLECTION_ERROR(10001, "抱歉，您尚未收藏该条目"),
     COMMENT_NOT_EXIST_ERROR(10002, "指定评论不存在"),
-
+    COMMENT_ARTICLE_FAILED_ERROR(10003, "评论文章失败"),
 
     CREATE_MENU_ERROR(40000, "自定义菜单失败"),
     DELETE_MENU_ERROR(40001, "删除自定义菜单失败"),
