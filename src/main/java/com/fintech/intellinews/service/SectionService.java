@@ -64,12 +64,27 @@ public class SectionService extends BaseService {
     public PageInfo<ListSectionVO> listSections(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<SectionEntity> sectionEntities = sectionDao.listAll();
+        if(sectionEntities.isEmpty()){
+            return new PageInfo(sectionEntities);
+        }
+        List<Long> ids = new ArrayList<>();
+        for (SectionEntity sectionEntity : sectionEntities) {
+            ids.add(sectionEntity.getId());
+        }
+        Map<Long, SectionCountEntity> sectionCountEntityMap = sectionCountDao.mapSectionCountByIds(ids);
         List<ListSectionVO> resultList = new ArrayList<>();
         ListSectionVO listSectionVO;
         SectionCountEntity sectionCountEntity;
         for (SectionEntity sectionEntity : sectionEntities) {
+            Long sectionId = sectionEntity.getId();
             listSectionVO = new ListSectionVO();
-            sectionCountEntity = sectionCountDao.getBySectionId(sectionEntity.getId());
+            sectionCountEntity = sectionCountEntityMap.get(sectionId);
+            if (sectionCountEntity == null) {
+                // 初始化条目统计信息
+                initSectionCount(sectionId);
+                sectionCountEntity = new SectionCountEntity();
+                sectionCountEntity.setViewCount(0);
+            }
             BeanUtils.copyProperties(sectionEntity, listSectionVO);
             listSectionVO.setViewCount(sectionCountEntity.getViewCount());
             resultList.add(listSectionVO);
@@ -361,5 +376,10 @@ public class SectionService extends BaseService {
     @Autowired
     public void setKeywordService(KeywordService keywordService) {
         this.keywordService = keywordService;
+    }
+
+    @Autowired
+    public void setArticleService(ArticleService articleService) {
+        this.articleService = articleService;
     }
 }

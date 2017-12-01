@@ -29,7 +29,7 @@ public class SessionService extends BaseService {
             return principal.getId();
         } catch (UnknownAccountException e) {
             logger.warn("账号{}不存在", account);
-            throw new AppException(ResultEnum.ACCOUNT_NOTEXIST_ERROR);
+            throw new AppException(ResultEnum.ACCOUNT_NOT_EXIST_ERROR);
         } catch (IncorrectCredentialsException e) {
             logger.warn("密码错误，账号：{}", account);
             throw new AppException(ResultEnum.WRONG_PASSWORD_ERROR);

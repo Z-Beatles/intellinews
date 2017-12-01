@@ -32,7 +32,7 @@ public class UserController {
             @RequestParam String username,
             @ApiParam(name = "password", value = "密码", required = true)
             @RequestParam String password) {
-        return ResultUtil.success(ResultEnum.REGIST_SUCCESS_INFO, userService.insertUser(nickname, username, password));
+        return ResultUtil.success(ResultEnum.REGISTER_SUCCESS_INFO, userService.insertUser(nickname, username, password));
     }
 
     @GetMapping("/me")
