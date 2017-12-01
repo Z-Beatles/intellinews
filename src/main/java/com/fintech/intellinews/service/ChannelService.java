@@ -20,7 +20,12 @@ public class ChannelService extends BaseService {
 
     private ChannelDao channelDao;
 
-    public List<ChannelVO> listCannels() {
+    /**
+     * 获取所有频道列表
+     *
+     * @return 频道列表
+     */
+    public List<ChannelVO> listChannels() {
         List<ChannelEntity> channelEntities = channelDao.listAll();
         List<ChannelVO> channelVOS = new ArrayList<>();
         for (ChannelEntity channelEntity : channelEntities) {

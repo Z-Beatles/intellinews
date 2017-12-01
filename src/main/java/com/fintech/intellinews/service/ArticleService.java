@@ -2,9 +2,11 @@ package com.fintech.intellinews.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.*;
 import com.fintech.intellinews.entity.*;
+import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.vo.ArticleVO;
@@ -107,7 +109,7 @@ public class ArticleService extends BaseService {
      *
      * @param articleId 文章id
      */
-    private void initArticleCount(Long articleId) {
+    void initArticleCount(Long articleId) {
         ArticleCountEntity initArticleCountEntity = new ArticleCountEntity();
         initArticleCountEntity.setArticleId(articleId);
         initArticleCountEntity.setLikeCount(0);
@@ -172,6 +174,7 @@ public class ArticleService extends BaseService {
         if (searchList.isEmpty()) {
             return new PageInfo(searchList);
         } else {
+            // 更新关键字热度
             keywordService.addKeyword(keyword);
         }
         List<SearchArticleVO> resultList = new ArrayList<>();
@@ -204,6 +207,9 @@ public class ArticleService extends BaseService {
     @Transactional(rollbackFor = {RuntimeException.class})
     public DetailsArticleVO getDetailsArticleById(Long id) {
         ArticleEntity articleEntity = articleDao.getById(id);
+        if (articleEntity == null) {
+            throw new AppException(ResultEnum.ARTICLE_NOT_EXIST_ERROR);
+        }
         DetailsArticleVO details = new DetailsArticleVO();
         BeanUtils.copyProperties(articleEntity, details);
         String dateStr = DateUtil.toDetailTimeString(articleEntity.getGmtCreate());

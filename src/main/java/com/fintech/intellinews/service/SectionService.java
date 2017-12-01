@@ -52,6 +52,8 @@ public class SectionService extends BaseService {
 
     private KeywordService keywordService;
 
+    private ArticleService articleService;
+
     /**
      * 获取所有条目列表
      *
@@ -144,14 +146,22 @@ public class SectionService extends BaseService {
      * @param sectionId 条目id
      * @return 条目详情
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public DetailsSectionVO getSectionById(Long sectionId) {
         SectionEntity sectionEntity = sectionDao.getById(sectionId);
         if (sectionEntity == null) {
             throw new AppException(ResultEnum.SECTION_NOT_EXIST_ERROR);
         }
-        SectionCountEntity sectionCountEntity = sectionCountDao.getBySectionId(sectionId);
         SectionItemEntity sectionItemEntity = sectionItemDao.getBySectionId(sectionId);
+        SectionCountEntity sectionCountEntity = sectionCountDao.getBySectionId(sectionId);
+        if (sectionCountEntity == null) {
+            // 初始化条目统计信息
+            initSectionCount(sectionId);
+            sectionCountEntity = new SectionCountEntity();
+            sectionCountEntity.setViewCount(0);
+            sectionCountEntity.setShareCount(0);
+            sectionCountEntity.setCollectCount(0);
+        }
         ObjectNode itemInfo = JacksonUtil.toObjectNodeFromString(objectMapper, sectionItemEntity.getItemInfo());
         // 创建时间为section主表的创建时间
         String createTime = DateUtil.toCustomStringFromDate(sectionEntity.getGmtCreate());
@@ -180,64 +190,119 @@ public class SectionService extends BaseService {
      * @return 图谱信息
      */
     public Map<String, Object> listAtlasBySectionId(Long sectionId) {
-        Map<String, Object> result = new HashMap();
-        List<AtlasEntity> atlasSectionEntities = atlasDao.listBySectionIdAndType(sectionId, "section", 5);
-        List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 3);
-
-        List<Long> sectionIds = new ArrayList<>();
-        List<Long> articleIds = new ArrayList<>();
-        for (AtlasEntity entity : atlasSectionEntities) {
-            sectionIds.add(entity.getRelationId());
-        }
-        for (AtlasEntity entity : atlasArticleEntities) {
-            articleIds.add(entity.getRelationId());
-        }
-        Map<Long, SectionEntity> sectionMap = new HashMap<>();
-        Map<Long, SectionCountEntity> sectionCountMap = new HashMap<>();
-        Map<Long, ArticleEntity> articleMap = new HashMap<>();
-        Map<Long, ArticleCountEntity> articleCountMap = new HashMap<>();
-        if (!sectionIds.isEmpty()) {
-            sectionMap = sectionDao.mapSectionByIds(sectionIds);
-            sectionCountMap = sectionCountDao.mapSectionCountByIds(sectionIds);
-        }
-        if (!articleIds.isEmpty()) {
-            articleMap = articleDao.mapArticlesByIds(articleIds);
-            articleCountMap = articleCountDao.mapArticleCountByIds(articleIds);
-        }
-        List<AtlasVO> atlasSectionVOS = new ArrayList<>();
-        List<AtlasVO> atlasArticleVOS = new ArrayList<>();
-
-        Integer maxSectionViewCount = sectionCountDao.getMaxViewCount();
-        Integer maxArticleViewCount = articleCountDao.getMaxViewCount();
-        for (AtlasEntity atlasSectionEntity : atlasSectionEntities) {
-            AtlasVO atlasSectionVO = new AtlasVO();
-            atlasSectionVO.setId(atlasSectionEntity.getRelationId());
-            atlasSectionVO.setTitle(sectionMap.get(atlasSectionEntity.getRelationId()).getName());
-            atlasSectionVO.setDistance(atlasSectionEntity.getRelationDegree());
-            Integer viewCount = sectionCountMap.get(atlasSectionEntity.getRelationId()).getViewCount();
-            Integer weight = convertToWeight(viewCount, maxSectionViewCount);
-            atlasSectionVO.setWeight(weight);
-            atlasSectionVOS.add(atlasSectionVO);
-        }
-        for (AtlasEntity atlasArticleEntity : atlasArticleEntities) {
-            AtlasVO atlasArticleVO = new AtlasVO();
-            atlasArticleVO.setId(atlasArticleEntity.getRelationId());
-            atlasArticleVO.setTitle(articleMap.get(atlasArticleEntity.getRelationId()).getTitle());
-            atlasArticleVO.setDistance(atlasArticleEntity.getRelationDegree());
-            Integer viewCount = articleCountMap.get(atlasArticleEntity.getRelationId()).getViewCount();
-            Integer weight = convertToWeight(viewCount, maxArticleViewCount);
-            atlasArticleVO.setWeight(weight);
-            atlasArticleVOS.add(atlasArticleVO);
-        }
+        Map<String, Object> result = new HashMap(3);
+        // 添加中心点信息
         SectionEntity sectionEntity = sectionDao.getById(sectionId);
         Map<String, Object> centerInfo = new HashMap<>(2);
         centerInfo.put("id", sectionEntity.getId());
         centerInfo.put("title", sectionEntity.getName());
+        // 添加5条相关条目信息
+        List<AtlasVO> atlasSectionVOS = listAtlasSectionBySectionId(sectionId);
+        // 添加3条相关文章信息
+        List<AtlasVO> atlasArticleVOS = listAtlasArticleBySectionId(sectionId);
 
         result.put("center", centerInfo);
         result.put("section", atlasSectionVOS);
         result.put("articles", atlasArticleVOS);
         return result;
+    }
+
+    /**
+     * 根据条目id获取相关条目信息
+     *
+     * @param sectionId 条目id
+     * @return 相关条目信息
+     */
+    private List<AtlasVO> listAtlasSectionBySectionId(Long sectionId) {
+        List<AtlasEntity> atlasSectionEntities = atlasDao.listBySectionIdAndType(sectionId, "section", 5);
+        List<Long> ids = new ArrayList<>();
+        for (AtlasEntity entity : atlasSectionEntities) {
+            ids.add(entity.getRelationId());
+        }
+        Map<Long, SectionEntity> sectionMap = new HashMap<>();
+        Map<Long, SectionCountEntity> sectionCountMap = new HashMap<>();
+        if (!ids.isEmpty()) {
+            sectionMap = sectionDao.mapSectionByIds(ids);
+            sectionCountMap = sectionCountDao.mapSectionCountByIds(ids);
+        }
+        List<AtlasVO> atlasSectionVOS = new ArrayList<>();
+        Integer maxSectionViewCount = sectionCountDao.getMaxViewCount();
+        for (AtlasEntity atlasSectionEntity : atlasSectionEntities) {
+            Long relationId = atlasSectionEntity.getRelationId();
+
+            AtlasVO atlasSectionVO = new AtlasVO();
+            atlasSectionVO.setId(relationId);
+            atlasSectionVO.setTitle(sectionMap.get(relationId).getName());
+            atlasSectionVO.setDistance(atlasSectionEntity.getRelationDegree());
+            SectionCountEntity sectionCountEntity = sectionCountMap.get(relationId);
+            if (sectionCountEntity == null) {
+                // 初始化条目统计信息
+                initSectionCount(relationId);
+                sectionCountEntity = new SectionCountEntity();
+                sectionCountEntity.setViewCount(0);
+            }
+            Integer viewCount = sectionCountEntity.getViewCount();
+            Integer weight = convertToWeight(viewCount, maxSectionViewCount);
+            atlasSectionVO.setWeight(weight);
+            atlasSectionVOS.add(atlasSectionVO);
+        }
+        return atlasSectionVOS;
+    }
+
+    /**
+     * 根据条目id获取相关文章信息
+     *
+     * @param sectionId 条目id
+     * @return 相关文章信息
+     */
+    private List<AtlasVO> listAtlasArticleBySectionId(Long sectionId) {
+        List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 3);
+        List<Long> articleIds = new ArrayList<>();
+        for (AtlasEntity entity : atlasArticleEntities) {
+            articleIds.add(entity.getRelationId());
+        }
+        Map<Long, ArticleEntity> articleMap = new HashMap<>();
+        Map<Long, ArticleCountEntity> articleCountMap = new HashMap<>();
+        if (!articleIds.isEmpty()) {
+            articleMap = articleDao.mapArticlesByIds(articleIds);
+            articleCountMap = articleCountDao.mapArticleCountByIds(articleIds);
+        }
+        List<AtlasVO> atlasArticleVOS = new ArrayList<>();
+        Integer maxArticleViewCount = articleCountDao.getMaxViewCount();
+        for (AtlasEntity atlasArticleEntity : atlasArticleEntities) {
+            Long relationId = atlasArticleEntity.getRelationId();
+
+            AtlasVO atlasArticleVO = new AtlasVO();
+            atlasArticleVO.setId(relationId);
+            atlasArticleVO.setTitle(articleMap.get(relationId).getTitle());
+            atlasArticleVO.setDistance(atlasArticleEntity.getRelationDegree());
+            ArticleCountEntity articleCountEntity = articleCountMap.get(relationId);
+            if (articleCountEntity == null) {
+                articleService.initArticleCount(relationId);
+                articleCountEntity = new ArticleCountEntity();
+                articleCountEntity.setViewCount(0);
+            }
+            Integer viewCount = articleCountEntity.getViewCount();
+            Integer weight = convertToWeight(viewCount, maxArticleViewCount);
+            atlasArticleVO.setWeight(weight);
+            atlasArticleVOS.add(atlasArticleVO);
+        }
+        return atlasArticleVOS;
+    }
+
+    /**
+     * 初始化条目统计信息
+     *
+     * @param sectionId 条目id
+     */
+    private void initSectionCount(Long sectionId) {
+        SectionCountEntity sectionCountEntity = new SectionCountEntity();
+        sectionCountEntity.setSectionId(sectionId);
+        sectionCountEntity.setViewCount(0);
+        sectionCountEntity.setShareCount(0);
+        sectionCountEntity.setCollectCount(0);
+        sectionCountEntity.setGmtCreate(new Date());
+        sectionCountDao.insert(sectionCountEntity);
     }
 
     /**
