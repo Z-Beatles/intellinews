@@ -58,7 +58,7 @@ public class UserKeywordService {
         entity.setGmtCreate(Calendar.getInstance().getTime());
         Integer count = userKeywordDao.addUserKeyword(entity);
         if (count == 0){
-            throw new AppException(ResultEnum.FAILED.getCode(),"添加用户偏好失败");
+            throw new AppException(ResultEnum.INSERT_USER_KEY_FAILED_ERROR);
         }
         UserKeywordVO userKeywordVO = new UserKeywordVO();
         BeanUtils.copyProperties(entity,userKeywordVO);
