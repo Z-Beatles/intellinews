@@ -36,8 +36,9 @@ public class UserArticleService {
         param.put("userId",userId);
         param.put("resourceId",resourceId);
         Integer count = userArticleDao.checkUserArticle(param);
+        // TODO 检测文章是否存在以及事务处理
         if (count>0){
-            throw new AppException(ResultEnum.FAILED.getCode(),"收藏失败");
+            throw new AppException(ResultEnum.COLLECT_ARTICLE_FAILED.getCode(),"收藏失败");
         }
         UserArticleEntity insertArticle = new UserArticleEntity();
         insertArticle.setUserId(userId);

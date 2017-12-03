@@ -14,15 +14,15 @@ public enum ResultEnum {
     SUCCESS(0, "succeed"),
     FAILED(1, "failed"),
 
-    ACCOUNT_NOTEXIST_ERROR(1000, "账号不存在"),
+    ACCOUNT_NOT_EXIST_ERROR(1000, "账号不存在"),
     HAS_LOGGED_IN_INFO(1002, "账号已登录"),
     WRONG_PASSWORD_ERROR(1003, "密码错误"),
     LOGIN_FAILED_ERROR(1004, "登陆失败"),
     REPEAT_LOGIN_ERROR(1005, "账号已在线，请勿重复登陆"),
     NOT_LOGIN_ERROR(1006, "抱歉，您尚未登录"),
-    LOGIN_SUCCEED_INFO(1007, "登陆成功"),
+    LOGIN_SUCCEED_INFO(1007, "登录成功"),
     LOGOUT_SUCCEED_INFO(1008, "退出成功"),
-    REGIST_SUCCESS_INFO(1009, "注册成功"),
+    REGISTER_SUCCESS_INFO(1009, "注册成功"),
     ACCOUNT_EXIST_ERROR(1010, "账号已被注册"),
     WITHOUT_PERMISSION_ERROR(1011, "没有权限查看他人信息"),
 
@@ -30,6 +30,7 @@ public enum ResultEnum {
     SECTION_NOT_COLLECTION_ERROR(10001, "抱歉，您尚未收藏该条目"),
     COMMENT_NOT_EXIST_ERROR(10002, "指定评论不存在"),
 
+    COLLECT_ARTICLE_FAILED(10004,"收藏文章失败"),
 
     CREATE_MENU_ERROR(40000, "自定义菜单失败"),
     DELETE_MENU_ERROR(40001, "删除自定义菜单失败"),

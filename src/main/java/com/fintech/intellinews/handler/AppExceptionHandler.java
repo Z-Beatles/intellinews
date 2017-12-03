@@ -27,7 +27,7 @@ public class AppExceptionHandler {
             return ResultUtil.error(appException.getErrorCode(), appException.getErrorMessage());
         } else {
             logger.error("【系统异常】 {}", e);
-            return ResultUtil.error(ResultEnum.SYSTEM_ERROR);
+            return ResultUtil.error(ResultEnum.SYSTEM_ERROR,e.getMessage());
         }
     }
 }
