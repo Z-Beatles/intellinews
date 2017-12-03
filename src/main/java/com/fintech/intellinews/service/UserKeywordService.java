@@ -82,9 +82,6 @@ public class UserKeywordService {
         }
         UserKeywordVO userKeywordVO = new UserKeywordVO();
         BeanUtils.copyProperties(entity,userKeywordVO);
-        if (true){
-            throw new AppException(ResultEnum.FAILED.getCode(),"测试事物");
-        }
         return userKeywordVO;
     }
 
