@@ -38,8 +38,6 @@ public class UserArticleService {
         param.put("resourceId",resourceId);
         Integer count = userArticleDao.checkUserArticle(param);
         // TODO 检测文章是否存在以及事务处理
-        if (count>0){
-            throw new AppException(ResultEnum.COLLECT_ARTICLE_FAILED.getCode(),"收藏失败");
         if (count > 0) {
             throw new AppException(ResultEnum.COLLECT_ARTICLE_FAILED_ERROR);
         }
