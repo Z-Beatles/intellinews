@@ -2,9 +2,11 @@ package com.fintech.intellinews.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.base.BaseService;
 import com.fintech.intellinews.dao.*;
 import com.fintech.intellinews.entity.*;
+import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.vo.ArticleVO;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -77,6 +80,12 @@ public class ArticleService extends BaseService {
             Long articleId = articleChannelEntity.getArticleId();
             ArticleEntity articleEntity = articleEntityMap.get(articleId);
             ArticleCountEntity articleCountEntity = articleCountEntityMap.get(articleId);
+            // 初始化文章统计信息
+            if (articleCountEntity == null) {
+                initArticleCount(articleId);
+                articleCountEntity = new ArticleCountEntity();
+                articleCountEntity.setViewCount(0);
+            }
             String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
             ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
 
@@ -93,6 +102,21 @@ public class ArticleService extends BaseService {
         PageInfo page = new PageInfo(articleChannelEntityList);
         page.setList(articleDTOS);
         return page;
+    }
+
+    /**
+     * 初始化文章统计信息
+     *
+     * @param articleId 文章id
+     */
+    void initArticleCount(Long articleId) {
+        ArticleCountEntity initArticleCountEntity = new ArticleCountEntity();
+        initArticleCountEntity.setArticleId(articleId);
+        initArticleCountEntity.setLikeCount(0);
+        initArticleCountEntity.setDislikeCount(0);
+        initArticleCountEntity.setViewCount(0);
+        initArticleCountEntity.setGmtCreate(new Date());
+        articleCountDao.insert(initArticleCountEntity);
     }
 
     /**
@@ -150,6 +174,7 @@ public class ArticleService extends BaseService {
         if (searchList.isEmpty()) {
             return new PageInfo(searchList);
         } else {
+            // 更新关键字热度
             keywordService.addKeyword(keyword);
         }
         List<SearchArticleVO> resultList = new ArrayList<>();
@@ -182,6 +207,9 @@ public class ArticleService extends BaseService {
     @Transactional(rollbackFor = {RuntimeException.class})
     public DetailsArticleVO getDetailsArticleById(Long id) {
         ArticleEntity articleEntity = articleDao.getById(id);
+        if (articleEntity == null) {
+            throw new AppException(ResultEnum.ARTICLE_NOT_EXIST_ERROR);
+        }
         DetailsArticleVO details = new DetailsArticleVO();
         BeanUtils.copyProperties(articleEntity, details);
         String dateStr = DateUtil.toDetailTimeString(articleEntity.getGmtCreate());

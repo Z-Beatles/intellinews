@@ -1,6 +1,5 @@
 package com.fintech.intellinews.service;
 
-import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.dao.ArticleDao;
 import com.fintech.intellinews.dao.FootmarkDao;
 import com.fintech.intellinews.dao.SectionDao;
@@ -46,19 +45,19 @@ public class FootmarkService {
         }
         List<Long> articleList = new ArrayList<>();
         List<Long> sectionList = new ArrayList<>();
-        for(FootmarkEntity entity : footmarks){
-            if ("article".equals(entity.getContentType())){
+        for (FootmarkEntity entity : footmarks) {
+            if ("article".equals(entity.getContentType())) {
                 articleList.add(entity.getContentId());
-            }else if ("section".equals(entity.getContentType())){
+            } else if ("section".equals(entity.getContentType())) {
                 sectionList.add(entity.getContentId());
             }
         }
-        Map<Long,ArticleEntity> articleMap = new HashMap<>();
-        Map<Long,SectionEntity> sectionMap = new HashMap<>();
-        if (!articleList.isEmpty()){
+        Map<Long, ArticleEntity> articleMap = new HashMap<>();
+        Map<Long, SectionEntity> sectionMap = new HashMap<>();
+        if (!articleList.isEmpty()) {
             articleMap = articleDao.mapArticlesByIds(articleList);
         }
-        if (!sectionList.isEmpty()){
+        if (!sectionList.isEmpty()) {
             sectionMap = sectionDao.mapSectionByIds(sectionList);
         }
         List<FootmarkVO> footmarkVOS = new ArrayList<>();
@@ -70,13 +69,13 @@ public class FootmarkService {
             footmarkVO = new FootmarkVO();
             BeanUtils.copyProperties(entity, footmarkVO);
             exchangeDate(footmarkVO, entity);
-            if ("article".equals(entity.getContentType())&&!articleMap.isEmpty()){
+            if ("article".equals(entity.getContentType()) && !articleMap.isEmpty()) {
                 articleEntity = articleMap.get(entity.getContentId());
                 content = articleEntity.getTitle();
-            }else if ("section".equals(entity.getContentType())&&!sectionMap.isEmpty()){
+            } else if ("section".equals(entity.getContentType()) && !sectionMap.isEmpty()) {
                 sectionEntity = sectionMap.get(entity.getContentId());
                 content = sectionEntity.getName();
-            }else{
+            } else {
                 continue;
             }
             footmarkVO.setContent(content);

@@ -19,7 +19,7 @@ import java.util.*;
  * create 2017-11-13 16:10
  **/
 @Service
-public class UserSectionService{
+public class UserSectionService {
 
     private UserSectionDao userSectionDao;
 
@@ -27,44 +27,46 @@ public class UserSectionService{
 
     /**
      * 获取条目指定用户的收藏
-     * @param userId 用户id
+     *
+     * @param userId    用户id
      * @param sectionId 条目id
      * @return 收藏资源
      */
-    public UserSectionEntity getUserSectionCollect(Long userId,Long sectionId){
+    public UserSectionEntity getUserSectionCollect(Long userId, Long sectionId) {
         UserSectionEntity userSectionEntity = new UserSectionEntity();
         userSectionEntity.setSectionId(sectionId);
         userSectionEntity.setUserId(userId);
         UserSectionEntity userSection = userSectionDao.getUserSectionCollect(userSectionEntity);
-        if (userSection == null){
-            throw new AppException(ResultEnum.SECTION_NOT_COLLECTION_ERROR);
+        if (userSection == null) {
+            throw new AppException(ResultEnum.SECTION_NOT_COLLECT_ERROR);
         }
         return userSection;
     }
 
     /**
      * 获取用户收藏条目
-     * @param userId 用户id
-     * @param pageNum 搜索页数
+     *
+     * @param userId   用户id
+     * @param pageNum  搜索页数
      * @param pageSize 搜索条数
      * @return 收藏列表
      */
     @SuppressWarnings("unchecked")
-    public PageInfo<UserSectionVO> getUserSections(Long userId,Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<UserSectionVO> getUserSections(Long userId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<UserSectionEntity> userSections = userSectionDao.getUserSection(userId);
-        if (userSections==null||userSections.isEmpty()){
+        if (userSections == null || userSections.isEmpty()) {
             return new PageInfo(userSections);
         }
         List<Long> idList = new ArrayList<>();
-        for (UserSectionEntity entity : userSections){
+        for (UserSectionEntity entity : userSections) {
             idList.add(entity.getSectionId());
         }
-        Map<Long,SectionEntity> mapList = sectionDao.mapSectionByIds(idList);
+        Map<Long, SectionEntity> mapList = sectionDao.mapSectionByIds(idList);
         List<UserSectionVO> list = new ArrayList<>();
         UserSectionVO userSectionVO;
         SectionEntity sectionEntity;
-        for (UserSectionEntity entity : userSections){
+        for (UserSectionEntity entity : userSections) {
             userSectionVO = new UserSectionVO();
             userSectionVO.setId(entity.getSectionId());
             sectionEntity = mapList.get(entity.getSectionId());
@@ -79,17 +81,18 @@ public class UserSectionService{
 
     /**
      * 添加用户收藏条目
-     * @param userId 用户id
+     *
+     * @param userId    用户id
      * @param sectionId 条目id
      * @return 影响行数
      */
-    public Integer insertUserSection(Long userId,Long sectionId){
-        Map<String,Long> param = new HashMap<>();
-        param.put("userId",userId);
-        param.put("sectionId",sectionId);
+    public Integer insertUserSection(Long userId, Long sectionId) {
+        Map<String, Long> param = new HashMap<>();
+        param.put("userId", userId);
+        param.put("sectionId", sectionId);
         Integer count = userSectionDao.checkUserSection(param);
-        if (count>0){
-            throw new AppException(ResultEnum.FAILED.getCode(),"收藏失败");
+        if (count > 0) {
+            throw new AppException(ResultEnum.COLLECT_SECTION_FAILED_ERROR);
         }
         UserSectionEntity insertSection = new UserSectionEntity();
         insertSection.setUserId(userId);
@@ -100,9 +103,10 @@ public class UserSectionService{
 
     /**
      * 取消收藏条目
+     *
      * @return 影响行数
      */
-    public Integer deleteUserSection(Long userId,Long sectionId){
+    public Integer deleteUserSection(Long userId, Long sectionId) {
         UserSectionEntity section = new UserSectionEntity();
         section.setUserId(userId);
         section.setSectionId(sectionId);

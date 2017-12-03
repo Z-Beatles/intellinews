@@ -34,7 +34,7 @@ public class CommentService {
         entity.setGmtCreate(Calendar.getInstance().getTime());
         Integer count = commentDao.addUserComment(entity);
         if (count == 0) {
-            throw new AppException(ResultEnum.FAILED.getCode(), "评论文章失败");
+            throw new AppException(ResultEnum.COMMENT_ARTICLE_FAILED_ERROR);
         }
         return entity.getId();
     }
@@ -52,7 +52,7 @@ public class CommentService {
         } else {
             flag = commentDao.updateWithDislike(commentId);
         }
-        if (flag ==0){
+        if (flag == 0) {
             throw new AppException(ResultEnum.COMMENT_NOT_EXIST_ERROR);
         }
     }

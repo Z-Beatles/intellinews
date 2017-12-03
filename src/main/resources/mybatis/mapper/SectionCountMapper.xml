@@ -36,6 +36,11 @@
         FROM oi_section_count
     </select>
 
+    <insert id="insert" parameterType="SectionCountEntity">
+        INSERT INTO oi_section_count (section_id, view_count, share_count, collect_count, gmt_create)
+        VALUES (#{sectionId}, #{viewCount}, #{shareCount}, #{collectCount}, #{gmtCreate})
+    </insert>
+
     <update id="updateViewCountBySectionId">
         UPDATE oi_section_count
         SET view_count = view_count + 1
