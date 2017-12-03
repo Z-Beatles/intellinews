@@ -1,4 +1,4 @@
-package com.fintech.intellinews.config;
+package com.fintech.intellinews.config.javaconfig;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

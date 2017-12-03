@@ -1,4 +1,4 @@
-package com.fintech.intellinews.config;
+package com.fintech.intellinews.config.javaconfig;
 
 import com.fintech.intellinews.shiro.FilterChainDefinitionMapBuilder;
 import com.fintech.intellinews.shiro.ShiroRealm;

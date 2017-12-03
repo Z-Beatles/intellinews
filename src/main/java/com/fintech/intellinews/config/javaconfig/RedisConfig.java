@@ -1,4 +1,4 @@
-package com.fintech.intellinews.config;
+package com.fintech.intellinews.config.javaconfig;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +13,6 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 public class RedisConfig {
 
-    @Bean
     public JedisPoolConfig initPool(){
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMinIdle(1);
@@ -22,7 +21,6 @@ public class RedisConfig {
         return poolConfig;
     }
 
-    @Bean
     public JedisConnectionFactory initConnectionFactory(JedisPoolConfig poolConfig){
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setPoolConfig(poolConfig);

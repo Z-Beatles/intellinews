@@ -4,7 +4,9 @@
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="com.fintech.intellinews"/>
+    <context:component-scan base-package="com.fintech.intellinews">
+        <context:exclude-filter type="aspectj" expression="com.fintech.intellinews.config.javaconfig"/>
+    </context:component-scan>
 
     <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
         <property name="slowSqlMillis" value="3000"/><!-- 慢SQL记录时常，默认3秒 -->

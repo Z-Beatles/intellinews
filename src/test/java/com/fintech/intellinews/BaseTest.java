@@ -1,13 +1,12 @@
 package com.fintech.intellinews;
 
-import com.fintech.intellinews.config.SpringApplicationContext;
-import com.fintech.intellinews.config.SpringMvcContext;
+import com.fintech.intellinews.config.javaconfig.SpringApplicationContext;
+import com.fintech.intellinews.config.javaconfig.SpringMvcContext;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -15,8 +14,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import javax.annotation.Resource;
 
 /**
  * @author wanghao
