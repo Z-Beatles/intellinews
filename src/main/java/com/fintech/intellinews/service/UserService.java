@@ -97,12 +97,17 @@ public class UserService extends BaseService {
         return userLoginEntity.getId();
     }
 
+    /**
+     * 获取当前登录的用户id
+     *
+     * @return 用户id
+     */
     public Long getCurrentUserId() {
         Subject currentUser = SecurityUtils.getSubject();
         UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
         if (principal == null) {
             throw new AppException(ResultEnum.NOT_LOGIN_ERROR);
-        }else{
+        } else {
             return principal.getId();
         }
     }

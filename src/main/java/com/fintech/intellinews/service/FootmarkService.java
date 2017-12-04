@@ -1,11 +1,13 @@
 package com.fintech.intellinews.service;
 
+import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.dao.ArticleDao;
 import com.fintech.intellinews.dao.FootmarkDao;
 import com.fintech.intellinews.dao.SectionDao;
 import com.fintech.intellinews.entity.ArticleEntity;
 import com.fintech.intellinews.entity.FootmarkEntity;
 import com.fintech.intellinews.entity.SectionEntity;
+import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.vo.FootmarkVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -104,6 +106,20 @@ public class FootmarkService {
         entity.setSource(source);
         footmarkDao.insert(entity);
         return entity.getId();
+    }
+
+    /**
+     * 删除用户足迹
+     *
+     * @param footmarkId 足迹id
+     * @return 足迹id
+     */
+    public Long deleteUserFootmark(Long footmarkId) {
+        Integer count = footmarkDao.deleteUserFootmarkById(footmarkId);
+        if (count == 0) {
+            throw new AppException(ResultEnum.DELETE_USER_FOOTMARK_FAILED_ERROR);
+        }
+        return footmarkId;
     }
 
     private void exchangeDate(FootmarkVO footmarkVO, FootmarkEntity entity) {
