@@ -17,6 +17,16 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
+    <filter>
+        <filter-name>XssFilter</filter-name>
+        <filter-class>com.fintech.intellinews.filter.XssFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>XssFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
     <!-- druid url monitor setting start -->
     <filter>
         <filter-name>DruidWebStatFilter</filter-name>
