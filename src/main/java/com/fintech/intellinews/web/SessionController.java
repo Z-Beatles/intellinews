@@ -27,8 +27,8 @@ public class SessionController extends BaseController {
 
     @PostMapping
     @ResponseBody
-    @ApiOperation(value = "用户登录", notes = "登录类型暂时可不填写，登陆成功返回用户id和一个名为‘sid’的Cookie，如果设置记住我会返回一个" +
-            "名为‘rememberMe’的Cookie用于实现自动登陆，有效期为7天", produces = "application/json")
+    @ApiOperation(value = "用户登录", notes = "登录类型暂时可不填写，登陆成功返回用户id和一个名为‘sid’" +
+            "的Cookie，有效期10年", produces = "application/json")
     public Result<Long> loginAction(
             @ApiParam(name = "loginType", value = "登陆的类型")
             @RequestParam(required = false) String loginType,

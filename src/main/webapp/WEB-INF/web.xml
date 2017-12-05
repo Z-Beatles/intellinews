@@ -24,7 +24,7 @@
     </filter>
     <filter-mapping>
         <filter-name>XssFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/v1/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
     <!-- druid url monitor setting start -->

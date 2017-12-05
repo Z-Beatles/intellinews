@@ -271,7 +271,7 @@ public class SectionService extends BaseService {
      * @return 相关文章信息
      */
     private List<AtlasVO> listAtlasArticleBySectionId(Long sectionId) {
-        List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 3);
+        List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 4);
         List<Long> articleIds = new ArrayList<>();
         for (AtlasEntity entity : atlasArticleEntities) {
             articleIds.add(entity.getRelationId());
