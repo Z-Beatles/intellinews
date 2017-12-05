@@ -64,11 +64,13 @@ public class SectionController {
 
     @GetMapping("/{sectionId}/atlas")
     @ResponseBody
-    @ApiOperation(value = "根据条目id查询图谱信息", produces = "application/json")
+    @ApiOperation(value = "根据条目id获取指定类型的图谱信息", produces = "application/json")
     public Result<Map<String, Object>> getSectionAtlas(
             @ApiParam(name = "sectionId", value = "条目id", required = true)
-            @PathVariable(name = "sectionId") Long sectionId) {
-        return ResultUtil.success(sectionService.listAtlasBySectionId(sectionId));
+            @PathVariable(name = "sectionId") Long sectionId,
+            @ApiParam(name = "atlasType", value = "图谱类型(article、section)", required = true)
+            @RequestParam(name = "atlasType") String atlasType) {
+        return ResultUtil.success(sectionService.listBySectionIdAndAtlasType(sectionId, atlasType));
     }
 
     @Autowired

@@ -36,7 +36,8 @@ public enum ResultEnum {
     ARTICLE_NOT_COLLECT_ERROR(10006, "未收藏该文章"),
     COLLECT_SECTION_FAILED_ERROR(10007, "收藏条目失败"),
     INSERT_USER_KEY_FAILED_ERROR(10008, "添加用户偏好失败"),
-    DELETE_USER_FOOTMARK_FAILED_ERROR(1009, "删除失败，该足迹不存在"),
+    DELETE_USER_FOOTMARK_FAILED_ERROR(10009, "删除失败，该足迹不存在"),
+    ATLAS_TYPE_NOT_EXIST_ERROR(10010, "请求的图谱类型不存在"),
 
     CREATE_MENU_ERROR(40000, "自定义菜单失败"),
     DELETE_MENU_ERROR(40001, "删除自定义菜单失败"),

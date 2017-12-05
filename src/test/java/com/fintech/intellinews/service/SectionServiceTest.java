@@ -23,7 +23,7 @@ public class SectionServiceTest {
 
     @Test
     public void listAtlasBySectionId() throws Exception {
-        System.out.println(ResultUtil.success(sectionService.listAtlasBySectionId(1L)));
+        System.out.println(ResultUtil.success(sectionService.listBySectionIdAndAtlasType(1L,"article")));
     }
 
 }
