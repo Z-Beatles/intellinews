@@ -8,6 +8,7 @@ public class UserSectionVO {
     private Long id;
     private String name;
     private String logo;
+    private String date;
 
     public Long getId() {
         return id;
@@ -31,5 +32,13 @@ public class UserSectionVO {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

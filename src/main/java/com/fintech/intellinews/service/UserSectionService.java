@@ -6,6 +6,7 @@ import com.fintech.intellinews.dao.UserSectionDao;
 import com.fintech.intellinews.entity.SectionEntity;
 import com.fintech.intellinews.entity.UserSectionEntity;
 import com.fintech.intellinews.enums.ResultEnum;
+import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.vo.UserSectionVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -72,6 +73,7 @@ public class UserSectionService {
             sectionEntity = mapList.get(entity.getSectionId());
             userSectionVO.setLogo(sectionEntity.getLogo());
             userSectionVO.setName(sectionEntity.getName());
+            userSectionVO.setDate(DateUtil.toCustomStringFromDate(sectionEntity.getGmtCreate()));
             list.add(userSectionVO);
         }
         PageInfo pageInfo = new PageInfo(userSections);
