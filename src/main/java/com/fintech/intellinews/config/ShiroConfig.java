@@ -1,12 +1,11 @@
 package com.fintech.intellinews.config;
 
-import com.fintech.intellinews.shiro.FilterChainDefinitionMapBuilder;
 import com.fintech.intellinews.shiro.ShiroRealm;
-import net.sf.ehcache.CacheManager;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -14,12 +13,13 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author wanghao
@@ -28,63 +28,64 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Bean
-    public DefaultWebSecurityManager webSecurityManager(
-            ShiroRealm shiroRealm,DefaultWebSessionManager sessionManager,
-            @Qualifier("cacheManager") EhCacheManager cacheManager) {
-        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
-        defaultWebSecurityManager.setRealm(shiroRealm);
-        defaultWebSecurityManager.setSessionManager(sessionManager);
-        defaultWebSecurityManager.setCacheManager(cacheManager);
-        return defaultWebSecurityManager;
-    }
-    @Bean
-    public DefaultWebSessionManager sessionManager(SimpleCookie sessionIdCookie) {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setGlobalSessionTimeout(1800000);
-        sessionManager.setSessionIdUrlRewritingEnabled(false);
-        sessionManager.setDeleteInvalidSessions(true);
-        sessionManager.setSessionValidationSchedulerEnabled(true);
-        sessionManager.setSessionIdCookieEnabled(true);
-        sessionManager.setSessionIdCookie(sessionIdCookie);
-        return sessionManager;
-    }
-
-    @Bean("cacheManager")
-    public EhCacheManager cacheManager() {
-//        CacheManager cacheManager = CacheManager.create("classpath:ehcache-shiro.xml");
-//        EhCacheManager ehCacheManager = new EhCacheManager();
-//        ehCacheManager.setCacheManager(cacheManager);
-//        return ehCacheManager;
+    public EhCacheManager ehCacheManager() {
         EhCacheManager ehCacheManager = new EhCacheManager();
         ehCacheManager.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
         return ehCacheManager;
     }
 
     @Bean
-    public ModularRealmAuthenticator initAuthenticator(){
+    public SimpleCookie sessionCookieId() {
+        SimpleCookie simpleCookie = new SimpleCookie("sid");
+        simpleCookie.setHttpOnly(true);
+        simpleCookie.setMaxAge(31536000);
+        return simpleCookie;
+    }
+
+    @Bean
+    public DefaultWebSessionManager sessionManager(SimpleCookie simpleCookie) {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setGlobalSessionTimeout(1800000);
+        sessionManager.setDeleteInvalidSessions(true);
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        sessionManager.setSessionValidationInterval(1800000);
+        sessionManager.setSessionIdCookieEnabled(true);
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
+        sessionManager.setSessionIdCookie(simpleCookie);
+        return sessionManager;
+    }
+
+    @Bean
+    public ModularRealmAuthenticator authenticator(){
         ModularRealmAuthenticator authenticator = new ModularRealmAuthenticator();
         authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
         return authenticator;
     }
 
     @Bean
-    public SimpleCookie sessionCookie(){
-        SimpleCookie sessionIdCookie = new SimpleCookie("sid");
-        //设置是否禁止客户端读取cookie
-        sessionIdCookie.setHttpOnly(true);
-        //有效期1年，-1代表有效时常为session
-        sessionIdCookie.setMaxAge(31536000);
-        return sessionIdCookie;
-    }
-
-    @Bean
-    public ShiroRealm initJdbcRealm(){
+    public Realm realm() {
         ShiroRealm shiroRealm = new ShiroRealm();
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
         matcher.setHashAlgorithmName("SHA-1");
         matcher.setHashIterations(1024);
         shiroRealm.setCredentialsMatcher(matcher);
         return shiroRealm;
+    }
+
+    @Bean
+    public DefaultWebSecurityManager securityManager(
+            Realm realm,
+            DefaultWebSessionManager sessionManager,
+            EhCacheManager ehCacheManager,
+            ModularRealmAuthenticator authenticator) {
+        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
+        defaultWebSecurityManager.setCacheManager(ehCacheManager);
+        defaultWebSecurityManager.setSessionManager(sessionManager);
+        defaultWebSecurityManager.setAuthenticator(authenticator);
+        List<Realm> list = new ArrayList<>();
+        list.add(realm);
+        defaultWebSecurityManager.setRealms(list);
+        return defaultWebSecurityManager;
     }
 
     @Bean
@@ -101,28 +102,28 @@ public class ShiroConfig {
     }
 
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager webSecurityManager) {
+    public MethodInvokingFactoryBean methodInvokingFactoryBean(DefaultWebSecurityManager securityManager){
+        MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
+        methodInvokingFactoryBean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
+        methodInvokingFactoryBean.setArguments(new Object[]{securityManager});
+        return methodInvokingFactoryBean;
+    }
+
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(webSecurityManager);
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
 
     @Bean(name = "shiroFilter")
-    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager webSecurityManager,
-                                                         Map<String,String> filterChainDefinitionMap) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        shiroFilterFactoryBean.setSecurityManager(webSecurityManager);
-        shiroFilterFactoryBean.setLoginUrl("/Account/Login");
-        shiroFilterFactoryBean.setSuccessUrl("/");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
-        shiroFilterFactoryBean.setLoginUrl("/v1/session");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        shiroFilterFactoryBean.setSecurityManager(securityManager);
+        shiroFilterFactoryBean.setLoginUrl("/v1/sessions");
+        HashMap<String, String> map = new HashMap<>();
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
-    }
-
-    @Bean("filterChainDefinitionMap")
-    public Map<String, String> initFilterChain(){
-        return new FilterChainDefinitionMapBuilder().buildFilterChainDefinitionMap();
     }
 
 }

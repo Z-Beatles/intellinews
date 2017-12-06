@@ -13,16 +13,16 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableTransactionManagement
 @Configuration
 @ComponentScan(
-    basePackages = {"com.fintech.intellinews"},
-    excludeFilters = {@ComponentScan.Filter(
-        value = {
-            EnableWebMvc.class,
-            ControllerAdvice.class,
-            Controller.class
-        }
-    )}
+        basePackages = {"com.fintech.intellinews"},
+        excludeFilters = {@ComponentScan.Filter(
+                value = {
+                        EnableWebMvc.class,
+                        ControllerAdvice.class,
+                        Controller.class
+                }
+        )}
 )
-@Import({ShiroConfig.class,RedisConfig.class})
+@Import({ShiroConfig.class, RedisConfig.class})
 public class SpringAppContext {
 
     @Configuration

@@ -20,12 +20,6 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         servletContext.setInitParameter("spring.profiles.active", "develop");
-        FilterRegistration.Dynamic encoding = servletContext.addFilter("encodingFilter",WebStatFilter.class);
-        encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class),false,"/*");
-        Map<String,String> encodingMap = new HashMap<>();
-        encodingMap.put("encoding","UTF-8");
-        encodingMap.put("forceEncoding","true");
-        encoding.setInitParameters(encodingMap);
 
         FilterRegistration.Dynamic druid = servletContext.addFilter("DruidWebStatFilter",WebStatFilter.class);
         druid.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class),false,"/*");
@@ -34,8 +28,12 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
         druidMap.put("profileEnable","true");
         druid.setInitParameters(druidMap);
 
-        ServletRegistration.Dynamic druidStatView = servletContext.addServlet("DruidStatView", StatViewServlet.class);
-        druidStatView.addMapping("/druid/*");
+        FilterRegistration.Dynamic encoding = servletContext.addFilter("encodingFilter",WebStatFilter.class);
+        encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class),false,"/*");
+        Map<String,String> encodingMap = new HashMap<>();
+        encodingMap.put("encoding","UTF-8");
+        encodingMap.put("forceEncoding","true");
+        encoding.setInitParameters(encodingMap);
 
         FilterRegistration.Dynamic shiroFilter = servletContext.addFilter("shiroFilter",DelegatingFilterProxy.class);
         encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class),false,"/*");
@@ -44,6 +42,8 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
         shiroFilter.setAsyncSupported(true);
         shiroFilter.setInitParameters(shiroMap);
 
+        ServletRegistration.Dynamic druidStatView = servletContext.addServlet("DruidStatView", StatViewServlet.class);
+        druidStatView.addMapping("/druid/*");
         super.onStartup(servletContext);
     }
 

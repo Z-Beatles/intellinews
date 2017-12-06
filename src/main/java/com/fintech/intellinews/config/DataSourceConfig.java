@@ -51,8 +51,8 @@ public class DataSourceConfig {
         DruidDataSource write = new DruidDataSource();
         BeanUtils.copyProperties(write, druidDataSource);
         write.setUrl("jdbc:mysql://119.31.210.76:3306/intellinews?characterEncoding=utf8&useSSL=false");
-        write.setPassword("root");
-        write.setUsername("YjJ2NPFnhE");
+        write.setUsername("root");
+        write.setPassword("YjJ2NPFnhE");
         write.setMaxActive(60000);
         write.setInitialSize(2);
         return write;
