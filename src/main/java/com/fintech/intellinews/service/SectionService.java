@@ -64,7 +64,7 @@ public class SectionService extends BaseService {
     public PageInfo<ListSectionVO> listSections(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<SectionEntity> sectionEntities = sectionDao.listAll();
-        if(sectionEntities.isEmpty()){
+        if (sectionEntities.isEmpty()) {
             return new PageInfo(sectionEntities);
         }
         List<Long> ids = new ArrayList<>();
@@ -204,31 +204,35 @@ public class SectionService extends BaseService {
      * @param sectionId 条目id
      * @return 图谱信息
      */
-    public Map<String, Object> listAtlasBySectionId(Long sectionId) {
-        Map<String, Object> result = new HashMap(3);
+    public Map<String, Object> listBySectionIdAndAtlasType(Long sectionId, String atlasType) {
+        Map<String, Object> result = new HashMap(2);
         // 添加中心点信息
         SectionEntity sectionEntity = sectionDao.getById(sectionId);
         Map<String, Object> centerInfo = new HashMap<>(2);
         centerInfo.put("id", sectionEntity.getId());
         centerInfo.put("title", sectionEntity.getName());
-        // 添加5条相关条目信息
-        List<AtlasVO> atlasSectionVOS = listAtlasSectionBySectionId(sectionId);
-        // 添加3条相关文章信息
-        List<AtlasVO> atlasArticleVOS = listAtlasArticleBySectionId(sectionId);
-
+        List<AtlasVO> atlasVOS;
+        if ("section".equals(atlasType)) {
+            // 添加5条相关条目信息
+            atlasVOS = listSectionsBySectionId(sectionId);
+        } else if ("article".equals(atlasType)) {
+            // 添加5条相关文章信息
+            atlasVOS = listArticlesBySectionId(sectionId);
+        } else {
+            throw new AppException(ResultEnum.ATLAS_TYPE_NOT_EXIST_ERROR);
+        }
         result.put("center", centerInfo);
-        result.put("section", atlasSectionVOS);
-        result.put("articles", atlasArticleVOS);
+        result.put("atlas", atlasVOS);
         return result;
     }
 
     /**
-     * 根据条目id获取相关条目信息
+     * 根据条目id获取相关条目列表
      *
      * @param sectionId 条目id
-     * @return 相关条目信息
+     * @return 相关条目列表
      */
-    private List<AtlasVO> listAtlasSectionBySectionId(Long sectionId) {
+    private List<AtlasVO> listSectionsBySectionId(Long sectionId) {
         List<AtlasEntity> atlasSectionEntities = atlasDao.listBySectionIdAndType(sectionId, "section", 5);
         List<Long> ids = new ArrayList<>();
         for (AtlasEntity entity : atlasSectionEntities) {
@@ -265,13 +269,13 @@ public class SectionService extends BaseService {
     }
 
     /**
-     * 根据条目id获取相关文章信息
+     * 根据条目id获取相关文章列表
      *
      * @param sectionId 条目id
-     * @return 相关文章信息
+     * @return 相关文章列表
      */
-    private List<AtlasVO> listAtlasArticleBySectionId(Long sectionId) {
-        List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 3);
+    private List<AtlasVO> listArticlesBySectionId(Long sectionId) {
+        List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 5);
         List<Long> articleIds = new ArrayList<>();
         for (AtlasEntity entity : atlasArticleEntities) {
             articleIds.add(entity.getRelationId());

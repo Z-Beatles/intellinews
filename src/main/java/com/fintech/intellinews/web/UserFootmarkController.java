@@ -51,6 +51,16 @@ public class UserFootmarkController {
         return ResultUtil.success(footmarkService.addFootmark(currentUserId, contentId, source, contentType));
     }
 
+    @DeleteMapping("/{footmarkId}")
+    @ResponseBody
+    @ApiOperation(value = "删除当前用户指定的浏览足迹", produces = "application/json")
+    public Result<Long> deleteUserFootmark(
+            @ApiParam(name = "footmarkId", value = "足迹id", required = true)
+            @PathVariable Long footmarkId) {
+        userService.getCurrentUserId();
+        return ResultUtil.success(footmarkService.deleteUserFootmark(footmarkId));
+    }
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;

@@ -25,13 +25,18 @@
     </select>
 
     <insert id="insert" parameterType="FootmarkEntity" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO oi_footmark(
+        INSERT INTO oi_footmark (
             user_id,
             content_id,
             content_type,
             source,
             gmt_create)
-        VALUES (#{userId},#{contentId},#{contentType},#{source},#{gmtCreate})
+        VALUES (#{userId}, #{contentId}, #{contentType}, #{source}, #{gmtCreate})
     </insert>
+
+    <delete id="deleteUserFootmarkById">
+        DELETE FROM oi_footmark
+        WHERE id = #{footmarkId}
+    </delete>
 
 </mapper>

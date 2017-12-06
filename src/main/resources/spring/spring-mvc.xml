@@ -13,7 +13,11 @@
                 <property name="supportedMediaTypes">
                     <list>
                         <value>text/json;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
                     </list>
+                </property>
+                <property name="objectMapper">
+                    <bean class="com.fintech.intellinews.model.CustomObjectMapper"/>
                 </property>
             </bean>
         </mvc:message-converters>
