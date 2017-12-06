@@ -1,15 +1,27 @@
-package com.fintech.intellinews.config.javaconfig;
+package com.fintech.intellinews.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
 
 import java.nio.charset.Charset;
 import java.util.Collections;
@@ -21,8 +33,8 @@ import static java.util.Arrays.asList;
  * @author wanghao
  * create 2017-12-02 23:08
  **/
-@EnableWebMvc
 @Configuration
+@EnableWebMvc
 @ComponentScan(basePackages = "com.fintech.intellinews.web")
 public class SpringMvcContext extends WebMvcConfigurerAdapter {
     /**
@@ -46,6 +58,13 @@ public class SpringMvcContext extends WebMvcConfigurerAdapter {
         converters.add(mappingJackson2HttpMessageConverter);
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/v1/static/**").addResourceLocations("/WEB-INF/static/");
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+
     /**
      *
      * @param configurer
@@ -54,4 +73,6 @@ public class SpringMvcContext extends WebMvcConfigurerAdapter {
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
+
+
 }

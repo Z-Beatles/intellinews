@@ -1,7 +1,7 @@
 package com.fintech.intellinews;
 
-import com.fintech.intellinews.config.javaconfig.SpringApplicationContext;
-import com.fintech.intellinews.config.javaconfig.SpringMvcContext;
+import com.fintech.intellinews.config.SpringAppContext;
+import com.fintech.intellinews.config.SpringMvcContext;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.junit.Before;
@@ -21,7 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {SpringApplicationContext.class
+@ContextConfiguration(classes = {SpringAppContext.class
         , SpringMvcContext.class})
 @ActiveProfiles("develop")
 public class BaseTest {

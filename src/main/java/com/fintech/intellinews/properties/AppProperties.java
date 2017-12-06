@@ -1,4 +1,4 @@
-package com.fintech.intellinews.config;
+package com.fintech.intellinews.properties;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Value;

@@ -2,7 +2,7 @@ package com.fintech.intellinews.service.wechat;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fintech.intellinews.Constant;
-import com.fintech.intellinews.config.AppProperties;
+import com.fintech.intellinews.properties.AppProperties;
 import com.fintech.intellinews.dao.cache.RedisDao;
 import com.fintech.intellinews.model.AccessToken;
 import com.fintech.intellinews.util.JacksonUtil;

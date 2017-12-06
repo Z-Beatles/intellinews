@@ -1,4 +1,4 @@
-package com.fintech.intellinews.config.javaconfig;
+package com.fintech.intellinews.config;
 
 import com.fintech.intellinews.shiro.FilterChainDefinitionMapBuilder;
 import com.fintech.intellinews.shiro.ShiroRealm;
@@ -14,6 +14,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -24,17 +25,16 @@ import java.util.Map;
  * @author wanghao
  * create 2017-12-02 23:31
  **/
-@Configuration
 public class ShiroConfig {
 
     @Bean
     public DefaultWebSecurityManager webSecurityManager(
             ShiroRealm shiroRealm,DefaultWebSessionManager sessionManager,
-            EhCacheManager ehCacheManager) {
+            @Qualifier("cacheManager") EhCacheManager cacheManager) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(shiroRealm);
         defaultWebSecurityManager.setSessionManager(sessionManager);
-        defaultWebSecurityManager.setCacheManager(ehCacheManager);
+        defaultWebSecurityManager.setCacheManager(cacheManager);
         return defaultWebSecurityManager;
     }
     @Bean
@@ -50,7 +50,11 @@ public class ShiroConfig {
     }
 
     @Bean("cacheManager")
-    public EhCacheManager ehCacheManager() {
+    public EhCacheManager cacheManager() {
+//        CacheManager cacheManager = CacheManager.create("classpath:ehcache-shiro.xml");
+//        EhCacheManager ehCacheManager = new EhCacheManager();
+//        ehCacheManager.setCacheManager(cacheManager);
+//        return ehCacheManager;
         EhCacheManager ehCacheManager = new EhCacheManager();
         ehCacheManager.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
         return ehCacheManager;
@@ -104,7 +108,7 @@ public class ShiroConfig {
     }
 
     @Bean(name = "shiroFilter")
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager webSecurityManager,
+    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager webSecurityManager,
                                                          Map<String,String> filterChainDefinitionMap) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(webSecurityManager);
