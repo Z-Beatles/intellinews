@@ -3,6 +3,7 @@ package com.fintech.intellinews.config;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.*;
@@ -35,6 +36,13 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
 
         ServletRegistration.Dynamic druidStatView = servletContext.addServlet("DruidStatView", StatViewServlet.class);
         druidStatView.addMapping("/druid/*");
+
+        FilterRegistration.Dynamic shiroFilter = servletContext.addFilter("shiroFilter",DelegatingFilterProxy.class);
+        encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class),false,"/*");
+        Map<String,String> shiroMap = new HashMap<>();
+        shiroMap.put("targetFilterLifecycle","true");
+        shiroFilter.setAsyncSupported(true);
+        shiroFilter.setInitParameters(shiroMap);
 
         super.onStartup(servletContext);
     }

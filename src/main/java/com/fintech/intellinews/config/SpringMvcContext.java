@@ -22,6 +22,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.nio.charset.Charset;
 import java.util.Collections;
@@ -35,6 +36,7 @@ import static java.util.Arrays.asList;
  **/
 @Configuration
 @EnableWebMvc
+@EnableSwagger2
 @ComponentScan(basePackages = "com.fintech.intellinews.web")
 public class SpringMvcContext extends WebMvcConfigurerAdapter {
     /**
@@ -74,5 +76,29 @@ public class SpringMvcContext extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
+
+    private static final String SWAGGER_SCAN_BASE_PACKAGE = "com.fintech.intellinews.web";
+
+    private static final String API_VERSION = "1.0.0";
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("企业资讯信息平台服务接口")
+                .description("企业咨询信息接口")
+                .termsOfServiceUrl("http://localhost:8080")
+                .contact(new Contact("Fintech", "", "contact@fintech.com"))
+                .version(API_VERSION)
+                .build();
+    }
+
+    @Bean
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage(SWAGGER_SCAN_BASE_PACKAGE))
+                .paths(PathSelectors.any())
+                .build();
+    }
 
 }
