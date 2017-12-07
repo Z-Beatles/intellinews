@@ -3,7 +3,6 @@ package com.fintech.intellinews.config;
 import org.springframework.context.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         excludeFilters = {@ComponentScan.Filter(
                 value = {
                         EnableWebMvc.class,
-                        ControllerAdvice.class,
                         Controller.class
                 }
         )}

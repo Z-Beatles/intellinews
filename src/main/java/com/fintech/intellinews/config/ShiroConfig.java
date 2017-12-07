@@ -56,7 +56,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public ModularRealmAuthenticator authenticator(){
+    public ModularRealmAuthenticator authenticator() {
         ModularRealmAuthenticator authenticator = new ModularRealmAuthenticator();
         authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
         return authenticator;
@@ -102,7 +102,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public MethodInvokingFactoryBean methodInvokingFactoryBean(DefaultWebSecurityManager securityManager){
+    public MethodInvokingFactoryBean methodInvokingFactoryBean(DefaultWebSecurityManager securityManager) {
         MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
         methodInvokingFactoryBean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
         methodInvokingFactoryBean.setArguments(new Object[]{securityManager});

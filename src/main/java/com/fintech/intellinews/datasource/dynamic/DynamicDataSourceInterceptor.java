@@ -60,6 +60,7 @@ public class DynamicDataSourceInterceptor implements Interceptor {
             lookUpKey = DynamicDataSourceHolder.DATA_SOURCE_MASTER;
         }
         DynamicDataSourceHolder.setDataSourceType(lookUpKey);
+        logger.info("current datasource is " + lookUpKey);
         return invocation.proceed();
     }
 

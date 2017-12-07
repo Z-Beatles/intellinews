@@ -21,24 +21,24 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
     public void onStartup(ServletContext servletContext) throws ServletException {
         servletContext.setInitParameter("spring.profiles.active", "develop");
 
-        FilterRegistration.Dynamic druid = servletContext.addFilter("DruidWebStatFilter",WebStatFilter.class);
-        druid.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class),false,"/*");
-        Map<String,String> druidMap = new HashMap<>();
-        druidMap.put("exclusions","*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
-        druidMap.put("profileEnable","true");
+        FilterRegistration.Dynamic druid = servletContext.addFilter("DruidWebStatFilter", WebStatFilter.class);
+        druid.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
+        Map<String, String> druidMap = new HashMap<>();
+        druidMap.put("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        druidMap.put("profileEnable", "true");
         druid.setInitParameters(druidMap);
 
-        FilterRegistration.Dynamic encoding = servletContext.addFilter("encodingFilter",WebStatFilter.class);
-        encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class),false,"/*");
-        Map<String,String> encodingMap = new HashMap<>();
-        encodingMap.put("encoding","UTF-8");
-        encodingMap.put("forceEncoding","true");
+        FilterRegistration.Dynamic encoding = servletContext.addFilter("encodingFilter", WebStatFilter.class);
+        encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
+        Map<String, String> encodingMap = new HashMap<>();
+        encodingMap.put("encoding", "UTF-8");
+        encodingMap.put("forceEncoding", "true");
         encoding.setInitParameters(encodingMap);
 
-        FilterRegistration.Dynamic shiroFilter = servletContext.addFilter("shiroFilter",DelegatingFilterProxy.class);
-        encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class),false,"/*");
-        Map<String,String> shiroMap = new HashMap<>();
-        shiroMap.put("targetFilterLifecycle","true");
+        FilterRegistration.Dynamic shiroFilter = servletContext.addFilter("shiroFilter", DelegatingFilterProxy.class);
+        encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
+        Map<String, String> shiroMap = new HashMap<>();
+        shiroMap.put("targetFilterLifecycle", "true");
         shiroFilter.setAsyncSupported(true);
         shiroFilter.setInitParameters(shiroMap);
 

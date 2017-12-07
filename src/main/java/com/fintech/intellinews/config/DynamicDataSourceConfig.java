@@ -60,6 +60,7 @@ public class DynamicDataSourceConfig {
             @Qualifier("slave1") DataSource slave1,
             @Qualifier("slave2") DataSource slave2) {
         DynamicDataSource dynamic = new DynamicDataSource();
+        dynamic.setReadDataSourcePollPattern(1);
         dynamic.setMaster(master);
         dynamic.setSlaves(Arrays.asList(slave1, slave2));
         return dynamic;
