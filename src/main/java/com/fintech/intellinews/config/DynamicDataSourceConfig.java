@@ -1,6 +1,5 @@
 package com.fintech.intellinews.config;
 
-import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.fintech.intellinews.datasource.DruidDataSourceFactory;
 import com.fintech.intellinews.datasource.dynamic.DynamicDataSource;
@@ -25,45 +24,33 @@ import java.util.Arrays;
 @Configuration
 public class DynamicDataSourceConfig {
 
-    @Bean("statFilter")
-    public StatFilter statFilter(){
-        StatFilter statFilter = new StatFilter();
-        statFilter.setSlowSqlMillis(3000);
-        statFilter.setLogSlowSql(true);
-        statFilter.setMergeSql(true);
-        return statFilter;
-    }
-
     @Bean("master")
-    public DruidDataSource master(@Qualifier("statFilter")StatFilter statFilter) {
+    public DruidDataSource master() {
         return new DruidDataSourceFactory.DruidDataSourceBuilder()
                 .setUsername("root")
                 .setPassword("AE6eiO3r.E1")
                 .setUrl("jdbc:mysql://119.31.210.76:3316/intellinews?characterEncoding=utf8&useSSL=false")
                 .setFilters("mergeStat")
-                .setStatFilter(statFilter)
                 .build();
     }
 
     @Bean("slave1")
-    public DruidDataSource slave1(@Qualifier("statFilter")StatFilter statFilter) {
+    public DruidDataSource slave1() {
         return new DruidDataSourceFactory.DruidDataSourceBuilder()
                 .setUsername("root")
                 .setPassword("AE6eiO3r.E1")
                 .setUrl("jdbc:mysql://119.31.210.76:3317/intellinews?characterEncoding=utf8&useSSL=false")
                 .setFilters("mergeStat")
-                .setStatFilter(statFilter)
                 .build();
     }
 
     @Bean("slave2")
-    public DruidDataSource slave2(@Qualifier("statFilter")StatFilter statFilter) {
+    public DruidDataSource slave2() {
         return new DruidDataSourceFactory.DruidDataSourceBuilder()
                 .setUsername("root")
                 .setPassword("AE6eiO3r.E1")
                 .setUrl("jdbc:mysql://119.31.210.76:3318/intellinews?characterEncoding=utf8&useSSL=false")
                 .setFilters("mergeStat")
-                .setStatFilter(statFilter)
                 .build();
     }
 

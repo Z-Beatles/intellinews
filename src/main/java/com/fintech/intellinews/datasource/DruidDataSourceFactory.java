@@ -1,6 +1,5 @@
 package com.fintech.intellinews.datasource;
 
-import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 
 import java.sql.SQLException;
@@ -26,7 +25,6 @@ public class DruidDataSourceFactory {
         private int maxPoolPreparedStatementPerConnectionSize = 20;
         private boolean poolPreparedStatements = true;
         private String filters;
-        private StatFilter statFilter;
 
         public DruidDataSource build() {
             DruidDataSource dataSource = new DruidDataSource();
@@ -121,10 +119,6 @@ public class DruidDataSourceFactory {
             return this;
         }
 
-        public DruidDataSourceBuilder setStatFilter(StatFilter statFilter){
-            this.statFilter = statFilter;
-            return this;
-        }
     }
 
 }
