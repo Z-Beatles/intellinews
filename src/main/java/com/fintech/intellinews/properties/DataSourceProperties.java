@@ -1,6 +1,6 @@
 package com.fintech.intellinews.properties;
 
-import com.fintech.intellinews.base.dynamic.DataSourceConnector;
+import com.fintech.intellinews.datasource.DataSourceConnector;
 import org.springframework.context.annotation.Configuration;
 
 /**

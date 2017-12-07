@@ -1,4 +1,4 @@
-package com.fintech.intellinews.base.dynamic;
+package com.fintech.intellinews.datasource.dynamic;
 
 
 /**

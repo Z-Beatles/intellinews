@@ -1,4 +1,4 @@
-package com.fintech.intellinews.base.dynamic;
+package com.fintech.intellinews.datasource.dynamic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,8 +76,8 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         String dynamicKey = DynamicDataSourceHolder.getDataSourceType();
-        if (dynamicKey == null || DynamicDataSourceHolder.DATA_SOURCE_MASTER.equals(dynamicKey)
-                || readDataSourceSize <= 0) {
+        if (DynamicDataSourceHolder.DATA_SOURCE_MASTER.equals(dynamicKey) || readDataSourceSize <= 0) {
+            logger.info("》》》》》》》》》》》》》》》》》》" + dynamicKey + "《《《《《《《《《《《《《《《《《");
             return DynamicDataSourceHolder.DATA_SOURCE_MASTER;
         }
         int index;
@@ -101,6 +101,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         } else {
             return DynamicDataSourceHolder.DATA_SOURCE_MASTER;
         }
+        logger.info("》》》》》》》》》》》》》》》》》》" + (dynamicKey + index) + "《《《《《《《《《《《《《《《《《");
         return dynamicKey + index;
     }
 

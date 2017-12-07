@@ -1,4 +1,4 @@
-package com.fintech.intellinews.base.dynamic;
+package com.fintech.intellinews.datasource.dynamic;
 
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.keygen.SelectKeyGenerator;
