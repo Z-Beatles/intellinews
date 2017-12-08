@@ -36,7 +36,7 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
         encoding.setInitParameters(encodingMap);
 
         FilterRegistration.Dynamic shiroFilter = servletContext.addFilter("shiroFilter", DelegatingFilterProxy.class);
-        encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
+        encoding.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, "/*");
         Map<String, String> shiroMap = new HashMap<>();
         shiroMap.put("targetFilterLifecycle", "true");
         shiroFilter.setAsyncSupported(true);
@@ -67,5 +67,10 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
     protected String[] getServletMappings() {
         // 配置DispatcherServlet映射路径
         return new String[]{"/"};
+    }
+
+    @Override
+    protected Filter[] getServletFilters() {
+        return super.getServletFilters();
     }
 }
