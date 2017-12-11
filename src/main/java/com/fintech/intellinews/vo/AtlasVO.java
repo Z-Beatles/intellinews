@@ -13,6 +13,8 @@ public class AtlasVO {
     private Integer distance;
     /** 权重 1-50 */
     private Integer weight;
+    /** 条目logo */
+    private String logo;
 
     public Long getId() {
         return id;
@@ -44,5 +46,13 @@ public class AtlasVO {
 
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }

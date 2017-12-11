@@ -10,10 +10,7 @@ import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.util.StringUtil;
-import com.fintech.intellinews.vo.AtlasVO;
-import com.fintech.intellinews.vo.DetailsSectionVO;
-import com.fintech.intellinews.vo.ListSectionVO;
-import com.fintech.intellinews.vo.SearchSectionVO;
+import com.fintech.intellinews.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -210,6 +207,7 @@ public class SectionService extends BaseService {
         SectionEntity sectionEntity = sectionDao.getById(sectionId);
         Map<String, Object> centerInfo = new HashMap<>(2);
         centerInfo.put("id", sectionEntity.getId());
+        centerInfo.put("logo",sectionEntity.getLogo());
         centerInfo.put("title", sectionEntity.getName());
         List<AtlasVO> atlasVOS;
         if ("section".equals(atlasType)) {
@@ -253,6 +251,7 @@ public class SectionService extends BaseService {
             atlasSectionVO.setId(relationId);
             atlasSectionVO.setTitle(sectionMap.get(relationId).getName());
             atlasSectionVO.setDistance(atlasSectionEntity.getRelationDegree());
+            atlasSectionVO.setLogo(sectionMap.get(relationId).getLogo());
             SectionCountEntity sectionCountEntity = sectionCountMap.get(relationId);
             if (sectionCountEntity == null) {
                 // 初始化条目统计信息
