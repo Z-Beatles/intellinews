@@ -21,17 +21,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         )}
 )
 @Import({ShiroConfig.class, RedisConfig.class})
+@PropertySource("classpath:application.properties")
 public class SpringAppContext {
 
-    @Configuration
-    @Profile("product")
-    @PropertySource("classpath:application.product.properties")
-    static class Production {
-    }
-
-    @Configuration
-    @Profile("develop")
-    @PropertySource("classpath:application.develop.properties")
-    static class Development {
-    }
 }
