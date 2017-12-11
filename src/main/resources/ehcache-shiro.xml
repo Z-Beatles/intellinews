@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache updateCheck="false">
-	<diskStore path="java.io.tmpdir\intellinews" />
+<diskStore path="java.io.tmpdir\intellinews" />
 
-	<defaultCache
-	   maxElementsInMemory="10000"
-	   eternal="false"
-	   timeToIdleSeconds="120"
-	   timeToLiveSeconds="120"
-	   overflowToDisk="false"
-	   diskPersistent="false" 
-	   diskExpiryThreadIntervalSeconds="120"
-	   memoryStoreEvictionPolicy="LRU" />
+<defaultCache
+		maxElementsInMemory="10000"
+		eternal="false"
+		timeToIdleSeconds="120"
+		timeToLiveSeconds="120"
+		overflowToDisk="false"
+		diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120"
+		memoryStoreEvictionPolicy="LRU" />
 </ehcache>

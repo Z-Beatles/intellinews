@@ -43,7 +43,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public DefaultWebSessionManager sessionManager(SimpleCookie simpleCookie) {
+    public DefaultWebSessionManager sessionManager(SimpleCookie sessionCookieId) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setGlobalSessionTimeout(1800000);
         sessionManager.setDeleteInvalidSessions(true);
@@ -51,7 +51,7 @@ public class ShiroConfig {
         sessionManager.setSessionValidationInterval(1800000);
         sessionManager.setSessionIdCookieEnabled(true);
         sessionManager.setSessionIdUrlRewritingEnabled(false);
-        sessionManager.setSessionIdCookie(simpleCookie);
+        sessionManager.setSessionIdCookie(sessionCookieId);
         return sessionManager;
     }
 
