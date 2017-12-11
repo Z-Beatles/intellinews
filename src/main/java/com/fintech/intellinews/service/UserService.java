@@ -3,7 +3,7 @@ package com.fintech.intellinews.service;
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.Constant;
 import com.fintech.intellinews.base.BaseService;
-import com.fintech.intellinews.config.AppProperties;
+import com.fintech.intellinews.properties.AppProperties;
 import com.fintech.intellinews.dao.*;
 import com.fintech.intellinews.entity.*;
 import com.fintech.intellinews.enums.ResultEnum;

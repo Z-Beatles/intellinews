@@ -10,6 +10,10 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
+    <typeAliases>
+        <package name="com.fintech.intellinews.entity"/>
+    </typeAliases>
+
     <plugins>
         <!-- 分页插件 -->
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
@@ -18,5 +22,7 @@
             <!-- 指定查询页数在有效范围 -->
             <property name="reasonable" value="false"/>
         </plugin>
+        <!--数据源拦截器-->
+        <plugin interceptor="com.fintech.intellinews.datasource.dynamic.DynamicDataSourceInterceptor"/>
     </plugins>
 </configuration>
