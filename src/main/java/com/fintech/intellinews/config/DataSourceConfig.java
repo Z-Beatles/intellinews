@@ -22,7 +22,7 @@ import java.util.Arrays;
  * create 2017-12-05 14:49
  **/
 @Configuration
-public class DynamicDataSourceConfig {
+public class DataSourceConfig {
 
     @Bean("master")
     public DruidDataSource master() {
