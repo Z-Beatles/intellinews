@@ -401,13 +401,17 @@
 
         <resources>
             <resource>
-                <directory>src/main/resources.${deploy.type}</directory>
+                <directory>src/main/resources</directory>
                 <excludes>
-                    <exclude>*.jsp</exclude>
+                    <exclude>/properties-dev/*</exclude>
+                    <exclude>/properties-prod/*</exclude>
                 </excludes>
             </resource>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/main/resources/properties-${deploy.type}</directory>
+                <excludes>
+                    <exclude>*.jsp</exclude>
+                </excludes>
             </resource>
         </resources>
 
