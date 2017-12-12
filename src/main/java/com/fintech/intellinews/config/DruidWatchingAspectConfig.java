@@ -13,25 +13,24 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  * create 2017-12-12 9:51
  **/
 @Aspect
-@EnableAspectJAutoProxy
 public class DruidWatchingAspectConfig {
 
     @Bean
-    public DruidStatInterceptor druidStatInterceptor() {
+    public DruidStatInterceptor interceptor() {
         return new DruidStatInterceptor();
     }
 
     @Bean
-    public JdkRegexpMethodPointcut druidStatPointcut() {
+    public JdkRegexpMethodPointcut methodPointcut() {
         JdkRegexpMethodPointcut druidStatPointcut = new JdkRegexpMethodPointcut();
-        String patterns = "com.fintech.intellinews.dao.*";
-        String patterns2 = "com.fintech.intellinews.service.*";
-        druidStatPointcut.setPatterns(patterns, patterns2);
+        String dao = "com.fintech.intellinews.dao.*";
+        String service = "com.fintech.intellinews.service.*";
+        druidStatPointcut.setPatterns(dao, service);
         return druidStatPointcut;
     }
 
     @Bean
-    public Advisor druidStatAdvisor() {
-        return new DefaultPointcutAdvisor(druidStatPointcut(), druidStatInterceptor());
+    public Advisor druidStatAdvisor(JdkRegexpMethodPointcut methodPointcut,DruidStatInterceptor interceptor) {
+        return new DefaultPointcutAdvisor(methodPointcut, interceptor);
     }
 }
