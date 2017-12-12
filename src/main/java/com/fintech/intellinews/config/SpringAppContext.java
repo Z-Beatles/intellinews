@@ -20,8 +20,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
                 }
         )}
 )
-@Import({ShiroConfig.class, RedisConfig.class})
-@PropertySource("classpath:properties-prod/application.properties")
+@Import({ShiroConfig.class, RedisConfig.class,DruidWatchingAspectConfig.class})
+@PropertySource("classpath:application.properties")
 public class SpringAppContext {
 
 }

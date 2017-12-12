@@ -1,9 +1,6 @@
 package com.fintech.intellinews.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.support.spring.stat.BeanTypeAutoProxyCreator;
-import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
-import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.datasource.DruidDataSourceFactory;
 import com.fintech.intellinews.datasource.dynamic.DynamicDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -26,19 +23,6 @@ import java.util.Arrays;
  **/
 @Configuration
 public class DataSourceConfig {
-
-    @Bean("druid-stat-interceptor")
-    public DruidStatInterceptor druidStatInterceptor(){
-        return new DruidStatInterceptor();
-    }
-
-    @Bean
-    public BeanTypeAutoProxyCreator beanTypeAutoProxyCreator(){
-        BeanTypeAutoProxyCreator beanType = new BeanTypeAutoProxyCreator();
-        beanType.setTargetBeanType(BaseDao.class);
-        beanType.setInterceptorNames("druid-stat-interceptor");
-        return beanType;
-    }
 
     @Bean("master")
     public DruidDataSource master() {
