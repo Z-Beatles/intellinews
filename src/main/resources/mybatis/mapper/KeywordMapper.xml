@@ -10,18 +10,12 @@
             gmt_modified
         FROM oi_keyword
     </sql>
-
-    <select id="getById" resultType="KeywordEntity">
-        <include refid="Base_Column_Select"/>
-        WHERE id = #{id}
-    </select>
-
     <select id="listHotKeywords" resultType="keywordEntity">
         <include refid="Base_Column_Select"/>
     </select>
 
-    <insert id="insert" parameterType="KeywordEntity">
-        INSERT INTO oi_keyword (name, count, gmt_create) VALUES (#{name}, #{count}, #{gmtCreate})
+    <insert id="insertKeyword" parameterType="KeywordEntity">
+        INSERT INTO oi_keyword (name, count) VALUES (#{name}, #{count})
     </insert>
 
     <update id="updateKeywordCount">

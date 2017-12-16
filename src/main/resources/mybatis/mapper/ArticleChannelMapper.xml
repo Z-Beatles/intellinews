@@ -11,7 +11,7 @@
         FROM oi_article_channel
     </sql>
 
-    <select id="listByChannelId" resultType="com.fintech.intellinews.entity.ArticleChannelEntity">
+    <select id="listByChannelId" resultType="ArticleChannelEntity">
         <include refid="Base_Column_Select"/>
         WHERE channel_id = #{channelId}
     </select>

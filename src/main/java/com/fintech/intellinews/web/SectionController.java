@@ -24,6 +24,7 @@ import java.util.Map;
 @RequestMapping("/v1/sections")
 public class SectionController {
 
+    @Autowired
     private SectionService sectionService;
 
     @GetMapping
@@ -71,10 +72,5 @@ public class SectionController {
             @ApiParam(name = "atlasType", value = "图谱类型(article、section)", required = true)
             @RequestParam(name = "atlasType") String atlasType) {
         return ResultUtil.success(sectionService.listBySectionIdAndAtlasType(sectionId, atlasType));
-    }
-
-    @Autowired
-    public void setSectionService(SectionService sectionService) {
-        this.sectionService = sectionService;
     }
 }

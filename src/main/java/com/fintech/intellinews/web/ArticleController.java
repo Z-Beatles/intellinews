@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.*;
  * @author waynechu
  * Created 2017-10-27 11:53
  */
-
 @RestController
 @Api(tags = "文章资源接口")
 @RequestMapping("/v1/articles")
 public class ArticleController {
 
+    @Autowired
     private ArticleService articleService;
 
     @GetMapping("/{articleId}")
@@ -58,10 +58,5 @@ public class ArticleController {
             @ApiParam(name = "pageSize", value = "查询条数")
             @RequestParam(value = "pageSize", defaultValue = "3", required = false) Integer pageSize) {
         return ResultUtil.success(articleService.listArticlesByKeyword(keyword, pageNum, pageSize));
-    }
-
-    @Autowired
-    public void setArticleService(ArticleService articleService) {
-        this.articleService = articleService;
     }
 }

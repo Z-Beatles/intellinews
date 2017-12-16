@@ -1,7 +1,6 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
-import com.fintech.intellinews.base.BaseController;
 import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.SessionService;
@@ -21,8 +20,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(tags = "会话管理接口")
 @RequestMapping("/v1/sessions")
-public class SessionController extends BaseController {
+public class SessionController {
 
+    @Autowired
     private SessionService sessionService;
 
     @PostMapping
@@ -52,10 +52,5 @@ public class SessionController extends BaseController {
     @ApiOperation(value = "用户退出", produces = "application/json")
     public Result logoutAction() {
         return ResultUtil.success(ResultEnum.LOGOUT_SUCCEED_INFO, sessionService.doLogout());
-    }
-
-    @Autowired
-    public void setSessionService(SessionService sessionService) {
-        this.sessionService = sessionService;
     }
 }

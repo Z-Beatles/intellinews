@@ -1,7 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
-import com.fintech.intellinews.service.FootmarkService;
+import com.fintech.intellinews.service.UserFootmarkService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.FootmarkVO;
@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/users/footmarks")
 public class UserFootmarkController {
 
+    @Autowired
     private UserService userService;
 
-    private FootmarkService footmarkService;
+    @Autowired
+    private UserFootmarkService footmarkService;
 
     @GetMapping
     @ResponseBody
@@ -59,15 +61,5 @@ public class UserFootmarkController {
             @PathVariable Long footmarkId) {
         userService.getCurrentUserId();
         return ResultUtil.success(footmarkService.deleteUserFootmark(footmarkId));
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setFootmarkService(FootmarkService footmarkService) {
-        this.footmarkService = footmarkService;
     }
 }

@@ -1,13 +1,13 @@
 package com.fintech.intellinews.dao;
 
-import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.entity.KeywordEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface KeywordDao extends BaseDao<KeywordEntity> {
+public interface KeywordDao {
+
     /**
      * 获取热门关键字
      *
@@ -22,4 +22,6 @@ public interface KeywordDao extends BaseDao<KeywordEntity> {
      * @return 影响的行数
      */
     int updateKeywordCount(String keyword);
+
+    void insertKeyword(KeywordEntity entity);
 }

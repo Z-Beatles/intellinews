@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/users")
 public class UserController {
 
+    @Autowired
     private UserService userService;
 
     @PostMapping
@@ -32,7 +33,8 @@ public class UserController {
             @RequestParam String username,
             @ApiParam(name = "password", value = "密码", required = true)
             @RequestParam String password) {
-        return ResultUtil.success(ResultEnum.REGISTER_SUCCESS_INFO, userService.insertUser(nickname, username, password));
+        return ResultUtil.success(ResultEnum.REGISTER_SUCCESS_INFO, userService.insertUser(nickname, username,
+                password));
     }
 
     @GetMapping("/me")
@@ -41,10 +43,5 @@ public class UserController {
     public Result<UserInfoVO> getUserInfo() {
         Long currentUserId = userService.getCurrentUserId();
         return ResultUtil.success(userService.getUserInfo(currentUserId));
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 }

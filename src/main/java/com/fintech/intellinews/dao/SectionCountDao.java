@@ -1,6 +1,5 @@
 package com.fintech.intellinews.dao;
 
-import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.entity.SectionCountEntity;
 import org.apache.ibatis.annotations.MapKey;
 import org.springframework.stereotype.Repository;
@@ -9,7 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface SectionCountDao extends BaseDao<SectionCountEntity> {
+public interface SectionCountDao {
+
     /**
      * 根据条目id获取条目统计信息
      *
@@ -37,7 +37,14 @@ public interface SectionCountDao extends BaseDao<SectionCountEntity> {
     /**
      * 获取最大浏览量
      *
-     * @return
+     * @return 最大浏览量
      */
     Integer getMaxViewCount();
+
+    /**
+     * 初始化条目统计信息
+     *
+     * @param sectionCountEntity 初始化统计对象
+     */
+    void initSectionCount(SectionCountEntity sectionCountEntity);
 }

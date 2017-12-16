@@ -11,12 +11,7 @@
         FROM oi_section_item
     </sql>
 
-    <select id="getById" resultType="SectionCountEntity">
-        <include refid="Base_Column_Select"/>
-        WHERE id = #{id}
-    </select>
-
-    <select id="getBySectionId" resultType="com.fintech.intellinews.entity.SectionItemEntity">
+    <select id="getBySectionId" resultType="SectionItemEntity">
         <include refid="Base_Column_Select"/>
         WHERE section_id = #{id}
     </select>

@@ -1,19 +1,18 @@
 package com.fintech.intellinews.config;
 
 import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author wanghao
  * create 2017-12-12 9:51
  **/
-@Aspect
-public class DruidWatchingAspectConfig {
+@Configuration
+public class DruidMonitorConfig {
 
     @Bean
     public DruidStatInterceptor interceptor() {
@@ -30,7 +29,7 @@ public class DruidWatchingAspectConfig {
     }
 
     @Bean
-    public Advisor druidStatAdvisor(JdkRegexpMethodPointcut methodPointcut,DruidStatInterceptor interceptor) {
+    public Advisor druidStatAdvisor(JdkRegexpMethodPointcut methodPointcut, DruidStatInterceptor interceptor) {
         return new DefaultPointcutAdvisor(methodPointcut, interceptor);
     }
 }

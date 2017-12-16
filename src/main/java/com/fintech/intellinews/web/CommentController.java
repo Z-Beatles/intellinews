@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/comments")
 public class CommentController {
 
+    @Autowired
     private CommentService commentService;
 
     @PutMapping("{commentId}/like")
@@ -38,10 +39,5 @@ public class CommentController {
             @PathVariable(name = "commentId") Long commentId) {
         commentService.updateComment(commentId, -1);
         return ResultUtil.success();
-    }
-
-    @Autowired
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
     }
 }

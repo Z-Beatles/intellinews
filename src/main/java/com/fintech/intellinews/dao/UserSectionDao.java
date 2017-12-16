@@ -1,16 +1,16 @@
 package com.fintech.intellinews.dao;
 
-import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.entity.UserSectionEntity;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
-public interface UserSectionDao extends BaseDao<UserSectionEntity> {
+public interface UserSectionDao {
     /**
-     * 获取用户收藏条目
+     * 根据用户id获取用户收藏的条目列表
+     *
      * @param userId 用户id
      * @return 条目列表
      */
@@ -20,5 +20,13 @@ public interface UserSectionDao extends BaseDao<UserSectionEntity> {
 
     Integer deleteCollectSection(UserSectionEntity entity);
 
-    Integer checkUserSection(Map<String,Long> param);
+    Integer checkUserSection(@Param("userId") Long userId, @Param("sectionId") Long sectionId);
+
+    /**
+     * 用户收藏条目
+     *
+     * @param insertSection 收藏条目对象
+     * @return 受影响的行数
+     */
+    Integer insertUserSection(UserSectionEntity insertSection);
 }

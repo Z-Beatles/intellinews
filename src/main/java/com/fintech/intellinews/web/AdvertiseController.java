@@ -1,7 +1,6 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
-import com.fintech.intellinews.base.BaseController;
 import com.fintech.intellinews.service.AdvertiseService;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.AdvertiseVO;
@@ -20,8 +19,9 @@ import java.util.List;
 @RestController
 @Api(tags = "广告资源接口")
 @RequestMapping("/v1/advertises")
-public class AdvertiseController extends BaseController {
+public class AdvertiseController {
 
+    @Autowired
     private AdvertiseService advertiseService;
 
     @GetMapping
@@ -34,11 +34,6 @@ public class AdvertiseController extends BaseController {
             @RequestParam(value = "pageSize", defaultValue = "4", required = false) Integer pageSize,
             @ApiParam(name = "active", value = "广告的状态(上架、下架)")
             @RequestParam(value = "active", defaultValue = "true") Boolean active) {
-        return ResultUtil.success(advertiseService.listAds(pageNum, pageSize, active));
-    }
-
-    @Autowired
-    public void setAdvertiseService(AdvertiseService advertiseService) {
-        this.advertiseService = advertiseService;
+        return ResultUtil.success(advertiseService.listAdvertises(pageNum, pageSize, active));
     }
 }

@@ -9,7 +9,7 @@ public class UserArticleEntity extends BaseEntity {
 
     private Long resourceId;
 
-    private String resourceType;
+    private Integer resourceType;
 
     public Long getId() {
         return id;
@@ -35,11 +35,11 @@ public class UserArticleEntity extends BaseEntity {
         this.resourceId = resourceId;
     }
 
-    public String getResourceType() {
+    public Integer getResourceType() {
         return resourceType;
     }
 
-    public void setResourceType(String resourceType) {
+    public void setResourceType(Integer resourceType) {
         this.resourceType = resourceType;
     }
 }

@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/users/comments")
 public class UserCommentController {
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private CommentService commentService;
 
     @GetMapping
@@ -47,15 +49,5 @@ public class UserCommentController {
             @RequestBody String content) {
         Long currentUserId = userService.getCurrentUserId();
         return ResultUtil.success(commentService.addUserComment(currentUserId, articleId, content));
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
     }
 }

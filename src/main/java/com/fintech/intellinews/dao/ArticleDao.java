@@ -1,15 +1,12 @@
 package com.fintech.intellinews.dao;
 
-import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.entity.ArticleEntity;
 import org.apache.ibatis.annotations.MapKey;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
-@Repository
-public interface ArticleDao extends BaseDao<ArticleEntity> {
+public interface ArticleDao {
 
     /**
      * 根据关键搜索文章
@@ -43,4 +40,11 @@ public interface ArticleDao extends BaseDao<ArticleEntity> {
     @MapKey("id")
     Map<Long, ArticleEntity> mapArticlesByIds(List<Long> list);
 
+    /**
+     * 根据文章id获取文章详情
+     *
+     * @param id 文章id
+     * @return 文章详情
+     */
+    ArticleEntity getArticleById(Long id);
 }

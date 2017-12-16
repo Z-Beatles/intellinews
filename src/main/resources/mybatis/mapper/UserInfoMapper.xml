@@ -14,12 +14,7 @@
         FROM oi_user_info
     </sql>
 
-    <select id="getById" resultType="UserInfoEntity">
-        <include refid="Base_Column_Select"/>
-        WHERE id = #{id}
-    </select>
-
-    <select id="list" resultType="UserInfoEntity">
+    <select id="listUserInfos" resultType="UserInfoEntity">
         <include refid="Base_Column_Select"/>
         <where>
             <if test="id!=null">
@@ -49,8 +44,8 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="UserInfoEntity" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO oi_user_info (user_id, username,weixin_id,email,phone,gmt_create)
-        VALUES (#{userId}, #{username},#{weixinId},#{email},#{phone},#{gmtCreate})
+    <insert id="insertUserInfo" parameterType="UserInfoEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO oi_user_info (user_id, username, weixin_id, email, phone)
+        VALUES (#{userId}, #{username}, #{weixinId}, #{email}, #{phone})
     </insert>
 </mapper>

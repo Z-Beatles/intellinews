@@ -1,17 +1,15 @@
 package com.fintech.intellinews.dao;
 
-import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.entity.UserConfigEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface UserConfigDao extends BaseDao<UserConfigEntity> {
+public interface UserConfigDao {
     /**
-     * 查询当前用户的频道配置
+     * 根据id获取用户的频道配置
      *
      * @param userId 用户id
      * @return 频道配置
@@ -19,15 +17,21 @@ public interface UserConfigDao extends BaseDao<UserConfigEntity> {
     String getUserChannelConfig(Long userId);
 
     /**
-     * 添加用户频道默认配置
+     * 初始化用户频道配置
      *
      * @param userId        用户id
-     * @param channelConfig 频道配置
-     * @param gmtCreate     创建时间
+     * @param channelConfig 默认配置
      * @return 受影响的行数
      */
-    Integer insertUserConfig(@Param("userId") Long userId, @Param("channelConfig") String channelConfig, @Param
-            ("gmtCreate") Date gmtCreate);
+    Integer insertUserConfig(@Param("userId") Long userId, @Param("channelConfig") String channelConfig);
 
     List<UserConfigEntity> getSortEntity();
+
+    /**
+     * 更新用户频道配置
+     *
+     * @param entity 用户配置对象
+     * @return 受影响的行数
+     */
+    Integer updateUserConfig(UserConfigEntity entity);
 }

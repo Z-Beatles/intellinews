@@ -3,17 +3,17 @@
 <mapper namespace="com.fintech.intellinews.dao.UserSectionDao">
     <sql id="Base_Column_Select">
         SELECT
-          id,
-          user_id,
-          section_id,
-          gmt_create,
-          gmt_modified
+            id,
+            user_id,
+            section_id,
+            gmt_create,
+            gmt_modified
         FROM oi_user_section
     </sql>
 
-    <insert id="insert" parameterType="UserSectionEntity" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO oi_user_section (user_id,section_id,gmt_create)
-        VALUES (#{userId},#{sectionId},#{gmtCreate})
+    <insert id="insertUserSection" parameterType="UserSectionEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO oi_user_section (user_id, section_id)
+        VALUES (#{userId}, #{sectionId})
     </insert>
 
     <select id="getUserSection" resultType="UserSectionEntity" parameterType="long">
@@ -39,12 +39,12 @@
     <select id="checkUserSection" parameterType="map" resultType="integer">
         SELECT count(id)
         FROM oi_user_section
-        WHERE user_id = #{userId} and section_id = #{sectionId}
+        WHERE user_id = #{userId} AND section_id = #{sectionId}
     </select>
 
     <delete id="deleteCollectSection" parameterType="map">
         DELETE FROM oi_user_section
-        WHERE user_id = #{userId} and section_id = #{sectionId}
+        WHERE user_id = #{userId} AND section_id = #{sectionId}
     </delete>
 
 </mapper>

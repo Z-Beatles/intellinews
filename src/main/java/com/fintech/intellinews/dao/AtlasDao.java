@@ -1,6 +1,5 @@
 package com.fintech.intellinews.dao;
 
-import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.entity.AtlasEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,8 @@ import java.util.List;
  * Created 2017-11-22 12:32
  */
 @Repository
-public interface AtlasDao extends BaseDao<AtlasEntity> {
+public interface AtlasDao {
+
     /**
      * 根据条目id以及图谱类型获取图谱信息
      *

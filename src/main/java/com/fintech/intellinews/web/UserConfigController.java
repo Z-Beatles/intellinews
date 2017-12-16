@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/users/channels")
 public class UserConfigController {
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private UserConfigService userConfigService;
 
     @GetMapping
@@ -39,15 +41,5 @@ public class UserConfigController {
             @RequestBody String config) {
         Long currentUserId = userService.getCurrentUserId();
         return ResultUtil.success(userConfigService.updateUserChannelConfig(currentUserId, config));
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setUserConfigService(UserConfigService userConfigService) {
-        this.userConfigService = userConfigService;
     }
 }

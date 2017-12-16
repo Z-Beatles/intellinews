@@ -13,11 +13,6 @@
         FROM oi_article_count
     </sql>
 
-    <select id="getById" resultType="ArticleCountEntity">
-        <include refid="Base_Column_Select"/>
-        WHERE id = #{id}
-    </select>
-
     <select id="getByArticleId" resultType="com.fintech.intellinews.entity.ArticleCountEntity">
         <include refid="Base_Column_Select"/>
         WHERE article_id = #{articleId}
@@ -36,9 +31,9 @@
         FROM oi_article_count
     </select>
 
-    <insert id="insert" parameterType="ArticleCountEntity">
-        INSERT INTO oi_article_count (article_id, like_count, dislike_count, view_count, gmt_create)
-        VALUES (#{articleId}, #{likeCount}, #{dislikeCount}, #{viewCount}, #{gmtCreate})
+    <insert id="insertArticleCount" parameterType="ArticleCountEntity">
+        INSERT INTO oi_article_count (article_id, like_count, dislike_count, view_count)
+        VALUES (#{articleId}, #{likeCount}, #{dislikeCount}, #{viewCount})
     </insert>
 
     <update id="updateViewCountByArticleId">

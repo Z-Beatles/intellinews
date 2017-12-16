@@ -1,123 +1,50 @@
 package com.fintech.intellinews.service;
 
-import com.fintech.intellinews.AppException;
-import com.fintech.intellinews.Constant;
-import com.fintech.intellinews.base.BaseService;
-import com.fintech.intellinews.properties.AppProperties;
-import com.fintech.intellinews.dao.*;
-import com.fintech.intellinews.entity.*;
-import com.fintech.intellinews.enums.ResultEnum;
-import com.fintech.intellinews.util.DateUtil;
-import com.fintech.intellinews.util.RegexUtil;
+import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.vo.UserCommentVO;
 import com.fintech.intellinews.vo.UserInfoVO;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.crypto.RandomNumberGenerator;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.subject.Subject;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 /**
  * @author waynechu
  * Created 2017-10-23 14:04
  */
 @Service
-@Scope(scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserService extends BaseService {
+public interface UserService {
 
-    private AppProperties appProperties;
+    /**
+     * 根据帐号获取用户登录信息
+     *
+     * @param account 帐号
+     * @return 用户登录信息
+     */
+    UserLoginEntity getByAccount(String account);
 
-    private UserInfoDao userInfoDao;
-
-    private UserLoginDao userLoginDao;
-
-    private CommentDao commentDao;
-
-    private ArticleDao articleDao;
-
-    public UserLoginEntity getByAccount(String account) {
-        UserInfoEntity userInfo = new UserInfoEntity();
-        if (RegexUtil.matchMobile(account)) {
-            userInfo.setPhone(account);
-        } else if (RegexUtil.matchEmail(account)) {
-            userInfo.setEmail(account);
-        } else {
-            userInfo.setUsername(account);
-        }
-        List<UserInfoEntity> userInfoEntities = userInfoDao.list(userInfo);
-        if (userInfoEntities.isEmpty()) {
-            return null;
-        }
-        UserLoginEntity userLoginEntity = new UserLoginEntity();
-        userLoginEntity.setUsername(userInfoEntities.get(0).getUsername());
-        return userLoginDao.list(userLoginEntity).get(0);
-    }
-
-    @Transactional
-    public Long insertUser(String nickname, String username, String password) {
-        UserLoginEntity entity = new UserLoginEntity();
-        entity.setUsername(username);
-        List<UserLoginEntity> entities = userLoginDao.list(entity);
-        if (!entities.isEmpty()) {
-            throw new AppException(ResultEnum.ACCOUNT_EXIST_ERROR);
-        }
-        RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
-        String salt = randomNumberGenerator.nextBytes().toHex();
-        String algorithmName = appProperties.getAlgorithmName();
-        int hashIterations = appProperties.getHashIterations();
-        String hexPassword = new SimpleHash(algorithmName, password, salt, hashIterations).toHex();
-
-        UserLoginEntity userLoginEntity = new UserLoginEntity();
-        userLoginEntity.setUsername(username);
-        userLoginEntity.setNickname(nickname);
-        userLoginEntity.setAvatar(Constant.DEFAULT_USER_AVATAR);
-        userLoginEntity.setPasswordHash(hexPassword);
-        userLoginEntity.setPasswordSalt(salt);
-        userLoginEntity.setPasswordAlgo(algorithmName);
-        userLoginEntity.setPasswordIteration(hashIterations);
-        userLoginEntity.setGmtCreate(new Date());
-        userLoginDao.insert(userLoginEntity);
-
-        UserInfoEntity userInfoEntity = new UserInfoEntity();
-        userInfoEntity.setUserId(userLoginEntity.getId());
-        userInfoEntity.setUsername(username);
-        userInfoEntity.setGmtCreate(new Date());
-        userInfoDao.insert(userInfoEntity);
-        return userLoginEntity.getId();
-    }
+    /**
+     * 添加用户
+     *
+     * @param nickname 用户昵称
+     * @param username 用户名
+     * @param password 密码
+     * @return 用户id
+     */
+    Long insertUser(String nickname, String username, String password);
 
     /**
      * 获取当前登录的用户id
      *
      * @return 用户id
      */
-    public Long getCurrentUserId() {
-        Subject currentUser = SecurityUtils.getSubject();
-        UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
-        if (principal == null) {
-            throw new AppException(ResultEnum.NOT_LOGIN_ERROR);
-        } else {
-            return principal.getId();
-        }
-    }
+    Long getCurrentUserId();
 
-    public UserInfoVO getUserInfo(Long id) {
-        UserLoginEntity userLoginEntity = userLoginDao.getById(id);
-        UserInfoVO userInfoVO = new UserInfoVO();
-        BeanUtils.copyProperties(userLoginEntity, userInfoVO);
-        return userInfoVO;
-    }
+    /**
+     * 根据用户id获取用户信息
+     *
+     * @param id 用户id
+     * @return 用户信息
+     */
+    UserInfoVO getUserInfo(Long id);
 
     /**
      * 获取用户评论
@@ -127,64 +54,5 @@ public class UserService extends BaseService {
      * @param pageSize 分页条数
      * @return 查询评论列表
      */
-    @SuppressWarnings("unchecked")
-    public PageInfo<UserCommentVO> getUserComments(Long userId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<CommentEntity> userComments = commentDao.listUserComments(userId);
-        if (userComments.isEmpty()) {
-            return new PageInfo(userComments);
-        }
-        List<Long> articleIdList = new ArrayList<>();
-        for (CommentEntity entity : userComments) {
-            articleIdList.add(entity.getArticleId());
-        }
-        Map<Long, ArticleEntity> articlesMap = articleDao.mapArticlesByIds(articleIdList);
-        List<UserCommentVO> resultList = new ArrayList<>();
-        UserCommentVO userCommentVO;
-        ArticleEntity articleEntity;
-        String dateDesc;
-        for (CommentEntity entity : userComments) {
-            userCommentVO = new UserCommentVO();
-            BeanUtils.copyProperties(entity, userCommentVO);
-            articleEntity = articlesMap.get(entity.getArticleId());
-            if (articleEntity == null) {
-                continue;
-            }
-            userCommentVO.setTitle(articleEntity.getTitle());
-            userCommentVO.setThumbnail(articleEntity.getThumbnail());
-            dateDesc = DateUtil.toDetailTimeString(articleEntity.getGmtCreate());
-            userCommentVO.setDate(dateDesc);
-            resultList.add(userCommentVO);
-        }
-        PageInfo pageInfo = new PageInfo(userComments);
-        pageInfo.setList(resultList);
-        return pageInfo;
-    }
-
-    @Autowired
-    public void setAppProperties(AppProperties appProperties) {
-        this.appProperties = appProperties;
-    }
-
-    @Autowired
-    public void setUserInfoDao(UserInfoDao userInfoDao) {
-        this.userInfoDao = userInfoDao;
-    }
-
-    @Autowired
-    public void setUserLoginDao(UserLoginDao userLoginDao) {
-        this.userLoginDao = userLoginDao;
-    }
-
-    @Autowired
-    public void setCommentDao(CommentDao commentDao) {
-        this.commentDao = commentDao;
-    }
-
-    @Autowired
-    public void setArticleDao(ArticleDao articleDao) {
-        this.articleDao = articleDao;
-    }
-
-
+    PageInfo<UserCommentVO> getUserComments(Long userId, Integer pageNum, Integer pageSize);
 }

@@ -1,7 +1,6 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
-import com.fintech.intellinews.base.BaseController;
 import com.fintech.intellinews.service.ArticleService;
 import com.fintech.intellinews.service.ChannelService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -23,10 +22,12 @@ import java.util.List;
 @RestController
 @Api(tags = "频道资源接口")
 @RequestMapping("/v1/channels")
-public class ChannelController extends BaseController {
+public class ChannelController {
 
+    @Autowired
     private ChannelService channelService;
 
+    @Autowired
     private ArticleService articleService;
 
     @GetMapping
@@ -43,19 +44,9 @@ public class ChannelController extends BaseController {
             @ApiParam(name = "channelId", value = "频道id", required = true)
             @PathVariable("channelId") Long channelId,
             @ApiParam(name = "pageNum", value = "查询页数")
-            @RequestParam(name = "pageNum",defaultValue = "1",required = false) Integer pageNum,
+            @RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
             @ApiParam(name = "pageSize", value = "查询条数")
-            @RequestParam(name = "pageSize",defaultValue = "10",required = false) Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
         return ResultUtil.success(articleService.listArticlesByChannelId(channelId, pageNum, pageSize));
-    }
-
-    @Autowired
-    public void setChannelService(ChannelService channelService) {
-        this.channelService = channelService;
-    }
-
-    @Autowired
-    public void setArticleService(ArticleService articleService) {
-        this.articleService = articleService;
     }
 }

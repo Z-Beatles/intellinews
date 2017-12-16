@@ -1,16 +1,13 @@
 package com.fintech.intellinews.dao;
 
-import com.fintech.intellinews.base.BaseDao;
 import com.fintech.intellinews.entity.ArticleCountEntity;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
-@Repository
-public interface ArticleCountDao extends BaseDao<ArticleCountEntity> {
+public interface ArticleCountDao {
 
     /**
      * 通过文章id查询统计量
@@ -36,4 +33,11 @@ public interface ArticleCountDao extends BaseDao<ArticleCountEntity> {
      * @return 最大浏览量
      */
     Integer getMaxViewCount();
+
+    /**
+     * 初始化文章统计信息
+     *
+     * @param initArticleCountEntity 初始化统计对象
+     */
+    void insertArticleCount(ArticleCountEntity initArticleCountEntity);
 }

@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/users/sections")
 public class UserSectionController {
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private UserSectionService userSectionService;
 
     @GetMapping
@@ -64,15 +66,5 @@ public class UserSectionController {
             @PathVariable("sectionId") Long sectionId) {
         Long currentUserId = userService.getCurrentUserId();
         return ResultUtil.success(userSectionService.deleteUserSection(currentUserId, sectionId));
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setUserSectionService(UserSectionService userSectionService) {
-        this.userSectionService = userSectionService;
     }
 }

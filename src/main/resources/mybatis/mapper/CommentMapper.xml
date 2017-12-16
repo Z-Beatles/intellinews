@@ -15,26 +15,6 @@
         FROM oi_comment
     </sql>
 
-    <select id="select" parameterType="CommentEntity">
-        <include refid="Base_Column_Select"/>
-        <where>
-            <if test="id!=null and id > 0">
-                AND id = #{id}
-            </if>
-            <if test="userId!=null and userId > 0">
-                AND user_id = #{userId}
-            </if>
-            <if test="articleId!=null and articleId > 0">
-                AND article_id = #{articleId}
-            </if>
-        </where>
-    </select>
-
-    <select id="getById" resultType="CommentEntity">
-        <include refid="Base_Column_Select"/>
-        WHERE id = #{id}
-    </select>
-
     <select id="listArticleComments" resultType="CommentEntity" parameterType="Long">
         <include refid="Base_Column_Select"/>
         WHERE article_id = #{articleId}
@@ -61,6 +41,7 @@
         SET like_count = like_count + 1
         WHERE id = #{id}
     </update>
+
     <update id="updateWithDislike">
         UPDATE oi_comment
         SET dislike_count = dislike_count + 1

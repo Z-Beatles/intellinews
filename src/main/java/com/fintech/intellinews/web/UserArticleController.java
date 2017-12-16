@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/users/articles")
 public class UserArticleController {
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private UserArticleService userArticleService;
 
     @GetMapping
@@ -66,15 +68,5 @@ public class UserArticleController {
             @PathVariable("articleId") Long articleId) {
         Long currentUserId = userService.getCurrentUserId();
         return ResultUtil.success(userArticleService.deleteUserArticle(currentUserId, articleId));
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setUserArticleService(UserArticleService userArticleService) {
-        this.userArticleService = userArticleService;
     }
 }

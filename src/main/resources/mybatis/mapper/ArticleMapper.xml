@@ -15,7 +15,7 @@
         FROM oi_article
     </sql>
 
-    <select id="getById" resultType="ArticleEntity">
+    <select id="getArticleById" resultType="ArticleEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
@@ -40,25 +40,6 @@
             #{id}
         </foreach>
     </select>
-
-    <select id="list" resultType="ArticleEntity">
-        <include refid="Base_Column_Select"/>
-        <where>
-            <if test="id!=null">
-                AND id=#{id}
-            </if>
-            <if test="title!=null">
-                AND title=#{title}
-            </if>
-            <if test="source!=null">
-                AND source=#{source}
-            </if>
-            <if test="gmtCreate!=null">
-                AND gmt_create=#{gmtCreate}
-            </if>
-        </where>
-    </select>
-
     <select id="listLatestArticles" resultType="com.fintech.intellinews.entity.ArticleEntity">
         <include refid="Base_Column_Select"/>
         ORDER BY gmt_create DESC

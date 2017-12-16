@@ -12,18 +12,9 @@
     </sql>
 
     <insert id="insertUserConfig">
-        INSERT INTO oi_user_config (user_id, channel_config, gmt_create)
-        VALUES (#{userId}, #{channelConfig}, #{gmtCreate})
+        INSERT INTO oi_user_config (user_id, channel_config)
+        VALUES (#{userId}, #{channelConfig})
     </insert>
-
-    <select id="getById" resultType="UserConfigEntity">
-        <include refid="Base_Column_Select"/>
-        <trim>
-            <if test="id != null">
-
-            </if>
-        </trim>
-    </select>
 
     <select id="getSortEntity" resultType="UserConfigEntity">
         <include refid="Base_Column_Select"/>
@@ -35,13 +26,9 @@
         WHERE user_id = #{userId}
     </select>
 
-    <update id="update">
+    <update id="updateUserConfig">
         UPDATE oi_user_config
-        <set>
-            <if test="channelConfig != null">
-                channel_config=#{channelConfig},
-            </if>
-        </set>
-        where user_id=#{userId}
+        SET channel_config = #{channelConfig}
+        WHERE user_id = #{userId}
     </update>
 </mapper>

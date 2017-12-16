@@ -16,12 +16,12 @@
         FROM oi_user_login
     </sql>
 
-    <select id="getById" resultType="UserLoginEntity">
+    <select id="getUserLoginById" resultType="UserLoginEntity">
         <include refid="Base_Column_Select"/>
         WHERE id = #{id}
     </select>
 
-    <select id="list" resultType="UserLoginEntity">
+    <select id="listUserLogins" resultType="UserLoginEntity">
         <include refid="Base_Column_Select"/>
         <where>
             <if test="id!=null">
@@ -64,12 +64,11 @@
 
     </select>
 
-    <insert id="insert" parameterType="UserLoginEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertUserLogin" parameterType="UserLoginEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO oi_user_login (
             username, nickname, avatar, password_hash,
-            password_salt, password_algo, password_iteration, gmt_create)
-        VALUES (
-            #{username}, #{nickname}, #{avatar}, #{passwordHash}, #{passwordSalt}, #{passwordAlgo},
-            #{passwordIteration}, #{gmtCreate})
+            password_salt, password_algo, password_iteration)
+        VALUES (#{username}, #{nickname}, #{avatar}, #{passwordHash},
+                #{passwordSalt}, #{passwordAlgo}, #{passwordIteration})
     </insert>
 </mapper>

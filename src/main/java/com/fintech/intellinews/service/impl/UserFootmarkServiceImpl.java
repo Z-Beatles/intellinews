@@ -1,13 +1,14 @@
-package com.fintech.intellinews.service;
+package com.fintech.intellinews.service.impl;
 
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.dao.ArticleDao;
-import com.fintech.intellinews.dao.FootmarkDao;
 import com.fintech.intellinews.dao.SectionDao;
+import com.fintech.intellinews.dao.UserFootmarkDao;
 import com.fintech.intellinews.entity.ArticleEntity;
 import com.fintech.intellinews.entity.FootmarkEntity;
 import com.fintech.intellinews.entity.SectionEntity;
 import com.fintech.intellinews.enums.ResultEnum;
+import com.fintech.intellinews.service.UserFootmarkService;
 import com.fintech.intellinews.vo.FootmarkVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,12 +24,15 @@ import java.util.*;
  **/
 @Service
 @SuppressWarnings("unchecked")
-public class FootmarkService {
+public class UserFootmarkServiceImpl implements UserFootmarkService {
 
-    private FootmarkDao footmarkDao;
+    @Autowired
+    private UserFootmarkDao userFootmarkDao;
 
+    @Autowired
     private ArticleDao articleDao;
 
+    @Autowired
     private SectionDao sectionDao;
 
     /**
@@ -39,9 +43,10 @@ public class FootmarkService {
      * @param pageSize 搜索条数
      * @return 足迹列表
      */
+    @Override
     public PageInfo<FootmarkVO> getUserFootmarks(Long userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<FootmarkEntity> footmarks = footmarkDao.getUserFootmarks(userId);
+        List<FootmarkEntity> footmarks = userFootmarkDao.getUserFootmarks(userId);
         if (footmarks.isEmpty()) {
             return new PageInfo(footmarks);
         }
@@ -97,6 +102,7 @@ public class FootmarkService {
      * @param contentType 足迹内容类型
      * @return 足迹id
      */
+    @Override
     public Long addFootmark(Long userId, Long contentId, String source, String contentType) {
         FootmarkEntity entity = new FootmarkEntity();
         entity.setUserId(userId);
@@ -104,7 +110,7 @@ public class FootmarkService {
         entity.setContentId(contentId);
         entity.setGmtCreate(Calendar.getInstance().getTime());
         entity.setSource(source);
-        footmarkDao.insert(entity);
+        userFootmarkDao.insertUserFootmark(entity);
         return entity.getId();
     }
 
@@ -114,14 +120,21 @@ public class FootmarkService {
      * @param footmarkId 足迹id
      * @return 足迹id
      */
+    @Override
     public Long deleteUserFootmark(Long footmarkId) {
-        Integer count = footmarkDao.deleteUserFootmarkById(footmarkId);
+        Integer count = userFootmarkDao.deleteUserFootmarkById(footmarkId);
         if (count == 0) {
             throw new AppException(ResultEnum.DELETE_USER_FOOTMARK_FAILED_ERROR);
         }
         return footmarkId;
     }
 
+    /**
+     * 转换时间格式
+     *
+     * @param footmarkVO 足迹VO
+     * @param entity     足迹对象
+     */
     private void exchangeDate(FootmarkVO footmarkVO, FootmarkEntity entity) {
         Calendar date = Calendar.getInstance();
         int year = date.get(Calendar.YEAR);
@@ -148,20 +161,5 @@ public class FootmarkService {
             footmarkVO.setDate(date.get(Calendar.MONTH) + "-" + date.get(Calendar.DATE));
         }
         footmarkVO.setTime(date.get(Calendar.HOUR) + ":" + date.get(Calendar.MINUTE));
-    }
-
-    @Autowired
-    public void setFootMarkDao(FootmarkDao footmarkDao) {
-        this.footmarkDao = footmarkDao;
-    }
-
-    @Autowired
-    public void setArticleDao(ArticleDao articleDao) {
-        this.articleDao = articleDao;
-    }
-
-    @Autowired
-    public void setSectionDao(SectionDao sectionDao) {
-        this.sectionDao = sectionDao;
     }
 }

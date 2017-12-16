@@ -13,12 +13,7 @@
         FROM oi_section_count
     </sql>
 
-    <select id="getById" resultType="SectionCountEntity">
-        <include refid="Base_Column_Select"/>
-        WHERE id = #{id}
-    </select>
-
-    <select id="getBySectionId" resultType="com.fintech.intellinews.entity.SectionCountEntity">
+    <select id="getBySectionId" resultType="SectionCountEntity">
         <include refid="Base_Column_Select"/>
         WHERE section_id = #{id}
     </select>
@@ -36,9 +31,9 @@
         FROM oi_section_count
     </select>
 
-    <insert id="insert" parameterType="SectionCountEntity">
-        INSERT INTO oi_section_count (section_id, view_count, share_count, collect_count, gmt_create)
-        VALUES (#{sectionId}, #{viewCount}, #{shareCount}, #{collectCount}, #{gmtCreate})
+    <insert id="initSectionCount" parameterType="SectionCountEntity">
+        INSERT INTO oi_section_count (section_id, view_count, share_count, collect_count)
+        VALUES (#{sectionId}, #{viewCount}, #{shareCount}, #{collectCount})
     </insert>
 
     <update id="updateViewCountBySectionId">

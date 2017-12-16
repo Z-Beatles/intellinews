@@ -15,6 +15,7 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.List;
  * @author wanghao
  * create 2017-12-02 23:31
  **/
+@Configuration
 public class ShiroConfig {
 
     @Bean
@@ -35,7 +37,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SimpleCookie sessionCookieId() {
+    public SimpleCookie sessionIdCookie() {
         SimpleCookie simpleCookie = new SimpleCookie("sid");
         simpleCookie.setHttpOnly(true);
         simpleCookie.setMaxAge(31536000);
@@ -43,7 +45,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public DefaultWebSessionManager sessionManager(SimpleCookie sessionCookieId) {
+    public DefaultWebSessionManager sessionManager(SimpleCookie sessionIdCookie) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setGlobalSessionTimeout(1800000);
         sessionManager.setDeleteInvalidSessions(true);
@@ -51,7 +53,7 @@ public class ShiroConfig {
         sessionManager.setSessionValidationInterval(1800000);
         sessionManager.setSessionIdCookieEnabled(true);
         sessionManager.setSessionIdUrlRewritingEnabled(false);
-        sessionManager.setSessionIdCookie(sessionCookieId);
+        sessionManager.setSessionIdCookie(sessionIdCookie);
         return sessionManager;
     }
 
@@ -73,11 +75,8 @@ public class ShiroConfig {
     }
 
     @Bean
-    public DefaultWebSecurityManager securityManager(
-            Realm realm,
-            DefaultWebSessionManager sessionManager,
-            EhCacheManager ehCacheManager,
-            ModularRealmAuthenticator authenticator) {
+    public DefaultWebSecurityManager securityManager(Realm realm, DefaultWebSessionManager sessionManager,
+            EhCacheManager ehCacheManager, ModularRealmAuthenticator authenticator) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setCacheManager(ehCacheManager);
         defaultWebSecurityManager.setSessionManager(sessionManager);

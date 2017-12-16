@@ -22,8 +22,10 @@ import java.util.List;
 @RequestMapping("/v1/users/keywords")
 public class UserKeywordController {
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private UserKeywordService userKeywordService;
 
     @GetMapping
@@ -42,15 +44,5 @@ public class UserKeywordController {
             @RequestParam String keyword) {
         Long currentUserId = userService.getCurrentUserId();
         return ResultUtil.success(userKeywordService.addUserKeyword(currentUserId, keyword));
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setUserKeywordService(UserKeywordService userKeywordService) {
-        this.userKeywordService = userKeywordService;
     }
 }

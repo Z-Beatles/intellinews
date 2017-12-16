@@ -14,11 +14,6 @@
         FROM oi_atlas
     </sql>
 
-    <select id="getById" resultType="AtlasEntity">
-        <include refid="Base_Column_Select"/>
-        WHERE id = #{id}
-    </select>
-
     <select id="listBySectionIdAndType" resultType="AtlasEntity">
         <include refid="Base_Column_Select"/>
         WHERE section_id = #{sectionId}

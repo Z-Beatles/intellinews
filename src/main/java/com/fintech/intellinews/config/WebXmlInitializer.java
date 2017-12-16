@@ -19,25 +19,24 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.setInitParameter("spring.profiles.active", "develop");
-
         FilterRegistration.Dynamic druid = servletContext.addFilter("DruidWebStatFilter", WebStatFilter.class);
         druid.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
-        Map<String, String> druidMap = new HashMap<>();
+        Map<String, String> druidMap = new HashMap<>(3);
         druidMap.put("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
         druidMap.put("profileEnable", "true");
+        druidMap.put("principalSessionName", "sessionId");
         druid.setInitParameters(druidMap);
 
         FilterRegistration.Dynamic encoding = servletContext.addFilter("encodingFilter", WebStatFilter.class);
         encoding.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
-        Map<String, String> encodingMap = new HashMap<>();
+        Map<String, String> encodingMap = new HashMap<>(2);
         encodingMap.put("encoding", "UTF-8");
         encodingMap.put("forceEncoding", "true");
         encoding.setInitParameters(encodingMap);
 
         FilterRegistration.Dynamic shiroFilter = servletContext.addFilter("shiroFilter", DelegatingFilterProxy.class);
         shiroFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, "/*");
-        Map<String, String> shiroMap = new HashMap<>();
+        Map<String, String> shiroMap = new HashMap<>(1);
         shiroMap.put("targetFilterLifecycle", "true");
         shiroFilter.setAsyncSupported(true);
         shiroFilter.setInitParameters(shiroMap);
@@ -54,12 +53,12 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{SpringAppContext.class};
+        return new Class[]{SpringAppConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{SpringMvcContext.class};
+        return new Class[]{SpringWebConfig.class};
     }
 
     @Override

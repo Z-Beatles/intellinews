@@ -6,9 +6,4 @@
         FROM oi_column
     </sql>
 
-    <select id="getById" resultType="com.fintech.intellinews.entity.ColumnEntity">
-        <include refid="Base_Column_Select"/>
-        WHERE id = #{id}
-    </select>
-
 </mapper>

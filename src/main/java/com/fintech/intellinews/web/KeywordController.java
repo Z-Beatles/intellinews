@@ -1,7 +1,6 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
-import com.fintech.intellinews.base.BaseController;
 import com.fintech.intellinews.service.KeywordService;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.HotKeywordVO;
@@ -19,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(tags = "关键字资源接口")
 @RequestMapping("/v1/keywords")
-public class KeywordController extends BaseController {
+public class KeywordController {
 
+    @Autowired
     private KeywordService keywordService;
 
     @GetMapping
@@ -32,10 +32,5 @@ public class KeywordController extends BaseController {
             @ApiParam(name = "pageSize", value = "查询条数")
             @RequestParam(name = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
         return ResultUtil.success(keywordService.listHotKeywords(pageNum, pageSize));
-    }
-
-    @Autowired
-    public void setKeywordService(KeywordService keywordService) {
-        this.keywordService = keywordService;
     }
 }
