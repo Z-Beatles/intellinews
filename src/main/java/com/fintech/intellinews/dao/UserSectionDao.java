@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface UserSectionDao {
     /**
      * 根据用户id获取用户收藏的条目列表

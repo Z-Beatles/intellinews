@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
  * @author waynechu
  * Created 2017-10-23 14:04
  */
-@Service
 public interface UserService {
 
     /**

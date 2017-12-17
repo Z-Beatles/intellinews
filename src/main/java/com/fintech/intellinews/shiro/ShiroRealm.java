@@ -17,8 +17,10 @@ import org.springframework.stereotype.Component;
  * @author waynechu
  * Created 2017-10-23 14:04
  */
+@Component
 public class ShiroRealm extends AuthorizingRealm {
 
+    @Autowired
     private UserService userService;
 
     @Override
@@ -42,11 +44,4 @@ public class ShiroRealm extends AuthorizingRealm {
     public boolean supports(AuthenticationToken token) {
         return token instanceof LoginAuthenticationToken || super.supports(token);
     }
-
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
 }

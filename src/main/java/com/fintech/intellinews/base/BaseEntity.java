@@ -10,7 +10,7 @@ import java.util.Date;
  * @author wanghao
  * create 2017-10-30 11:25
  **/
-public class BaseEntity  implements Serializable {
+public class BaseEntity implements Serializable {
     /** 创建时间 */
     private Date gmtCreate;
     /** 更新时间 */

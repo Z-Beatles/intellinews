@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
  * @author waynechu
  * Created 2017-11-14 13:20
  */
-@Repository
 public interface SectionItemDao {
 
     /**

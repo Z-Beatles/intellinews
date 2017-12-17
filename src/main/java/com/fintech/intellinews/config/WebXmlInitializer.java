@@ -3,7 +3,10 @@ package com.fintech.intellinews.config;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.*;
@@ -47,11 +50,6 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
     }
 
     @Override
-    protected FilterRegistration.Dynamic registerServletFilter(ServletContext servletContext, Filter filter) {
-        return super.registerServletFilter(servletContext, filter);
-    }
-
-    @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[]{SpringAppConfig.class};
     }
@@ -65,10 +63,5 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
     protected String[] getServletMappings() {
         // 配置DispatcherServlet映射路径
         return new String[]{"/"};
-    }
-
-    @Override
-    protected Filter[] getServletFilters() {
-        return super.getServletFilters();
     }
 }

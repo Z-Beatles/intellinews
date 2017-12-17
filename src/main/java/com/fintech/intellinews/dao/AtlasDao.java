@@ -10,7 +10,6 @@ import java.util.List;
  * @author waynechu
  * Created 2017-11-22 12:32
  */
-@Repository
 public interface AtlasDao {
 
     /**

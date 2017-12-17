@@ -10,7 +10,6 @@ import java.util.List;
  * @author wanghao
  * create 2017-11-23 11:22
  **/
-@Repository
 public interface UserKeywordDao {
 
     List<UserKeywordEntity> getUserKeywords(@Param("userId") Long userId);

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface UserConfigDao {
     /**
      * 根据id获取用户的频道配置

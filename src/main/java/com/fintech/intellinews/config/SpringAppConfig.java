@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fintech.intellinews.util.JacksonUtil;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.concurrent.Executor;
 
@@ -20,12 +19,23 @@ import java.util.concurrent.Executor;
  * create 2017-12-02 23:07
  **/
 @Configuration
-@Aspect
-@EnableAsync(proxyTargetClass = true)
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableTransactionManagement(proxyTargetClass = true)
-@ComponentScan(basePackages = {"com.fintech.intellinews"})
+@EnableAsync(proxyTargetClass = true)
+@EnableScheduling
+@ComponentScan(basePackages = {"com.fintech.intellinews"},
+        excludeFilters = {@ComponentScan.Filter(
+                value = {
+                        EnableWebMvc.class
+                })
+        })
 @PropertySource("classpath:application.properties")
 public class SpringAppConfig {
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Bean(name = "asyncExecutor")
     public Executor asyncExecutor() {

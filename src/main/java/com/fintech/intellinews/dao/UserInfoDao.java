@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface UserInfoDao {
     /**
      * 获取用户信息
