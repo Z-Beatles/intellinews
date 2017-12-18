@@ -60,7 +60,6 @@
     </pluginRepositories>
 
     <dependencies>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -159,7 +158,6 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
         <!--
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -349,6 +347,7 @@
 
     <build>
         <finalName>IntelliNews</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -357,7 +356,7 @@
                 <configuration>
                     <path>/</path>
                     <port>8080</port>
-                    <useBodyEncodingForURI>true</useBodyEncodingForURI>
+                    <uriEncoding>UTF-8</uriEncoding>
                     <contextReloadable>true</contextReloadable>
                 </configuration>
             </plugin>
@@ -385,8 +384,7 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-
-            <!--generator插件-->
+            <!-- mybatis generator插件 -->
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
@@ -396,7 +394,6 @@
                     <overwrite>true</overwrite>
                 </configuration>
             </plugin>
-
         </plugins>
 
         <resources>

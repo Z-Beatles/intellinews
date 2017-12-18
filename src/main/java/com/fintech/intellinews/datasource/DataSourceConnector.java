@@ -5,8 +5,11 @@ package com.fintech.intellinews.datasource;
  * create 2017-12-06 17:04
  **/
 public class DataSourceConnector {
+
     private String url;
+
     private String username;
+
     private String password;
 
     public String getUrl() {

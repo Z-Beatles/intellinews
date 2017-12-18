@@ -6,13 +6,11 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author wanghao
  * create 2017-12-12 9:51
  **/
-@Configuration
 public class DruidMonitorConfig {
 
     @Bean("druid-stat-interceptor")

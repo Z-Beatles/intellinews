@@ -21,5 +21,10 @@ public interface KeywordDao {
      */
     int updateKeywordCount(String keyword);
 
+    /**
+     * 添加关键字
+     *
+     * @param entity 关键字对象
+     */
     void insertKeyword(KeywordEntity entity);
 }

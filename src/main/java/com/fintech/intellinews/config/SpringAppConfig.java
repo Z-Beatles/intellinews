@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -26,9 +27,11 @@ import java.util.concurrent.Executor;
 @ComponentScan(basePackages = {"com.fintech.intellinews"}, excludeFilters = {
         @ComponentScan.Filter(value = {
                 EnableWebMvc.class,
-                RestController.class
+                RestController.class,
+                ControllerAdvice.class
         })
 })
+@Import({DataSourceConfig.class, ShiroConfig.class, DruidMonitorConfig.class})
 @PropertySource("classpath:application.properties")
 public class SpringAppConfig {
 

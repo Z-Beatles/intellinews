@@ -1,6 +1,8 @@
 package com.fintech.intellinews.datasource;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 
@@ -10,7 +12,12 @@ import java.sql.SQLException;
  **/
 public class DruidDataSourceFactory {
 
+    private DruidDataSourceFactory() {
+    }
+
     public static class DruidDataSourceBuilder {
+        private Logger logger = LoggerFactory.getLogger(DruidDataSourceBuilder.class);
+
         private String username;
         private String password;
         private String url;
@@ -44,7 +51,7 @@ public class DruidDataSourceFactory {
             try {
                 dataSource.setFilters(filters);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("druidDataSource error: {}", e);
             }
             return dataSource;
         }
@@ -118,7 +125,5 @@ public class DruidDataSourceFactory {
             this.filters = filters;
             return this;
         }
-
     }
-
 }

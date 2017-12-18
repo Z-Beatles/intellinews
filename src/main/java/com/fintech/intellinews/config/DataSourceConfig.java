@@ -7,7 +7,6 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -21,7 +20,6 @@ import java.util.Arrays;
 /**
  * @author wanghao create 2017-12-05 14:49
  **/
-@Configuration
 public class DataSourceConfig {
 
 	@Bean("master")

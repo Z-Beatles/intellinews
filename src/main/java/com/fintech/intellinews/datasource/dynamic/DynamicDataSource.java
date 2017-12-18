@@ -18,29 +18,20 @@ import java.util.concurrent.locks.ReentrantLock;
  **/
 public class DynamicDataSource extends AbstractRoutingDataSource {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
-    /**
-     * 写数据源
-     */
+    private static final Logger log = LoggerFactory.getLogger(DynamicDataSource.class);
+    /** 写数据源 */
     private Object master;
-    /**
-     * 多个读数据源
-     */
+    /** 多个读数据源 */
     private List<Object> slaves;
-    /**
-     * 多数据源个数
-     */
+    /** 多数据源个数 */
     private int readDataSourceSize;
-    /**
-     * 获取多数据源方式，0：随机，1：轮询
-     */
+    /** 获取多数据源方式，0：随机，1：轮询 */
     private int readDataSourcePollPattern = 1;
+    /** 原子计数器 **/
     private AtomicLong counter = new AtomicLong(0);
+    /** 计数最大值 **/
     private static final Long MAX_POOL = Long.MAX_VALUE;
-    /**
-     * 线程锁
-     */
+    /** 线程锁 */
     private final Lock lock = new ReentrantLock();
 
     /**
@@ -57,7 +48,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         targetDataSources.put(DynamicDataSourceHolder.DATA_SOURCE_MASTER, master);
         if (slaves.isEmpty()) {
             readDataSourceSize = 0;
-            logger.warn("slaves is empty");
+            log.warn("slaves is empty");
         } else {
             for (int i = 0; i < slaves.size(); i++) {
                 targetDataSources.put(DynamicDataSourceHolder.DATA_SOURCE_SALVE + i, slaves.get(i));
@@ -77,7 +68,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     protected Object determineCurrentLookupKey() {
         String dynamicKey = DynamicDataSourceHolder.getDataSourceType();
         if (DynamicDataSourceHolder.DATA_SOURCE_MASTER.equals(dynamicKey) || readDataSourceSize <= 0) {
-            logger.info("》》》》》》》》》》》》》》》》》》" + dynamicKey + "《《《《《《《《《《《《《《《《《");
+            log.info("》》》》》》》》》》》》》》》》》》{}《《《《《《《《《《《《《《《《《", dynamicKey);
             return DynamicDataSourceHolder.DATA_SOURCE_MASTER;
         }
         int index;
@@ -101,7 +92,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         } else {
             return DynamicDataSourceHolder.DATA_SOURCE_MASTER;
         }
-        logger.info("》》》》》》》》》》》》》》》》》》" + (dynamicKey + index) + "《《《《《《《《《《《《《《《《《");
+        log.info("》》》》》》》》》》》》》》》》》》{}-{}《《《《《《《《《《《《《《《《《", dynamicKey, index);
         return dynamicKey + index;
     }
 

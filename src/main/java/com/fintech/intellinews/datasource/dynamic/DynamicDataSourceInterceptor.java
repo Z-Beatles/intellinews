@@ -29,7 +29,7 @@ import java.util.Properties;
 })
 public class DynamicDataSourceInterceptor implements Interceptor {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(DynamicDataSourceInterceptor.class);
 
     private static final String REGEX = ".*insert\\u0020.*|.*delete\\u0020.*|.*update\\u0020.*";
 
@@ -60,7 +60,7 @@ public class DynamicDataSourceInterceptor implements Interceptor {
             lookUpKey = DynamicDataSourceHolder.DATA_SOURCE_MASTER;
         }
         DynamicDataSourceHolder.setDataSourceType(lookUpKey);
-        logger.info("current datasource is " + lookUpKey);
+        logger.info("current datasource is {}", lookUpKey);
         return invocation.proceed();
     }
 
@@ -80,6 +80,6 @@ public class DynamicDataSourceInterceptor implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
-
+        // do nothing here
     }
 }

@@ -6,9 +6,15 @@ package com.fintech.intellinews.datasource.dynamic;
  * create 2017-12-05 12:59
  **/
 class DynamicDataSourceHolder {
+
     private static ThreadLocal<String> contextHolder = new ThreadLocal<>();
+
     static final String DATA_SOURCE_MASTER = "master";
+
     static final String DATA_SOURCE_SALVE = "salve";
+
+    private DynamicDataSourceHolder() {
+    }
 
     static String getDataSourceType() {
         String type = contextHolder.get();
@@ -25,5 +31,4 @@ class DynamicDataSourceHolder {
     static void clearDataSourceType() {
         contextHolder.remove();
     }
-
 }
