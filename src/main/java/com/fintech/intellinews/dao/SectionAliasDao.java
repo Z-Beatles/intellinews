@@ -1,7 +1,5 @@
 package com.fintech.intellinews.dao;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 public interface SectionAliasDao {

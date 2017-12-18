@@ -3,10 +3,7 @@ package com.fintech.intellinews.config;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.*;
@@ -26,8 +23,8 @@ public class WebXmlInitializer extends AbstractAnnotationConfigDispatcherServlet
         druid.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
         Map<String, String> druidMap = new HashMap<>(3);
         druidMap.put("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        druidMap.put("sessionStatEnable", "false");
         druidMap.put("profileEnable", "true");
-        druidMap.put("principalSessionName", "sessionId");
         druid.setInitParameters(druidMap);
 
         FilterRegistration.Dynamic encoding = servletContext.addFilter("encodingFilter", WebStatFilter.class);

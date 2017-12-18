@@ -1,7 +1,6 @@
 package com.fintech.intellinews.dao;
 
 import com.fintech.intellinews.entity.ChannelEntity;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

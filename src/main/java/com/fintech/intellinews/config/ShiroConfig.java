@@ -1,5 +1,8 @@
 package com.fintech.intellinews.config;
 
+import com.fintech.intellinews.properties.AppProperties;
+import com.fintech.intellinews.shiro.ShiroRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.Realm;
@@ -11,6 +14,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -26,11 +30,14 @@ import java.util.HashMap;
 @Configuration
 public class ShiroConfig {
 
+    @Autowired
+    private AppProperties appProperties;
+
     @Bean(name = "shiroEhcacheManager")
     public EhCacheManagerFactoryBean shiroEhcacheManager(ApplicationContext applicationContext) {
         EhCacheManagerFactoryBean factory = new EhCacheManagerFactoryBean();
         factory.setCacheManagerName("shiroEhcacheManager");
-        factory.setConfigLocation(applicationContext.getResource("classpath:META-INF/ehcache-shiro.xml"));
+        factory.setConfigLocation(applicationContext.getResource("classpath:ehcache-shiro.xml"));
         return factory;
     }
 
@@ -55,11 +62,11 @@ public class ShiroConfig {
     public SimpleCookie sessionIdCookie() {
         SimpleCookie simpleCookie = new SimpleCookie("sid");
         simpleCookie.setHttpOnly(true);
-        simpleCookie.setMaxAge(31536000);
+        simpleCookie.setMaxAge(31536000);//
         return simpleCookie;
     }
 
-    @Bean
+    @Bean(name = "sessionManager")
     public DefaultWebSessionManager sessionManager(
             @Qualifier("sessionDAO") SessionDAO sessionDAO,
             @Qualifier("sessionIdCookie") SimpleCookie sessionIdCookie) {
@@ -75,7 +82,7 @@ public class ShiroConfig {
         return sessionManager;
     }
 
-    @Bean
+    @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager(
             Realm realm,
             @Qualifier("sessionManager") SessionManager sessionManager,

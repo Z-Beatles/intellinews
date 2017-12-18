@@ -2,7 +2,6 @@ package com.fintech.intellinews.dao;
 
 import com.fintech.intellinews.entity.SectionItemEntity;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author waynechu

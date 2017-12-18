@@ -1,11 +1,11 @@
 package com.fintech.intellinews.dao;
 
 import com.fintech.intellinews.entity.UserInfoEntity;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 public interface UserInfoDao {
+
     /**
      * 获取用户信息
      *
@@ -14,5 +14,10 @@ public interface UserInfoDao {
      */
     List<UserInfoEntity> listUserInfos(UserInfoEntity userInfo);
 
+    /**
+     * 添加用户信息
+     *
+     * @param userInfoEntity 用户信息对象
+     */
     void insertUserInfo(UserInfoEntity userInfoEntity);
 }

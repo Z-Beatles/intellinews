@@ -10,41 +10,31 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.concurrent.Executor;
 
 /**
- * @author wanghao
- * create 2017-12-02 23:07
+ * @author wanghao create 2017-12-02 23:07
  **/
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableAsync(proxyTargetClass = true)
 @EnableScheduling
-@ComponentScan(basePackages = {"com.fintech.intellinews"},
-        excludeFilters = {@ComponentScan.Filter(
-                value = {
-                        EnableWebMvc.class
-                })
+@ComponentScan(basePackages = {"com.fintech.intellinews"}, excludeFilters = {
+        @ComponentScan.Filter(value = {
+                EnableWebMvc.class,
+                RestController.class
         })
+})
 @PropertySource("classpath:application.properties")
 public class SpringAppConfig {
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean(name = "asyncExecutor")
-    public Executor asyncExecutor() {
-        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(5);
-        taskExecutor.setMaxPoolSize(20);
-        taskExecutor.setQueueCapacity(200);
-        taskExecutor.initialize();
-        return taskExecutor;
     }
 
     @Bean(name = "taskExecutor")

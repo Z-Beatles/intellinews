@@ -2,7 +2,6 @@ package com.fintech.intellinews.dao;
 
 import com.fintech.intellinews.entity.AtlasEntity;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

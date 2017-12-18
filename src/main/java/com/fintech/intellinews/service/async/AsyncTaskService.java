@@ -37,6 +37,7 @@ public class AsyncTaskService {
      *
      * @param keyword 关键字
      */
+    @Async
     public void updateKeywordDegree(String keyword) {
         int count = keywordDao.updateKeywordCount(keyword);
         if (count == 0) {

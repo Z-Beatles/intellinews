@@ -4,6 +4,7 @@ import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,12 +15,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DruidMonitorConfig {
 
-    @Bean
+    @Bean("druid-stat-interceptor")
     public DruidStatInterceptor interceptor() {
         return new DruidStatInterceptor();
     }
 
-    @Bean
+    @Bean("druid-stat-pointcut")
     public JdkRegexpMethodPointcut methodPointcut() {
         JdkRegexpMethodPointcut druidStatPointcut = new JdkRegexpMethodPointcut();
         String dao = "com.fintech.intellinews.dao.*";
@@ -29,7 +30,8 @@ public class DruidMonitorConfig {
     }
 
     @Bean
-    public Advisor druidStatAdvisor(JdkRegexpMethodPointcut methodPointcut, DruidStatInterceptor interceptor) {
+    public Advisor druidStatAdvisor(@Qualifier("druid-stat-pointcut") JdkRegexpMethodPointcut methodPointcut,
+                                    @Qualifier("druid-stat-interceptor") DruidStatInterceptor interceptor) {
         return new DefaultPointcutAdvisor(methodPointcut, interceptor);
     }
 }

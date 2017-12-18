@@ -2,7 +2,6 @@ package com.fintech.intellinews.dao;
 
 import com.fintech.intellinews.entity.FootmarkEntity;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -26,6 +25,7 @@ public interface UserFootmarkDao {
 
     /**
      * 添加用户浏览足迹
+     *
      * @param entity 足迹对象
      */
     void insertUserFootmark(FootmarkEntity entity);

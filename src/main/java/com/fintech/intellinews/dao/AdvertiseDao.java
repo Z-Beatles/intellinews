@@ -5,6 +5,7 @@ import com.fintech.intellinews.entity.AdvertiseEntity;
 import java.util.List;
 
 public interface AdvertiseDao {
+
     /**
      * 获取广告列表
      *

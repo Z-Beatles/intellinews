@@ -1,17 +1,21 @@
 package com.fintech.intellinews.shiro;
 
 import com.fintech.intellinews.entity.UserLoginEntity;
+import com.fintech.intellinews.properties.AppProperties;
 import com.fintech.intellinews.service.UserService;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author waynechu
@@ -21,12 +25,10 @@ import org.springframework.stereotype.Component;
 public class ShiroRealm extends AuthorizingRealm {
 
     @Autowired
-    private UserService userService;
+    private AppProperties appProperties;
 
-    @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        return null;
-    }
+    @Autowired
+    private UserService userService;
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
@@ -38,6 +40,18 @@ public class ShiroRealm extends AuthorizingRealm {
         }
         return new SimpleAuthenticationInfo(userLoginEntity, userLoginEntity.getPasswordHash(), ByteSource.Util.bytes
                 (userLoginEntity.getPasswordSalt()), getName());
+    }
+
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        return null;
+    }
+
+    @PostConstruct
+    public void initCredentialsMatcher() {
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(appProperties.getAlgorithmName());
+        matcher.setHashIterations(appProperties.getHashIterations());
+        this.setCredentialsMatcher(matcher);
     }
 
     @Override
