@@ -110,7 +110,10 @@ public class UserFootmarkServiceImpl implements UserFootmarkService {
         entity.setContentId(contentId);
         entity.setGmtCreate(Calendar.getInstance().getTime());
         entity.setSource(source);
-        userFootmarkDao.insertUserFootmark(entity);
+        Integer count = userFootmarkDao.insertUserFootmark(entity);
+        if (count == 0) {
+            throw new AppException(ResultEnum.INSERT_USER_FOOTMARK_FAILED_ERROR);
+        }
         return entity.getId();
     }
 

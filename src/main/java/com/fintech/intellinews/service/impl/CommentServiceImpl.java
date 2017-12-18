@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
         entity.setContent(content);
         entity.setGmtCreate(Calendar.getInstance().getTime());
         Integer count = commentDao.addUserComment(entity);
-        if (count < 1) {
+        if (count == 0) {
             throw new AppException(ResultEnum.COMMENT_ARTICLE_FAILED_ERROR);
         }
         return entity.getId();

@@ -34,7 +34,7 @@ public class UserSectionServiceImpl implements UserSectionService {
     private SectionDao sectionDao;
 
     /**
-     * 获取条目指定用户的收藏
+     * 指定用户是否收藏指定条目
      *
      * @param userId    用户id
      * @param sectionId 条目id
@@ -99,7 +99,7 @@ public class UserSectionServiceImpl implements UserSectionService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer insertUserSection(Long userId, Long sectionId) {
+    public Long insertUserSection(Long userId, Long sectionId) {
         Integer count = userSectionDao.checkUserSection(userId, sectionId);
         if (count > 0) {
             throw new AppException(ResultEnum.COLLECT_SECTION_REPEAT_ERROR);
@@ -108,19 +108,27 @@ public class UserSectionServiceImpl implements UserSectionService {
         insertSection.setUserId(userId);
         insertSection.setSectionId(sectionId);
         insertSection.setGmtCreate(Calendar.getInstance().getTime());
-        return userSectionDao.insertUserSection(insertSection);
+        Integer insertCount = userSectionDao.insertUserSection(insertSection);
+        if (insertCount == 0) {
+            throw new AppException(ResultEnum.INSERT_USER_SECTION_FAILED_ERROR);
+        }
+        return insertSection.getId();
     }
 
     /**
      * 取消收藏条目
      *
-     * @return 影响行数
+     * @return 收藏条目的id
      */
     @Override
-    public Integer deleteUserSection(Long userId, Long sectionId) {
+    public Long deleteUserSection(Long userId, Long sectionId) {
         UserSectionEntity section = new UserSectionEntity();
         section.setUserId(userId);
         section.setSectionId(sectionId);
-        return userSectionDao.deleteCollectSection(section);
+        Integer count = userSectionDao.deleteCollectSection(section);
+        if (count == 0) {
+            throw new AppException(ResultEnum.CANCEL_COLLECT_SECTION_FAILED_ERROR);
+        }
+        return section.getId();
     }
 }

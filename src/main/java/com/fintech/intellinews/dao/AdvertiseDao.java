@@ -1,6 +1,7 @@
 package com.fintech.intellinews.dao;
 
 import com.fintech.intellinews.entity.AdvertiseEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

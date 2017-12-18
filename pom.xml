@@ -357,7 +357,7 @@
                 <configuration>
                     <path>/</path>
                     <port>8080</port>
-                    <useBodyEncodingForURI>true</useBodyEncodingForURI>
+                    <uriEncoding>UTF-8</uriEncoding>
                     <contextReloadable>true</contextReloadable>
                 </configuration>
             </plugin>
