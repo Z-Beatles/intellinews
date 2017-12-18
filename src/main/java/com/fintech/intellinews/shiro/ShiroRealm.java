@@ -1,7 +1,7 @@
 package com.fintech.intellinews.shiro;
 
 import com.fintech.intellinews.entity.UserLoginEntity;
-import com.fintech.intellinews.properties.AppProperties;
+import com.fintech.intellinews.properties.ShiroProperties;
 import com.fintech.intellinews.service.UserService;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -25,7 +25,7 @@ import javax.annotation.PostConstruct;
 public class ShiroRealm extends AuthorizingRealm {
 
     @Autowired
-    private AppProperties appProperties;
+    private ShiroProperties shiroProperties;
 
     @Autowired
     private UserService userService;
@@ -49,8 +49,8 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @PostConstruct
     public void initCredentialsMatcher() {
-        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(appProperties.getAlgorithmName());
-        matcher.setHashIterations(appProperties.getHashIterations());
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(shiroProperties.getAlgorithmName());
+        matcher.setHashIterations(shiroProperties.getHashIterations());
         this.setCredentialsMatcher(matcher);
     }
 

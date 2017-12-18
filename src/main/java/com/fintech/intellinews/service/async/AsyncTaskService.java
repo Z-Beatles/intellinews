@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 /**
  * @author waynechu
  * Created 2017-12-15 14:27
@@ -44,7 +42,6 @@ public class AsyncTaskService {
             KeywordEntity entity = new KeywordEntity();
             entity.setName(keyword);
             entity.setCount(1);
-            entity.setGmtCreate(new Date());
             keywordDao.insertKeyword(entity);
         }
     }

@@ -121,6 +121,7 @@ public class SectionServiceImpl implements SectionService{
         if (sectionEntities.isEmpty()) {
             return new PageInfo(sectionEntities);
         } else {
+            // 更新关键字热度
             asyncTaskService.updateKeywordDegree(keyword);
         }
         List<SearchSectionVO> resultList = new ArrayList<>();

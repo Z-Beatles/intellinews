@@ -11,7 +11,7 @@ import com.fintech.intellinews.entity.CommentEntity;
 import com.fintech.intellinews.entity.UserInfoEntity;
 import com.fintech.intellinews.entity.UserLoginEntity;
 import com.fintech.intellinews.enums.ResultEnum;
-import com.fintech.intellinews.properties.AppProperties;
+import com.fintech.intellinews.properties.ShiroProperties;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.DateUtil;
 import com.fintech.intellinews.util.RegexUtil;
@@ -41,7 +41,7 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private AppProperties appProperties;
+    private ShiroProperties shiroProperties;
 
     @Autowired
     private UserInfoDao userInfoDao;
@@ -99,8 +99,8 @@ public class UserServiceImpl implements UserService {
         }
         RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
         String salt = randomNumberGenerator.nextBytes().toHex();
-        String algorithmName = appProperties.getAlgorithmName();
-        int hashIterations = appProperties.getHashIterations();
+        String algorithmName = shiroProperties.getAlgorithmName();
+        int hashIterations = shiroProperties.getHashIterations();
         String hexPassword = new SimpleHash(algorithmName, password, salt, hashIterations).toHex();
 
         UserLoginEntity userLoginEntity = new UserLoginEntity();

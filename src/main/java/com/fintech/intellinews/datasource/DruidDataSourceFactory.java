@@ -31,7 +31,7 @@ public class DruidDataSourceFactory {
         private boolean testOnReturn = false;
         private int maxPoolPreparedStatementPerConnectionSize = 20;
         private boolean poolPreparedStatements = true;
-        private String filters;
+        private String filters = "mergeStat";
 
         public DruidDataSource build() {
             DruidDataSource dataSource = new DruidDataSource();
