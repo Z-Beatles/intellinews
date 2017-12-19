@@ -65,7 +65,7 @@ public class UserConfigServiceImpl implements UserConfigService {
         entity.setUserId(id);
         entity.setChannelConfig(configStr);
         Integer count = userConfigDao.updateUserConfig(entity);
-        if (count < 1) {
+        if (count == 0) {
             throw new AppException(ResultEnum.UPDATE_USER_CONFIG_ERROR);
         }
         return configNode;

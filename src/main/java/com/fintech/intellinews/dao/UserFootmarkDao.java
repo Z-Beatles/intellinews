@@ -28,5 +28,5 @@ public interface UserFootmarkDao {
      *
      * @param entity 足迹对象
      */
-    void insertUserFootmark(FootmarkEntity entity);
+    Integer insertUserFootmark(FootmarkEntity entity);
 }

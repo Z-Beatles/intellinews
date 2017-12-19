@@ -54,14 +54,18 @@ public class UserArticleServiceImpl implements UserArticleService {
     /**
      * 取消收藏文章
      *
-     * @return 影响行数
+     * @return 用户收藏的文章的id
      */
     @Override
-    public Integer deleteUserArticle(Long userId, Long articleId) {
+    public Long deleteUserArticle(Long userId, Long articleId) {
         UserArticleEntity article = new UserArticleEntity();
         article.setUserId(userId);
         article.setResourceId(articleId);
-        return userArticleDao.deleteCollectArticle(article);
+        Integer count = userArticleDao.deleteCollectArticle(article);
+        if (count == 0) {
+            throw new AppException(ResultEnum.DELETE_USER_ARTICLE_FAILED_ERROR);
+        }
+        return articleId;
     }
 
 

@@ -34,14 +34,14 @@ public interface UserSectionService {
      *
      * @param userId    用户id
      * @param sectionId 条目id
-     * @return 影响行数
+     * @return 新增条目的id
      */
-    Integer insertUserSection(Long userId, Long sectionId);
+    Long insertUserSection(Long userId, Long sectionId);
 
     /**
      * 取消收藏条目
      *
      * @return 影响行数
      */
-    Integer deleteUserSection(Long userId, Long sectionId);
+    Long deleteUserSection(Long userId, Long sectionId);
 }

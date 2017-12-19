@@ -26,7 +26,7 @@ public interface UserArticleService {
      * @param articleId 文章id
      * @return 影响行数
      */
-    Integer deleteUserArticle(Long userId, Long articleId);
+    Long deleteUserArticle(Long userId, Long articleId);
 
     /**
      * 获取用户的收藏的指定文章
