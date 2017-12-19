@@ -15,7 +15,6 @@ public enum ResultEnum {
     FAILED(1, "failed"),
 
     ACCOUNT_NOT_EXIST_ERROR(1000, "账号不存在"),
-    HAS_LOGGED_IN_INFO(1002, "账号已登录"),
     WRONG_PASSWORD_ERROR(1003, "密码错误"),
     LOGIN_FAILED_ERROR(1004, "登陆失败"),
     REPEAT_LOGIN_ERROR(1005, "账号已在线，请勿重复登陆"),
@@ -29,7 +28,6 @@ public enum ResultEnum {
     SECTION_NOT_EXIST_ERROR(10000, "指定条目不存在"),
     SECTION_NOT_COLLECT_ERROR(10001, "未收藏该条目"),
     COMMENT_NOT_EXIST_ERROR(10002, "指定评论不存在"),
-
     COMMENT_ARTICLE_FAILED_ERROR(10003, "评论文章失败"),
     COLLECT_ARTICLE_REPEAT_ERROR(10004, "文章重复收藏"),
     ARTICLE_NOT_EXIST_ERROR(10005, "指定文章不存在"),
@@ -38,10 +36,8 @@ public enum ResultEnum {
     INSERT_USER_KEY_FAILED_ERROR(10008, "添加用户偏好失败"),
     DELETE_USER_FOOTMARK_FAILED_ERROR(10009, "删除失败，该足迹不存在"),
     ATLAS_TYPE_NOT_EXIST_ERROR(10010, "请求的图谱类型不存在"),
-    CANCEL_COLLECT_SECTION_FAILED_ERROR(10011, "取消收藏条目失败"),
     INSERT_USER_SECTION_FAILED_ERROR(10012, "用户收藏条目失败"),
     INSERT_USER_FOOTMARK_FAILED_ERROR(10013, "添加用户足迹失败"),
-    DELETE_USER_ARTICLE_FAILED_ERROR(10014, "删除用户收藏文章失败"),
 
     CREATE_MENU_ERROR(40000, "自定义菜单失败"),
     DELETE_MENU_ERROR(40001, "删除自定义菜单失败"),

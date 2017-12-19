@@ -63,7 +63,7 @@ public class UserArticleServiceImpl implements UserArticleService {
         article.setResourceId(articleId);
         Integer count = userArticleDao.deleteCollectArticle(article);
         if (count == 0) {
-            throw new AppException(ResultEnum.DELETE_USER_ARTICLE_FAILED_ERROR);
+            throw new AppException(ResultEnum.ARTICLE_NOT_COLLECT_ERROR);
         }
         return articleId;
     }

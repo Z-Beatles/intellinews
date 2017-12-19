@@ -127,7 +127,7 @@ public class UserSectionServiceImpl implements UserSectionService {
         section.setSectionId(sectionId);
         Integer count = userSectionDao.deleteCollectSection(section);
         if (count == 0) {
-            throw new AppException(ResultEnum.CANCEL_COLLECT_SECTION_FAILED_ERROR);
+            throw new AppException(ResultEnum.SECTION_NOT_COLLECT_ERROR);
         }
         return section.getId();
     }

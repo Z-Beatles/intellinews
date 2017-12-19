@@ -45,7 +45,7 @@
 
     <delete id="deleteCollectArticle" parameterType="map">
         DELETE FROM oi_user_article
-        WHERE user_id = #{userId} AND resource_id = #{resourceId} AND resource_type = 'article';
+        WHERE user_id = #{userId} AND resource_id = #{resourceId} AND resource_type = 1;
     </delete>
 
 </mapper>
