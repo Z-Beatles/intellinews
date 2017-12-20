@@ -1,9 +1,12 @@
 package com.fintech.intellinews.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.fintech.intellinews.dao.cache.RedisDao;
+import com.fintech.intellinews.dao.session.RedisSessionDAO;
 import com.fintech.intellinews.datasource.DataSourceConnector;
 import com.fintech.intellinews.datasource.DruidDataSourceFactory;
 import com.fintech.intellinews.datasource.dynamic.DynamicDataSource;
+import com.fintech.intellinews.properties.JedisConnectProperties;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,8 +17,10 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
+import redis.clients.jedis.JedisPoolConfig;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -30,7 +35,7 @@ public class DataSourceConfig implements EnvironmentAware {
     private Environment environment;
 
     @Bean("masterConnector")
-    public DataSourceConnector masterConnector(){
+    public DataSourceConnector masterConnector() {
         DataSourceConnector dataSourceConnector = new DataSourceConnector();
         dataSourceConnector.setUrl(environment.getProperty("spring.datasource.split.master.url"));
         dataSourceConnector.setUsername(environment.getProperty("spring.datasource.split.master.username"));
@@ -39,7 +44,7 @@ public class DataSourceConfig implements EnvironmentAware {
     }
 
     @Bean("slave0Connector")
-    public DataSourceConnector slave0Connectors(){
+    public DataSourceConnector slave0Connectors() {
         DataSourceConnector dataSourceConnector = new DataSourceConnector();
         dataSourceConnector.setUrl(environment.getProperty("spring.datasource.split.slave0.url"));
         dataSourceConnector.setUsername(environment.getProperty("spring.datasource.split.slave0.username"));
@@ -48,7 +53,7 @@ public class DataSourceConfig implements EnvironmentAware {
     }
 
     @Bean("slave1Connector")
-    public DataSourceConnector slave1Connector(){
+    public DataSourceConnector slave1Connector() {
         DataSourceConnector dataSourceConnector = new DataSourceConnector();
         dataSourceConnector.setUrl(environment.getProperty("spring.datasource.split.slave1.url"));
         dataSourceConnector.setUsername(environment.getProperty("spring.datasource.split.slave1.username"));
@@ -84,7 +89,8 @@ public class DataSourceConfig implements EnvironmentAware {
 
     @Bean("dynamicDataSource")
     public DynamicDataSource dynamicDataSource(@Qualifier("master") DruidDataSource master,
-            @Qualifier("slave0") DataSource slave0, @Qualifier("slave1") DataSource slave1) {
+                                               @Qualifier("slave0") DataSource slave0, @Qualifier("slave1")
+                                                       DataSource slave1) {
         DynamicDataSource dynamic = new DynamicDataSource();
         dynamic.setReadDataSourcePollPattern(1);
         dynamic.setMaster(master);
@@ -123,6 +129,37 @@ public class DataSourceConfig implements EnvironmentAware {
         mapperScanner.setBasePackage("com.fintech.intellinews.dao");
         mapperScanner.setSqlSessionFactoryBeanName("sqlSessionFactory");
         return mapperScanner;
+    }
+
+    @Bean("redisSessionDAO")
+    public RedisSessionDAO redisSessionDAO(RedisDao redisDao) {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisDao(redisDao);
+        redisSessionDAO.setExpire(1800000L);
+        redisSessionDAO.setKeyPrefix("shiro_redis_session:");
+        return redisSessionDAO;
+    }
+
+    @Bean("jedisPoolConfig")
+    public JedisPoolConfig jedisPoolConfig(JedisConnectProperties jedisConnectProperties) {
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(jedisConnectProperties.getMaxTotal());
+        config.setMaxIdle(jedisConnectProperties.getMaxIdle());
+        config.setTestOnBorrow(jedisConnectProperties.getTestOnBorrow());
+        return config;
+    }
+
+    @Bean("redisConnectionFactory")
+    public JedisConnectionFactory jedisConnectionFactory(
+            JedisPoolConfig jedisPoolConfig, JedisConnectProperties jedisConnectProperties) {
+        JedisConnectionFactory factory = new JedisConnectionFactory();
+        factory.setPoolConfig(jedisPoolConfig);
+        factory.setHostName(jedisConnectProperties.getHostName());
+        factory.setPort(jedisConnectProperties.getPort());
+        factory.setPassword(jedisConnectProperties.getPassword());
+        factory.setTimeout(jedisConnectProperties.getTimeout());
+        factory.setUsePool(jedisConnectProperties.getUsePool());
+        return new JedisConnectionFactory();
     }
 
     @Override

@@ -52,7 +52,7 @@ public class ProtoStuffSerializerUtil {
      */
     public static <T> T deserialize(byte[] bytes, Class<T> targetClass) {
         if (bytes == null || bytes.length == 0) {
-            throw new RuntimeException("反序列化对象发生异常,bytes数组为空!");
+            return null;
         }
         T instance;
         try {

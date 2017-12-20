@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 
 import java.util.HashMap;
 
@@ -30,15 +31,6 @@ public class ShiroConfig {
         factory.setCacheManagerName("shiroEhcacheManager");
         factory.setConfigLocation(applicationContext.getResource("classpath:ehcache-shiro.xml"));
         return factory;
-    }
-
-    @Bean(name = "sessionDAO")
-    public EnterpriseCacheSessionDAO sessionDAO(
-            @Qualifier("shiroCacheManagerForEhcache") CacheManager shiroCacheManagerForEhcache) {
-        EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
-        sessionDAO.setActiveSessionsCacheName("shiro-activeSessionCache");
-        sessionDAO.setCacheManager(shiroCacheManagerForEhcache);
-        return sessionDAO;
     }
 
     @Bean(name = "shiroCacheManagerForEhcache")
@@ -59,7 +51,7 @@ public class ShiroConfig {
 
     @Bean(name = "sessionManager")
     public DefaultWebSessionManager sessionManager(
-            @Qualifier("sessionDAO") SessionDAO sessionDAO,
+            @Qualifier("redisSessionDAO")SessionDAO sessionDAO,
             @Qualifier("sessionIdCookie") SimpleCookie sessionIdCookie) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setGlobalSessionTimeout(1800000);
@@ -74,8 +66,7 @@ public class ShiroConfig {
     }
 
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager securityManager(
-            Realm realm,
+    public DefaultWebSecurityManager securityManager( Realm realm,
             @Qualifier("sessionManager") SessionManager sessionManager,
             @Qualifier("shiroCacheManagerForEhcache") CacheManager shiroCacheManagerForEhcache) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
