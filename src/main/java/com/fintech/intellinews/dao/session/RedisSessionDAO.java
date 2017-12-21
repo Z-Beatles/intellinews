@@ -3,7 +3,6 @@ package com.fintech.intellinews.dao.session;
 import com.fintech.intellinews.dao.cache.RedisDao;
 import com.fintech.intellinews.util.SerializableUtils;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     /**
      * session的有效时长，默认30分钟，单位毫秒
      */
-    private long expire = 1800000;
+    private int expire = 1800000;
 
     /**
      * session key的前缀
@@ -36,7 +35,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
 
     @Override
     protected Serializable doCreate(Session session) {
-        Serializable sessionId = this.generateSessionId(session);
+        Serializable sessionId = generateSessionId(session);
         assignSessionId(session, sessionId);
         saveSession(session);
         return sessionId;
@@ -56,8 +55,8 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     }
 
     @Override
-    public void update(Session session) throws UnknownSessionException {
-        this.saveSession(session);
+    public void update(Session session) {
+        saveSession(session);
     }
 
     @Override
@@ -119,11 +118,11 @@ public class RedisSessionDAO extends AbstractSessionDAO {
         this.redisDao = redisDao;
     }
 
-    public long getExpire() {
+    public int getExpire() {
         return expire;
     }
 
-    public void setExpire(long expire) {
+    public void setExpire(int expire) {
         this.expire = expire;
     }
 

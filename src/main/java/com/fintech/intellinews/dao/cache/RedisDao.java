@@ -3,9 +3,9 @@ package com.fintech.intellinews.dao.cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.Set;
 
@@ -19,7 +19,7 @@ public class RedisDao {
     private static final Logger logger = LoggerFactory.getLogger(RedisDao.class);
 
     @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
+    private JedisPool jedisPool;
 
     /**
      * 从redis中获取值
@@ -28,15 +28,15 @@ public class RedisDao {
      * @return 未查询到返回null
      */
     public byte[] get(String key) {
-        RedisConnection connection = redisConnectionFactory.getConnection();
+        Jedis resource = jedisPool.getResource();
         byte[] result = null;
         try {
-            result = connection.get(key.getBytes());
+            result = resource.get(key.getBytes());
         } catch (Exception e) {
             logger.warn("缓存不存在，key:{}", key);
         } finally {
-            if (connection != null) {
-                connection.close();
+            if (resource != null) {
+                resource.close();
             }
         }
         return result;
@@ -49,13 +49,13 @@ public class RedisDao {
      * @param value 值
      */
     public void set(String key, byte[] value) {
-        RedisConnection connection = redisConnectionFactory.getConnection();
+        Jedis resource = jedisPool.getResource();
         try {
-            connection.set(key.getBytes(), value);
+            resource.set(key.getBytes(), value);
             logger.info("存入缓存成功，key:{}", key);
         } finally {
-            if (connection != null) {
-                connection.close();
+            if (resource != null) {
+                resource.close();
             }
         }
     }
@@ -67,16 +67,16 @@ public class RedisDao {
      * @param value  值
      * @param expire 有效期限/秒
      */
-    public void setEx(String key, byte[] value, long expire) {
-        RedisConnection connection = redisConnectionFactory.getConnection();
+    public void setEx(String key, byte[] value, int expire) {
+        Jedis resource = jedisPool.getResource();
         try {
-            connection.setEx(key.getBytes(), expire, value);
+            resource.setex(key.getBytes(), expire, value);
             logger.info("存入缓存成功, 有效期:{}秒, key:{}", expire, key);
         } catch (Exception e) {
-            logger.warn("存入缓存失败, expire:{}, key:{}, exception:{}", expire, key, e);
+            logger.warn("存入缓存失败, key:{}, exception:{}", expire, key, e);
         } finally {
-            if (connection != null) {
-                connection.close();
+            if (resource != null) {
+                resource.close();
             }
         }
     }
@@ -87,13 +87,13 @@ public class RedisDao {
      * @param key 键
      */
     public void del(String key) {
-        RedisConnection connection = redisConnectionFactory.getConnection();
+        Jedis resource = jedisPool.getResource();
         try {
-            connection.del(key.getBytes());
+            resource.del(key.getBytes());
             logger.info("删除缓存成功，key:{}", key);
         } finally {
-            if (connection != null) {
-                connection.close();
+            if (resource != null) {
+                resource.close();
             }
         }
     }
@@ -105,13 +105,13 @@ public class RedisDao {
      * @return 符合条件的值
      */
     public Set<byte[]> keys(String pattern) {
-        RedisConnection connection = redisConnectionFactory.getConnection();
+        Jedis resource = jedisPool.getResource();
         Set<byte[]> keys;
         try {
-            keys = connection.keys(pattern.getBytes());
+            keys = resource.keys(pattern.getBytes());
         } finally {
-            if (connection != null) {
-                connection.close();
+            if (resource != null) {
+                resource.close();
             }
         }
         return keys;

@@ -25,13 +25,19 @@ public class JedisConnectProperties {
     @Value("${spring.redis.usePool}")
     private boolean usePool;
 
+    /** 一个pool所能分配的最大的连接数目 */
     @Value("${spring.redis.pool.max-total}")
     private int maxTotal;
 
     /** 最大空闲连接数 */
-    @Value("${spring.redis.pool.max-total}")
+    @Value("${spring.redis.pool.max-idle}")
     private int maxIdle;
 
+    /** 超时时间，如果超过等待时间抛出JedisConnectionException */
+    @Value("${spring.redis.pool.max-wait-millis}")
+    private int maxWaitMillis;
+
+    /** 获取连接的时候检查有效性，确保连接池内的连接都可用 */
     @Value("${spring.redis.pool.test-on-borrow}")
     private boolean testOnBorrow;
 
@@ -71,6 +77,10 @@ public class JedisConnectProperties {
         return usePool;
     }
 
+    public void setUsePool(boolean usePool) {
+        this.usePool = usePool;
+    }
+
     public int getMaxTotal() {
         return maxTotal;
     }
@@ -85,6 +95,14 @@ public class JedisConnectProperties {
 
     public void setMaxIdle(int maxIdle) {
         this.maxIdle = maxIdle;
+    }
+
+    public int getMaxWaitMillis() {
+        return maxWaitMillis;
+    }
+
+    public void setMaxWaitMillis(int maxWaitMillis) {
+        this.maxWaitMillis = maxWaitMillis;
     }
 
     public boolean getTestOnBorrow() {

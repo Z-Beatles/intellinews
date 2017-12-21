@@ -17,9 +17,9 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
+import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import javax.sql.DataSource;
@@ -135,7 +135,8 @@ public class DataSourceConfig implements EnvironmentAware {
     public RedisSessionDAO redisSessionDAO(RedisDao redisDao) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisDao(redisDao);
-        redisSessionDAO.setExpire(1800000L);
+        // session有效期30分钟
+        redisSessionDAO.setExpire(1800);
         redisSessionDAO.setKeyPrefix("shiro_redis_session:");
         return redisSessionDAO;
     }
@@ -145,21 +146,18 @@ public class DataSourceConfig implements EnvironmentAware {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(jedisConnectProperties.getMaxTotal());
         config.setMaxIdle(jedisConnectProperties.getMaxIdle());
+        config.setMaxWaitMillis(jedisConnectProperties.getMaxWaitMillis());
         config.setTestOnBorrow(jedisConnectProperties.getTestOnBorrow());
         return config;
     }
 
-    @Bean("redisConnectionFactory")
-    public JedisConnectionFactory jedisConnectionFactory(
-            JedisPoolConfig jedisPoolConfig, JedisConnectProperties jedisConnectProperties) {
-        JedisConnectionFactory factory = new JedisConnectionFactory();
-        factory.setPoolConfig(jedisPoolConfig);
-        factory.setHostName(jedisConnectProperties.getHostName());
-        factory.setPort(jedisConnectProperties.getPort());
-        factory.setPassword(jedisConnectProperties.getPassword());
-        factory.setTimeout(jedisConnectProperties.getTimeout());
-        factory.setUsePool(jedisConnectProperties.getUsePool());
-        return new JedisConnectionFactory();
+    @Bean("jedisPool")
+    public JedisPool jedisPool(JedisPoolConfig jedisPoolConfig, JedisConnectProperties jedisConnectProperties) {
+        String hostName = jedisConnectProperties.getHostName();
+        int port = jedisConnectProperties.getPort();
+        int timeout = jedisConnectProperties.getTimeout();
+        String password = jedisConnectProperties.getPassword();
+        return new JedisPool(jedisPoolConfig, hostName, port, timeout, password);
     }
 
     @Override
