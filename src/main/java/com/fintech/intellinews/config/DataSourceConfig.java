@@ -61,7 +61,7 @@ public class DataSourceConfig implements EnvironmentAware {
         return dataSourceConnector;
     }
 
-    @Bean("master")
+    @Bean(name = "master", initMethod = "init", destroyMethod = "close")
     public DruidDataSource master(DataSourceConnector masterConnector) {
         return new DruidDataSourceFactory.DruidDataSourceBuilder()
                 .setUrl(masterConnector.getUrl())
@@ -70,7 +70,7 @@ public class DataSourceConfig implements EnvironmentAware {
                 .build();
     }
 
-    @Bean("slave0")
+    @Bean(name = "slave0", initMethod = "init", destroyMethod = "close")
     public DruidDataSource slave1(DataSourceConnector slave0Connector) {
         return new DruidDataSourceFactory.DruidDataSourceBuilder()
                 .setUrl(slave0Connector.getUrl())
@@ -79,7 +79,7 @@ public class DataSourceConfig implements EnvironmentAware {
                 .build();
     }
 
-    @Bean("slave1")
+    @Bean(name = "slave1", initMethod = "init", destroyMethod = "close")
     public DruidDataSource slave2(DataSourceConnector slave1Connector) {
         return new DruidDataSourceFactory.DruidDataSourceBuilder().setUrl(slave1Connector.getUrl())
                 .setUsername(slave1Connector.getUsername())

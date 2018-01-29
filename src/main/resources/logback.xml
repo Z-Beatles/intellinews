@@ -38,7 +38,7 @@
 
     <logger name="org.apache.http" level="info"/>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="console"/>
         <appender-ref ref="file"/>
         <appender-ref ref="errorAppender"/>
