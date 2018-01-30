@@ -12,7 +12,6 @@ import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
@@ -29,7 +28,6 @@ import java.util.Arrays;
 /**
  * @author wanghao create 2017-12-05 14:49
  **/
-@Configuration
 public class DataSourceConfig implements EnvironmentAware {
 
     private Environment environment;
@@ -81,16 +79,17 @@ public class DataSourceConfig implements EnvironmentAware {
 
     @Bean(name = "slave1", initMethod = "init", destroyMethod = "close")
     public DruidDataSource slave2(DataSourceConnector slave1Connector) {
-        return new DruidDataSourceFactory.DruidDataSourceBuilder().setUrl(slave1Connector.getUrl())
+        return new DruidDataSourceFactory.DruidDataSourceBuilder()
+                .setUrl(slave1Connector.getUrl())
                 .setUsername(slave1Connector.getUsername())
                 .setPassword(slave1Connector.getPassword())
                 .build();
     }
 
     @Bean("dynamicDataSource")
-    public DynamicDataSource dynamicDataSource(@Qualifier("master") DruidDataSource master,
-                                               @Qualifier("slave0") DataSource slave0, @Qualifier("slave1")
-                                                       DataSource slave1) {
+    public DynamicDataSource dynamicDataSource(@Qualifier("master") DataSource master,
+                                               @Qualifier("slave0") DataSource slave0,
+                                               @Qualifier("slave1") DataSource slave1) {
         DynamicDataSource dynamic = new DynamicDataSource();
         dynamic.setReadDataSourcePollPattern(1);
         dynamic.setMaster(master);
@@ -113,7 +112,7 @@ public class DataSourceConfig implements EnvironmentAware {
     }
 
     @Bean("sqlSessionFactory")
-    public static SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) throws IOException {
+    public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) throws IOException {
         SqlSessionFactoryBean session = new SqlSessionFactoryBean();
         session.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -124,7 +123,7 @@ public class DataSourceConfig implements EnvironmentAware {
 
     @Bean
     @DependsOn("sqlSessionFactory")
-    public static MapperScannerConfigurer mapperScanner() {
+    public MapperScannerConfigurer mapperScanner() {
         MapperScannerConfigurer mapperScanner = new MapperScannerConfigurer();
         mapperScanner.setBasePackage("com.fintech.intellinews.dao");
         mapperScanner.setSqlSessionFactoryBeanName("sqlSessionFactory");
