@@ -23,10 +23,10 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     private Object master;
     /** 多个读数据源 */
     private List<Object> slaves;
-    /** 多数据源个数 */
+    /** 读数据源个数 */
     private int readDataSourceSize;
-    /** 获取多数据源方式，0：随机，1：轮询 */
-    private int readDataSourcePollPattern = 1;
+    /** 读数据源选择方式，默认0轮询，1随机 */
+    private int readDataSourceSelectPattern = 0;
     /** 原子计数器 **/
     private AtomicLong counter = new AtomicLong(0);
     /** 计数最大值 **/
@@ -39,22 +39,22 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
      */
     @Override
     public void afterPropertiesSet() {
-        // 写数据源
-        if (this.master == null) {
-            throw new IllegalArgumentException("master is required");
+        if (master == null) {
+            throw new IllegalArgumentException("【DynamicDataSource】master is required");
         }
         setDefaultTargetDataSource(master);
-        Map<Object, Object> targetDataSources = new HashMap<>();
-        targetDataSources.put(DynamicDataSourceHolder.DATA_SOURCE_MASTER, master);
+        Map<Object, Object> targetDataSources = new HashMap<>(slaves.size() + 1);
+        targetDataSources.put(DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER, master);
         if (slaves.isEmpty()) {
             readDataSourceSize = 0;
-            log.warn("slaves is empty");
+            log.warn("【DynamicDataSource】slaves is empty");
         } else {
             for (int i = 0; i < slaves.size(); i++) {
-                targetDataSources.put(DynamicDataSourceHolder.DATA_SOURCE_SALVE + i, slaves.get(i));
+                targetDataSources.put(DynamicDataSourceHolder.DATASOURCE_TYPE_SALVE + i, slaves.get(i));
             }
             readDataSourceSize = slaves.size();
         }
+        // 设置数据源
         setTargetDataSources(targetDataSources);
         super.afterPropertiesSet();
     }
@@ -67,13 +67,16 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         String dynamicKey = DynamicDataSourceHolder.getDataSourceType();
-        if (DynamicDataSourceHolder.DATA_SOURCE_MASTER.equals(dynamicKey) || readDataSourceSize <= 0) {
-            log.info("》》》》》》》》》》》》》》》》》》{}《《《《《《《《《《《《《《《《《", dynamicKey);
-            return DynamicDataSourceHolder.DATA_SOURCE_MASTER;
+        if (DynamicDataSourceHolder.getDataSourceType() == null) {
+            log.info("【DynamicDataSource】set default datasource [master]");
+            return DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;
+        }
+        if (DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER.equals(dynamicKey) || readDataSourceSize <= 0) {
+            return DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;
         }
         int index;
-        // 可以添加负载均衡算法
-        if (readDataSourcePollPattern == 1) {
+        if (readDataSourceSelectPattern == 0) {
+            // 轮询方式
             long currValue = counter.incrementAndGet();
             if ((currValue + 1) >= MAX_POOL) {
                 try {
@@ -86,13 +89,15 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
                 }
             }
             index = (int) (currValue % readDataSourceSize);
-        } else if (readDataSourcePollPattern == 0) {
-            //随机方式
+        } else if (readDataSourceSelectPattern == 1) {
+            // 随机方式
             index = ThreadLocalRandom.current().nextInt(0, readDataSourceSize);
         } else {
-            return DynamicDataSourceHolder.DATA_SOURCE_MASTER;
+            return DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;
         }
-        log.info("》》》》》》》》》》》》》》》》》》{}-{}《《《《《《《《《《《《《《《《《", dynamicKey, index);
+        log.info("【DynamicDataSource】select datasource [{}-{}], select pattern [{}]", dynamicKey, index,
+                readDataSourceSelectPattern == 0 ? "polling" :
+                        (readDataSourceSelectPattern == 1 ? "random" : "null"));
         return dynamicKey + index;
     }
 
@@ -104,7 +109,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         this.slaves = slaves;
     }
 
-    public void setReadDataSourcePollPattern(int readDataSourcePollPattern) {
-        this.readDataSourcePollPattern = readDataSourcePollPattern;
+    public void setReadDataSourceSelectPattern(int readDataSourceSelectPattern) {
+        this.readDataSourceSelectPattern = readDataSourceSelectPattern;
     }
 }

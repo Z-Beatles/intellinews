@@ -43,10 +43,10 @@ public class SessionServiceImpl implements SessionService {
         try {
             currentUser.login(token);
             UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();
-            logger.info("账号{}登陆成功", account);
+            logger.info("账号 {} 登陆成功", account);
             return principal.getId();
         } catch (UnknownAccountException e) {
-            logger.warn("账号{}不存在", account);
+            logger.warn("账号 {} 不存在", account);
             throw new AppException(ResultEnum.ACCOUNT_NOT_EXIST_ERROR);
         } catch (IncorrectCredentialsException e) {
             logger.warn("密码错误，账号：{}", account);
@@ -56,8 +56,8 @@ public class SessionServiceImpl implements SessionService {
             throw new AppException(ResultEnum.LOGIN_FAILED_ERROR);
         } catch (Exception e) {
             logger.error("系统异常", e);
+            throw new AppException(ResultEnum.SYSTEM_ERROR);
         }
-        return null;
     }
 
     /**
@@ -73,7 +73,7 @@ public class SessionServiceImpl implements SessionService {
             String account = principal.getUsername();
             try {
                 currentUser.logout();
-                logger.info("用户{}退出系统", account);
+                logger.info("账号 {} 退出系统", account);
                 return principal.getId();
             } catch (Exception e) {
                 logger.error("系统异常", e);

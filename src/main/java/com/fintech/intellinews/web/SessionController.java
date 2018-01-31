@@ -28,7 +28,7 @@ public class SessionController {
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户登录", notes = "登录类型暂时可不填写，登陆成功返回用户id和一个名为‘sid’" +
-            "的Cookie，有效期10年", produces = "application/json")
+            "的Cookie以及rememberMe Cookie有效期1年", produces = "application/json")
     public Result<Long> loginAction(
             @ApiParam(name = "loginType", value = "登陆的类型")
             @RequestParam(required = false) String loginType,
@@ -36,11 +36,13 @@ public class SessionController {
             @RequestParam String account,
             @ApiParam(name = "password", value = "密码", required = true)
             @RequestParam String password,
+            @ApiParam(name = "rememberMe", value = "记住我")
+            @RequestParam(required = false, defaultValue = "true") boolean rememberMe,
             @ApiParam(name = "host", value = "登陆IP")
             @RequestParam(required = false) String host) {
         Subject currentUser = SecurityUtils.getSubject();
         if (!currentUser.isAuthenticated()) {
-            Long userId = sessionService.doLogin(loginType, account, password, false, host, currentUser);
+            Long userId = sessionService.doLogin(loginType, account, password, rememberMe, host, currentUser);
             return ResultUtil.success(ResultEnum.LOGIN_SUCCEED_INFO, userId);
         }
         UserLoginEntity principal = (UserLoginEntity) currentUser.getPrincipal();

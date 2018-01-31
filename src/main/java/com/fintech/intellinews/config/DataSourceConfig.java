@@ -91,7 +91,7 @@ public class DataSourceConfig implements EnvironmentAware {
                                                @Qualifier("slave0") DataSource slave0,
                                                @Qualifier("slave1") DataSource slave1) {
         DynamicDataSource dynamic = new DynamicDataSource();
-        dynamic.setReadDataSourcePollPattern(1);
+        dynamic.setReadDataSourceSelectPattern(0);
         dynamic.setMaster(master);
         dynamic.setSlaves(Arrays.asList(slave0, slave1));
         return dynamic;

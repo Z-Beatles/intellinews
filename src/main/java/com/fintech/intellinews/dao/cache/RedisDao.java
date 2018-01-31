@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import javax.annotation.Resource;
 import java.util.Set;
 
 /**
@@ -18,7 +19,7 @@ public class RedisDao {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisDao.class);
 
-    @Autowired
+    @Resource
     private JedisPool jedisPool;
 
     /**
@@ -52,7 +53,7 @@ public class RedisDao {
         Jedis resource = jedisPool.getResource();
         try {
             resource.set(key.getBytes(), value);
-            logger.info("存入缓存成功，key:{}", key);
+            logger.debug("存入缓存成功，key:{}", key);
         } finally {
             if (resource != null) {
                 resource.close();
@@ -71,7 +72,7 @@ public class RedisDao {
         Jedis resource = jedisPool.getResource();
         try {
             resource.setex(key.getBytes(), expire, value);
-            logger.info("存入缓存成功, 有效期:{}秒, key:{}", expire, key);
+            logger.debug("存入缓存成功, 有效期:{}秒, key:{}", expire, key);
         } catch (Exception e) {
             logger.warn("存入缓存失败, key:{}, exception:{}", expire, key, e);
         } finally {
@@ -90,7 +91,7 @@ public class RedisDao {
         Jedis resource = jedisPool.getResource();
         try {
             resource.del(key.getBytes());
-            logger.info("删除缓存成功，key:{}", key);
+            logger.debug("删除缓存成功，key:{}", key);
         } finally {
             if (resource != null) {
                 resource.close();

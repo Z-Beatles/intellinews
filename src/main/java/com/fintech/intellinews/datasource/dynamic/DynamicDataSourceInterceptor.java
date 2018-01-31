@@ -37,30 +37,32 @@ public class DynamicDataSourceInterceptor implements Interceptor {
     public Object intercept(Invocation invocation) throws Throwable {
         // 当前有没有开启事务
         boolean synchronizationActive = TransactionSynchronizationManager.isActualTransactionActive();
-        String lookUpKey = DynamicDataSourceHolder.DATA_SOURCE_MASTER;
+        String lookUpKey = DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;
         if (!synchronizationActive) {
             //当前查询不在事务管理状态下
             Object[] args = invocation.getArgs();
             MappedStatement ms = (MappedStatement) args[0];
             if (ms.getSqlCommandType().equals(SqlCommandType.SELECT)) {
                 if (ms.getId().contains(SelectKeyGenerator.SELECT_KEY_SUFFIX)) {
-                    lookUpKey = DynamicDataSourceHolder.DATA_SOURCE_MASTER;
+                    lookUpKey = DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;
                 } else {
                     BoundSql boundSql = ms.getSqlSource().getBoundSql(args[1]);
                     // 将sql中的换行符，指标符替换成空格
                     String sql = boundSql.getSql().toLowerCase(Locale.CHINA).replaceAll("\\t\\r\\n", " ");
                     if (sql.matches(REGEX)) {
-                        lookUpKey = DynamicDataSourceHolder.DATA_SOURCE_MASTER;
+                        lookUpKey = DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;
                     } else {
-                        lookUpKey = DynamicDataSourceHolder.DATA_SOURCE_SALVE;
+                        lookUpKey = DynamicDataSourceHolder.DATASOURCE_TYPE_SALVE;
                     }
                 }
             }
+            logger.info("【DynamicDataSourceInterceptor】determine to use datasource [{}] ,method [{}], SqlCommandType [{}]", lookUpKey, ms.getId(), ms.getSqlCommandType().name());
         } else {
-            lookUpKey = DynamicDataSourceHolder.DATA_SOURCE_MASTER;
+            lookUpKey = DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;
+            logger.info("【DynamicDataSourceInterceptor】determine to use datasource [{}]  with transition", lookUpKey);
         }
         DynamicDataSourceHolder.setDataSourceType(lookUpKey);
-        logger.info("current datasource is {}", lookUpKey);
+
         return invocation.proceed();
     }
 
