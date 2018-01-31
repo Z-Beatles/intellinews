@@ -39,7 +39,7 @@ public class DynamicDataSourceInterceptor implements Interceptor {
         boolean synchronizationActive = TransactionSynchronizationManager.isActualTransactionActive();
         String lookUpKey = DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;
         if (!synchronizationActive) {
-            //当前查询不在事务管理状态下
+            // 当前查询不在事务管理状态下
             Object[] args = invocation.getArgs();
             MappedStatement ms = (MappedStatement) args[0];
             if (ms.getSqlCommandType().equals(SqlCommandType.SELECT)) {
@@ -62,7 +62,6 @@ public class DynamicDataSourceInterceptor implements Interceptor {
             logger.info("【DynamicDataSourceInterceptor】determine to use datasource [{}]  with transition", lookUpKey);
         }
         DynamicDataSourceHolder.setDataSourceType(lookUpKey);
-
         return invocation.proceed();
     }
 

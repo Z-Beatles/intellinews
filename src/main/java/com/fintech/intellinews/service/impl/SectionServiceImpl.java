@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author wanghao
@@ -31,7 +32,7 @@ import java.util.*;
  **/
 @Service
 @SuppressWarnings("unchecked")
-public class SectionServiceImpl implements SectionService{
+public class SectionServiceImpl implements SectionService {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -77,10 +78,8 @@ public class SectionServiceImpl implements SectionService{
         if (sectionEntities.isEmpty()) {
             return new PageInfo(sectionEntities);
         }
-        List<Long> ids = new ArrayList<>();
-        for (SectionEntity sectionEntity : sectionEntities) {
-            ids.add(sectionEntity.getId());
-        }
+        List<Long> ids = sectionEntities.stream().map(SectionEntity::getId).collect(Collectors.toList());
+
         Map<Long, SectionCountEntity> sectionCountEntityMap = sectionCountDao.mapSectionCountByIds(ids);
         List<ListSectionVO> resultList = new ArrayList<>();
         ListSectionVO listSectionVO;
@@ -250,10 +249,8 @@ public class SectionServiceImpl implements SectionService{
      */
     private List<AtlasVO> listSectionsBySectionId(Long sectionId) {
         List<AtlasEntity> atlasSectionEntities = atlasDao.listBySectionIdAndType(sectionId, "section", 5);
-        List<Long> ids = new ArrayList<>();
-        for (AtlasEntity entity : atlasSectionEntities) {
-            ids.add(entity.getRelationId());
-        }
+        List<Long> ids = atlasSectionEntities.stream().map(AtlasEntity::getRelationId).collect(Collectors.toList());
+
         Map<Long, SectionEntity> sectionMap = new HashMap<>();
         Map<Long, SectionCountEntity> sectionCountMap = new HashMap<>();
         if (!ids.isEmpty()) {
@@ -293,10 +290,8 @@ public class SectionServiceImpl implements SectionService{
      */
     private List<AtlasVO> listArticlesBySectionId(Long sectionId) {
         List<AtlasEntity> atlasArticleEntities = atlasDao.listBySectionIdAndType(sectionId, "article", 5);
-        List<Long> articleIds = new ArrayList<>();
-        for (AtlasEntity entity : atlasArticleEntities) {
-            articleIds.add(entity.getRelationId());
-        }
+        List<Long> articleIds = atlasArticleEntities.stream().map(AtlasEntity::getRelationId).collect(Collectors.toList());
+
         Map<Long, ArticleEntity> articleMap = new HashMap<>();
         Map<Long, ArticleCountEntity> articleCountMap = new HashMap<>();
         if (!articleIds.isEmpty()) {
@@ -314,6 +309,7 @@ public class SectionServiceImpl implements SectionService{
             atlasArticleVO.setDistance(atlasArticleEntity.getRelationDegree());
             ArticleCountEntity articleCountEntity = articleCountMap.get(relationId);
             if (articleCountEntity == null) {
+                // 初始化文章统计信息
                 articleService.initArticleCount(relationId);
                 articleCountEntity = new ArticleCountEntity();
                 articleCountEntity.setViewCount(0);

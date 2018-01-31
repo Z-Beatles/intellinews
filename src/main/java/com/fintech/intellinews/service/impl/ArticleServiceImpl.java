@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author waynechu
@@ -72,10 +73,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (articleChannelEntityList.isEmpty()) {
             return new PageInfo(articleChannelEntityList);
         }
-        List<Long> ids = new ArrayList<>();
-        for (ArticleChannelEntity entity : articleChannelEntityList) {
-            ids.add(entity.getArticleId());
-        }
+        List<Long> ids = articleChannelEntityList.stream().map(ArticleChannelEntity::getArticleId).collect(Collectors.toList());
 
         List<ArticleVO> articleDTOS = new ArrayList<>();
         Map<Long, ArticleEntity> articleEntityMap = articleDao.mapArticlesByIds(ids);
@@ -136,10 +134,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (articleEntityList.isEmpty()) {
             return new PageInfo(articleEntityList);
         }
-        List<Long> ids = new ArrayList<>();
-        for (ArticleEntity entity : articleEntityList) {
-            ids.add(entity.getId());
-        }
+        List<Long> ids = articleEntityList.stream().map(ArticleEntity::getId).collect(Collectors.toList());
 
         Map<Long, ArticleCountEntity> articleCountEntityMap = articleCountDao.mapArticleCountByIds(ids);
         List<ArticleVO> articleDTOS = new ArrayList<>();
@@ -236,19 +231,17 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public PageInfo<CommentVO> listArticleComments(Long id, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<CommentEntity> comments = commentDao.listArticleComments(id);
-        if (comments.isEmpty()) {
-            return new PageInfo(comments);
+        List<CommentEntity> commentEntityList = commentDao.listArticleComments(id);
+        if (commentEntityList.isEmpty()) {
+            return new PageInfo(commentEntityList);
         }
-        List<Long> userIds = new ArrayList<>();
-        for (CommentEntity entity : comments) {
-            userIds.add(entity.getUserId());
-        }
+        List<Long> userIds = commentEntityList.stream().map(CommentEntity::getUserId).collect(Collectors.toList());
+
         Map<Long, UserLoginEntity> mapUsers = userLoginDao.mapUserLoginByIds(userIds);
         List<CommentVO> resultComments = new ArrayList<>();
         UserLoginEntity userLoginEntity;
         CommentVO commentVO;
-        for (CommentEntity entity : comments) {
+        for (CommentEntity entity : commentEntityList) {
             commentVO = new CommentVO();
             BeanUtils.copyProperties(entity, commentVO);
             userLoginEntity = mapUsers.get(entity.getUserId());
@@ -256,7 +249,7 @@ public class ArticleServiceImpl implements ArticleService {
             commentVO.setAvatar(userLoginEntity.getAvatar());
             resultComments.add(commentVO);
         }
-        PageInfo pageInfo = new PageInfo(comments);
+        PageInfo pageInfo = new PageInfo(commentEntityList);
         pageInfo.setList(resultComments);
         return pageInfo;
     }

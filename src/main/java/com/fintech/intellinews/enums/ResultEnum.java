@@ -7,11 +7,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Created 2017-10-19 11:25
  */
 public enum ResultEnum {
-    /**
-     * 向前端返回的结果
-     */
+
+    /** 系统异常 */
     SYSTEM_ERROR(-1, "系统异常"),
+    /** 请求成功 **/
     SUCCESS(0, "succeed"),
+    /** 请求失败 **/
     FAILED(1, "failed"),
 
     ACCOUNT_NOT_EXIST_ERROR(1000, "账号不存在"),
@@ -46,8 +47,8 @@ public enum ResultEnum {
     UPDATE_USER_CONFIG_ERROR(40017, "更新用户频道配置失败"),
     ILLEGAL_JSON_FORMAT_ERROR(40018, "Json格式不合法");
 
-
     private Integer code;
+
     private String message;
 
     ResultEnum(Integer code, String message) {
