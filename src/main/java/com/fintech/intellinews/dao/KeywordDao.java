@@ -27,4 +27,11 @@ public interface KeywordDao {
      * @param entity 关键字对象
      */
     void insertKeyword(KeywordEntity entity);
+
+    /**
+     * 删除单个字的热搜关键字
+     *
+     * @return 影响的行数
+     */
+    int deleteSingleWordKeywords();
 }

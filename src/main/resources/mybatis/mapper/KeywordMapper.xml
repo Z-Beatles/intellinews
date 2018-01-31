@@ -24,4 +24,9 @@
         SET count = count + 1
         WHERE name = #{keyword}
     </update>
+
+    <delete id="deleteSingleWordKeywords">
+        DELETE FROM oi_keyword
+        WHERE char_length(name) <![CDATA[ < ]]> 2
+    </delete>
 </mapper>
