@@ -10,6 +10,8 @@ import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.UserConfigService;
 import com.fintech.intellinews.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,7 @@ public class UserConfigServiceImpl implements UserConfigService {
      * @param id 用户id
      * @return 配置对象
      */
+    @Cacheable(cacheNames = "userChannelConfig", key = "#id")
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ArrayNode getUserChannelConfig(Long id) {
@@ -52,6 +55,7 @@ public class UserConfigServiceImpl implements UserConfigService {
      * @param config 用户配置json
      * @return 配置对象
      */
+    @CacheEvict(cacheNames = "userChannelConfig", key = "#id")
     @Override
     public ArrayNode updateUserChannelConfig(Long id, String config) {
         ArrayNode configNode;

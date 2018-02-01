@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fintech.intellinews.util.JacksonUtil;
+import net.sf.ehcache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -23,6 +28,7 @@ import java.util.concurrent.Executor;
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableAsync(proxyTargetClass = true)
 @EnableScheduling
+@EnableCaching
 @ComponentScan(basePackages = {"com.fintech.intellinews"}, excludeFilters = {
         @ComponentScan.Filter(value = {
                 EnableWebMvc.class,
@@ -46,6 +52,21 @@ public class SpringAppConfig {
         taskExecutor.setQueueCapacity(200);
         taskExecutor.initialize();
         return taskExecutor;
+    }
+
+    @Bean
+    public EhCacheManagerFactoryBean cacheManager(ApplicationContext applicationContext) {
+        EhCacheManagerFactoryBean cacheManager = new EhCacheManagerFactoryBean();
+        cacheManager.setCacheManagerName("shiroEhcacheManager");
+        cacheManager.setConfigLocation(applicationContext.getResource("classpath:ehcache.xml"));
+        return cacheManager;
+    }
+
+    @Bean
+    public EhCacheCacheManager ehCacheCacheManager(CacheManager cacheManager){
+        EhCacheCacheManager ehCacheCacheManager = new EhCacheCacheManager();
+        ehCacheCacheManager.setCacheManager(cacheManager);
+        return ehCacheCacheManager;
     }
 
     @Bean

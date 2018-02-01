@@ -25,20 +25,11 @@ import java.util.HashMap;
  **/
 public class ShiroConfig {
 
-    @Bean(name = "shiroEhcacheManager")
-    public EhCacheManagerFactoryBean shiroEhcacheManager(ApplicationContext applicationContext) {
-        EhCacheManagerFactoryBean factory = new EhCacheManagerFactoryBean();
-        factory.setCacheManagerName("shiroEhcacheManager");
-        factory.setConfigLocation(applicationContext.getResource("classpath:ehcache-shiro.xml"));
-        return factory;
-    }
-
-    @Bean(name = "shiroCacheManagerForEhcache")
-    public EhCacheManager shiroCacheManagerForEhcache(
-            @Qualifier("shiroEhcacheManager") net.sf.ehcache.CacheManager shiroEhcacheManager) {
-        EhCacheManager shiroCacheManagerForEhcache = new EhCacheManager();
-        shiroCacheManagerForEhcache.setCacheManager(shiroEhcacheManager);
-        return shiroCacheManagerForEhcache;
+    @Bean(name = "shiroEhCacheManager")
+    public EhCacheManager shiroEhCacheManager(net.sf.ehcache.CacheManager shiroEhcacheManager) {
+        EhCacheManager shiroEhCacheManager = new EhCacheManager();
+        shiroEhCacheManager.setCacheManager(shiroEhcacheManager);
+        return shiroEhCacheManager;
     }
 
     @Bean(name = "sessionIdCookie")
@@ -86,10 +77,10 @@ public class ShiroConfig {
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager(Realm realm,
                                                      @Qualifier("sessionManager") SessionManager sessionManager,
-                                                     @Qualifier("shiroCacheManagerForEhcache") CacheManager shiroCacheManagerForEhcache) {
+                                                     CacheManager shiroEhCacheManager) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(realm);
-        defaultWebSecurityManager.setCacheManager(shiroCacheManagerForEhcache);
+        defaultWebSecurityManager.setCacheManager(shiroEhCacheManager);
         defaultWebSecurityManager.setSessionManager(sessionManager);
         return defaultWebSecurityManager;
     }

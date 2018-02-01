@@ -6,6 +6,7 @@ import com.fintech.intellinews.service.ChannelService;
 import com.fintech.intellinews.vo.ChannelVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class ChannelServiceImpl implements ChannelService {
      *
      * @return 频道列表
      */
+    @Cacheable(cacheNames = "channels")
     @Override
     public List<ChannelVO> listChannels() {
         List<ChannelEntity> channelEntities = channelDao.listAll();
