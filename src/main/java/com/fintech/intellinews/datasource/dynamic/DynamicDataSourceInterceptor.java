@@ -47,7 +47,7 @@ public class DynamicDataSourceInterceptor implements Interceptor {
                     lookUpKey = DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;
                 } else {
                     BoundSql boundSql = ms.getSqlSource().getBoundSql(args[1]);
-                    // 将sql中的换行符，指标符替换成空格
+                    // 将sql中的制表符、回车符、换行符替换成空格
                     String sql = boundSql.getSql().toLowerCase(Locale.CHINA).replaceAll("\\t\\r\\n", " ");
                     if (sql.matches(REGEX)) {
                         lookUpKey = DynamicDataSourceHolder.DATASOURCE_TYPE_MASTER;

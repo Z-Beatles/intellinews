@@ -145,6 +145,7 @@ public class SectionServiceImpl implements SectionService {
      * @param pageSize  页大小
      * @return 导航条目列表
      */
+    @Cacheable(cacheNames = "sectionsByStartWith", key = "#startWith + #pageNum + #pageSize")
     @Override
     public PageInfo<ListSectionVO> listByStartWith(String startWith, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);

@@ -13,7 +13,7 @@ import com.github.pagehelper.PageInfo;
 public interface ArticleService {
 
     /**
-     * 根据频道id获取文章
+     * 根据频道id获取文章列表
      *
      * @param channelId 频道id
      * @param pageNum   页数
