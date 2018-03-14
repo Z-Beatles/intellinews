@@ -1,7 +1,5 @@
 package com.fintech.intellinews.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fintech.intellinews.AppException;
 import com.fintech.intellinews.dao.*;
 import com.fintech.intellinews.entity.*;
@@ -9,7 +7,6 @@ import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.ArticleService;
 import com.fintech.intellinews.service.async.AsyncTaskService;
 import com.fintech.intellinews.util.DateUtil;
-import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.vo.ArticleVO;
 import com.fintech.intellinews.vo.CommentVO;
 import com.fintech.intellinews.vo.DetailsArticleVO;
@@ -18,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +31,6 @@ import java.util.stream.Collectors;
 @Service
 @SuppressWarnings("unchecked")
 public class ArticleServiceImpl implements ArticleService {
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private ArticleDao articleDao;
@@ -89,14 +84,13 @@ public class ArticleServiceImpl implements ArticleService {
                 articleCountEntity.setViewCount(0);
             }
             String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
-            ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
 
             ArticleVO articleDTO = new ArticleVO();
             articleDTO.setId(articleEntity.getId());
             articleDTO.setTitle(articleEntity.getTitle());
             articleDTO.setSource(articleEntity.getSource());
             articleDTO.setDate(date);
-            articleDTO.setKeywords(keywords);
+            articleDTO.setKeywords(articleEntity.getKeywords());
             articleDTO.setViewCount(articleCountEntity.getViewCount());
             articleDTO.setThumbnail(articleEntity.getThumbnail());
             articleDTOS.add(articleDTO);
@@ -142,14 +136,13 @@ public class ArticleServiceImpl implements ArticleService {
             Long articleId = articleEntity.getId();
             ArticleCountEntity articleCountEntity = articleCountEntityMap.get(articleId);
             String date = DateUtil.toCustomStringFromDate(articleEntity.getGmtCreate());
-            ArrayNode keywords = JacksonUtil.toArrayNodeFromString(objectMapper, articleEntity.getKeywords());
 
             ArticleVO articleDTO = new ArticleVO();
             articleDTO.setId(articleEntity.getId());
             articleDTO.setTitle(articleEntity.getTitle());
             articleDTO.setSource(articleEntity.getSource());
             articleDTO.setDate(date);
-            articleDTO.setKeywords(keywords);
+            articleDTO.setKeywords(articleEntity.getKeywords());
             articleDTO.setViewCount(articleCountEntity.getViewCount());
             articleDTO.setThumbnail(articleEntity.getThumbnail());
             articleDTOS.add(articleDTO);
@@ -204,6 +197,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @param id 文章id
      * @return 文章详情实体
      */
+    @Cacheable(cacheNames = "articleById", key = "#id")
     @Override
     @Transactional(rollbackFor = {RuntimeException.class})
     public DetailsArticleVO getDetailsArticleById(Long id) {

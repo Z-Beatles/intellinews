@@ -7,6 +7,7 @@ import com.fintech.intellinews.vo.AdvertiseVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
      * @param active   是否上架
      * @return 广告列表
      */
+    @Cacheable(cacheNames = "advertises", key = "T(String).valueOf(#pageNum).concat('-').concat(#pageSize).concat('-').concat(#active)")
     @Override
     public List<AdvertiseVO> listAdvertises(Integer pageNum, Integer pageSize, Boolean active) {
         AdvertiseEntity entity = new AdvertiseEntity();
