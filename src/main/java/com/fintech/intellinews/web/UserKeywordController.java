@@ -29,7 +29,7 @@ public class UserKeywordController {
     @Autowired
     private UserKeywordService userKeywordService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户的所有偏好关键字", produces = "application/json")
@@ -38,7 +38,7 @@ public class UserKeywordController {
         return ResultUtil.success(userKeywordService.getUserKeyWords(currentUserId));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "添加用户偏好关键字", produces = "application/json")

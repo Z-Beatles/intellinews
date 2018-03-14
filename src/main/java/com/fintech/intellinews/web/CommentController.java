@@ -22,7 +22,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @PutMapping("{commentId}/like")
     @ResponseBody
     @ApiOperation(value = "为指定评论点赞", produces = "application/json")
@@ -33,7 +33,7 @@ public class CommentController {
         return ResultUtil.success();
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @PutMapping("{commentId}/dislike")
     @ResponseBody
     @ApiOperation(value = "为指定评论点踩", produces = "application/json")

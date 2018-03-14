@@ -26,7 +26,7 @@ public class SessionController {
     @Autowired
     private SessionService sessionService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户登录", notes = "登录类型暂时可不填写，登陆成功返回用户id和一个名为‘sid’" +
@@ -51,7 +51,7 @@ public class SessionController {
         return ResultUtil.error(ResultEnum.REPEAT_LOGIN_ERROR, principal.getId());
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @DeleteMapping
     @ResponseBody
     @ApiOperation(value = "用户退出", produces = "application/json")

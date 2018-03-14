@@ -19,19 +19,19 @@ import java.lang.annotation.*;
 public @interface LimitIPRequest {
 
     /**
-     * 限制某时间段内可访问次数，默认500次
+     * 限制某时间段内可访问次数，默认5次
      */
-    int limitCounts() default 500;
+    int limitCounts() default 5;
 
     /**
-     * 限制访问的间段，默认为1天，即86400秒
+     * 限制访问的间段，默认为60秒
      */
-    int timeSecond() default 86400;
+    int timeSecond() default 60;
 
     /**
      * IP白名单，跳过访问次数检查
      */
-    String[] whiteList() default {};
+    String[] whiteList() default {"172.17.0.1"};
 
     /**
      * IP黑名单，无接口访问权限

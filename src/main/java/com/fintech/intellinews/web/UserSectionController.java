@@ -27,7 +27,7 @@ public class UserSectionController {
     @Autowired
     private UserSectionService userSectionService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户收藏的所有条目", produces = "application/json")
@@ -40,7 +40,7 @@ public class UserSectionController {
         return ResultUtil.success(userSectionService.getUserSections(currentUserId, pageNum, pageSize));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping("/{sectionId}")
     @ResponseBody
     @ApiOperation(value = "获取当前用户收藏的指定条目", notes = "用于判断用户是否收藏该条目", produces = "application/json")
@@ -51,7 +51,7 @@ public class UserSectionController {
         return ResultUtil.success(userSectionService.getUserSectionCollect(currentUserId, sectionId));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @PostMapping("/{sectionId}")
     @ResponseBody
     @ApiOperation(value = "用户收藏条目", produces = "application/json")
@@ -62,7 +62,7 @@ public class UserSectionController {
         return ResultUtil.success(userSectionService.insertUserSection(currentUserId, sectionId));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @DeleteMapping("/{sectionId}")
     @ResponseBody
     @ApiOperation(value = "取消收藏条目", produces = "application/json")

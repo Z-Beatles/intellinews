@@ -28,7 +28,7 @@ public class UserCommentController {
     @Autowired
     private CommentService commentService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户发表的所有评论", produces = "application/json")
@@ -41,7 +41,7 @@ public class UserCommentController {
         return ResultUtil.success(userService.getUserComments(currentUserId, pageNum, pageSize));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户发表文章评论", produces = "application/json")

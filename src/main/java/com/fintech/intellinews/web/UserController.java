@@ -24,7 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户注册", notes = "注册成功返回用户id", produces = "application/json")
@@ -39,7 +39,7 @@ public class UserController {
                 password));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping("/me")
     @ResponseBody
     @ApiOperation(value = "获取当前用户的个人信息", produces = "application/json")

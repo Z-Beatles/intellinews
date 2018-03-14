@@ -31,7 +31,7 @@ public class ChannelController {
     @Autowired
     private ArticleService articleService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取所有频道列表", produces = "application/json")
@@ -39,7 +39,7 @@ public class ChannelController {
         return ResultUtil.success(channelService.listChannels());
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping("/{channelId}/articles")
     @ResponseBody
     @ApiOperation(value = "据频道id获取频道下的文章", produces = "application/json")

@@ -24,7 +24,7 @@ public class KeywordController {
     @Autowired
     private KeywordService keywordService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取热门搜索关键字", produces = "application/json")

@@ -26,7 +26,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping("/{articleId}")
     @ResponseBody
     @ApiOperation(value = "根据文章id获取文章内容详情", produces = "application/json")
@@ -36,7 +36,7 @@ public class ArticleController {
         return ResultUtil.success(articleService.getDetailsArticleById(id));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping("/{articleId}/comments")
     @ResponseBody
     @ApiOperation(value = "根据文章id获取文章的评论", produces = "application/json")
@@ -50,6 +50,7 @@ public class ArticleController {
         return ResultUtil.success(articleService.listArticleComments(id, pageNum, pageSize));
     }
 
+    @LimitIPRequest
     @GetMapping("/search")
     @ResponseBody
     @ApiOperation(value = "通过关键字搜索文章", notes = "默认返回3条搜索结果，按发布时间、浏览数排序", produces = "application/json")

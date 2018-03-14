@@ -25,7 +25,7 @@ public class AdvertiseController {
     @Autowired
     private AdvertiseService advertiseService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取首页上架广告", notes = "默认返回4条上架广告", produces = "application/json")

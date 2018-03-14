@@ -26,7 +26,7 @@ public class UserConfigController {
     @Autowired
     private UserConfigService userConfigService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户的频道配置", produces = "application/json")
@@ -35,7 +35,7 @@ public class UserConfigController {
         return ResultUtil.success(userConfigService.getUserChannelConfig(currentUserId));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @PutMapping
     @ResponseBody
     @ApiOperation(value = "更新当前用户的频道配置", produces = "application/json")

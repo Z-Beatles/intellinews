@@ -28,7 +28,7 @@ public class UserArticleController {
     @Autowired
     private UserArticleService userArticleService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户收藏的所有文章", produces = "application/json")
@@ -41,7 +41,7 @@ public class UserArticleController {
         return ResultUtil.success(userArticleService.getUserCollectArticles(currentUserId, pageNum, pageSize));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping("/{articleId}")
     @ResponseBody
     @ApiOperation(value = "获取当前用户收藏的指定文章", notes = "用于判断当前用户是否收藏该文章", produces = "application/json")
@@ -52,7 +52,7 @@ public class UserArticleController {
         return ResultUtil.success(userArticleService.getUserArticle(currentUserId, articleId));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @ResponseBody
     @PostMapping("/{articleId}")
     @ApiOperation(value = "用户收藏文章", produces = "application/json")
@@ -63,7 +63,7 @@ public class UserArticleController {
         return ResultUtil.success(userArticleService.insertUserArticle(currentUserId, articleId));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @DeleteMapping("/{articleId}")
     @ResponseBody
     @ApiOperation(value = "用户取消收藏文章", produces = "application/json")

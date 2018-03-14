@@ -28,7 +28,7 @@ public class SectionController {
     @Autowired
     private SectionService sectionService;
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取所有条目列表", produces = "application/json")
@@ -40,7 +40,7 @@ public class SectionController {
         return ResultUtil.success(sectionService.listSections(pageNum, pageSize));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping("/{sectionId}")
     @ResponseBody
     @ApiOperation(value = "根据条目id获取条目详情", produces = "application/json")
@@ -50,7 +50,7 @@ public class SectionController {
         return ResultUtil.success(sectionService.getSectionById(sectionId));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping("/search")
     @ResponseBody
     @ApiOperation(value = "按条件搜索条目", notes = "可以按照关键字和首字母搜索，首字母格式为a~z", produces = "application/json")
@@ -67,7 +67,7 @@ public class SectionController {
         return ResultUtil.success(sectionService.listByKeyword(keyword, pageNum, pageSize));
     }
 
-    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
+    @LimitIPRequest
     @GetMapping("/{sectionId}/atlas")
     @ResponseBody
     @ApiOperation(value = "根据条目id获取指定类型的图谱信息", produces = "application/json")
