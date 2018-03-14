@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.annotation.LimitIPRequest;
 import com.fintech.intellinews.service.ArticleService;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.CommentVO;
@@ -25,6 +26,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping("/{articleId}")
     @ResponseBody
     @ApiOperation(value = "根据文章id获取文章内容详情", produces = "application/json")
@@ -34,6 +36,7 @@ public class ArticleController {
         return ResultUtil.success(articleService.getDetailsArticleById(id));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping("/{articleId}/comments")
     @ResponseBody
     @ApiOperation(value = "根据文章id获取文章的评论", produces = "application/json")

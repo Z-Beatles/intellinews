@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.annotation.LimitIPRequest;
 import com.fintech.intellinews.service.UserConfigService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -25,6 +26,7 @@ public class UserConfigController {
     @Autowired
     private UserConfigService userConfigService;
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户的频道配置", produces = "application/json")
@@ -33,6 +35,7 @@ public class UserConfigController {
         return ResultUtil.success(userConfigService.getUserChannelConfig(currentUserId));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @PutMapping
     @ResponseBody
     @ApiOperation(value = "更新当前用户的频道配置", produces = "application/json")

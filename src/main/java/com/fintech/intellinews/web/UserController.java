@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.annotation.LimitIPRequest;
 import com.fintech.intellinews.enums.ResultEnum;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -23,6 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户注册", notes = "注册成功返回用户id", produces = "application/json")
@@ -37,6 +39,7 @@ public class UserController {
                 password));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping("/me")
     @ResponseBody
     @ApiOperation(value = "获取当前用户的个人信息", produces = "application/json")

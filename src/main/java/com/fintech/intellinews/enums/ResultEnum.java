@@ -14,6 +14,8 @@ public enum ResultEnum {
     SUCCESS(0, "succeed"),
     /** 请求失败 **/
     FAILED(1, "failed"),
+    FREQUENTLY_IP_REQUEST_ERROR(2, "接口访问受限，访问过于频繁"),
+    BLACK_IP_REQUEST_ERROR(3, "接口访问受限，黑名单用户"),
 
     ACCOUNT_NOT_EXIST_ERROR(1000, "账号不存在"),
     WRONG_PASSWORD_ERROR(1003, "密码错误"),
@@ -45,7 +47,8 @@ public enum ResultEnum {
     ILLEGAL_MENU_TYPES_ERROR(40015, "不合法的菜单类型"),
     ILLEGAL_BUTTONS_NUMBER_ERROR(40016, "不合法的按钮个数"),
     UPDATE_USER_CONFIG_ERROR(40017, "更新用户频道配置失败"),
-    ILLEGAL_JSON_FORMAT_ERROR(40018, "Json格式不合法");
+    ILLEGAL_JSON_FORMAT_ERROR(40018, "Json格式不合法"),
+    ;
 
     private Integer code;
 

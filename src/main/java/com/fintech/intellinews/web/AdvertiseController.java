@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.annotation.LimitIPRequest;
 import com.fintech.intellinews.service.AdvertiseService;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.AdvertiseVO;
@@ -24,6 +25,7 @@ public class AdvertiseController {
     @Autowired
     private AdvertiseService advertiseService;
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取首页上架广告", notes = "默认返回4条上架广告", produces = "application/json")

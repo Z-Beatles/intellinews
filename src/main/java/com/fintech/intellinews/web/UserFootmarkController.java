@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.annotation.LimitIPRequest;
 import com.fintech.intellinews.service.UserFootmarkService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -27,6 +28,7 @@ public class UserFootmarkController {
     @Autowired
     private UserFootmarkService footmarkService;
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户的所有浏览足迹", produces = "application/json")
@@ -39,6 +41,7 @@ public class UserFootmarkController {
         return ResultUtil.success(footmarkService.getUserFootmarks(currentUserId, pageNum, pageSize));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "添加当前用户浏览足迹", produces = "application/json")
@@ -53,6 +56,7 @@ public class UserFootmarkController {
         return ResultUtil.success(footmarkService.addFootmark(currentUserId, contentId, source, contentType));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @DeleteMapping("/{footmarkId}")
     @ResponseBody
     @ApiOperation(value = "删除当前用户指定的浏览足迹", produces = "application/json")

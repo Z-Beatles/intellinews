@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.annotation.LimitIPRequest;
 import com.fintech.intellinews.service.UserKeywordService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -28,6 +29,7 @@ public class UserKeywordController {
     @Autowired
     private UserKeywordService userKeywordService;
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户的所有偏好关键字", produces = "application/json")
@@ -36,6 +38,7 @@ public class UserKeywordController {
         return ResultUtil.success(userKeywordService.getUserKeyWords(currentUserId));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "添加用户偏好关键字", produces = "application/json")

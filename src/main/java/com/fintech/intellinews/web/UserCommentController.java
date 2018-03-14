@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.annotation.LimitIPRequest;
 import com.fintech.intellinews.service.CommentService;
 import com.fintech.intellinews.service.UserService;
 import com.fintech.intellinews.util.ResultUtil;
@@ -27,6 +28,7 @@ public class UserCommentController {
     @Autowired
     private CommentService commentService;
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户发表的所有评论", produces = "application/json")
@@ -39,6 +41,7 @@ public class UserCommentController {
         return ResultUtil.success(userService.getUserComments(currentUserId, pageNum, pageSize));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @PostMapping
     @ResponseBody
     @ApiOperation(value = "用户发表文章评论", produces = "application/json")

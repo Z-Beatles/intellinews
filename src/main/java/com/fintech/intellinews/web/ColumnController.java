@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.annotation.LimitIPRequest;
 import com.fintech.intellinews.service.ColumnService;
 import com.fintech.intellinews.util.ResultUtil;
 import com.fintech.intellinews.vo.ColumnVO;
@@ -23,6 +24,7 @@ public class ColumnController {
     @Autowired
     private ColumnService columnService;
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取专栏列表", notes = "该接口暂未实现", produces = "application/json")

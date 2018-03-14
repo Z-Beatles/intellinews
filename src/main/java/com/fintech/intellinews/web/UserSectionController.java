@@ -1,6 +1,7 @@
 package com.fintech.intellinews.web;
 
 import com.fintech.intellinews.Result;
+import com.fintech.intellinews.annotation.LimitIPRequest;
 import com.fintech.intellinews.entity.UserSectionEntity;
 import com.fintech.intellinews.service.UserSectionService;
 import com.fintech.intellinews.service.UserService;
@@ -26,6 +27,7 @@ public class UserSectionController {
     @Autowired
     private UserSectionService userSectionService;
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping
     @ResponseBody
     @ApiOperation(value = "获取当前用户收藏的所有条目", produces = "application/json")
@@ -38,6 +40,7 @@ public class UserSectionController {
         return ResultUtil.success(userSectionService.getUserSections(currentUserId, pageNum, pageSize));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @GetMapping("/{sectionId}")
     @ResponseBody
     @ApiOperation(value = "获取当前用户收藏的指定条目", notes = "用于判断用户是否收藏该条目", produces = "application/json")
@@ -48,6 +51,7 @@ public class UserSectionController {
         return ResultUtil.success(userSectionService.getUserSectionCollect(currentUserId, sectionId));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @PostMapping("/{sectionId}")
     @ResponseBody
     @ApiOperation(value = "用户收藏条目", produces = "application/json")
@@ -58,6 +62,7 @@ public class UserSectionController {
         return ResultUtil.success(userSectionService.insertUserSection(currentUserId, sectionId));
     }
 
+    @LimitIPRequest(limitCounts = 5, timeSecond = 60, whiteList = {"119.31.210.76"})
     @DeleteMapping("/{sectionId}")
     @ResponseBody
     @ApiOperation(value = "取消收藏条目", produces = "application/json")
