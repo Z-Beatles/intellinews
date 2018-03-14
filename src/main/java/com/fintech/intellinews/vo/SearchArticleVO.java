@@ -1,12 +1,13 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author wanghao
  * create 2017-11-10 10:57
  **/
-public class SearchArticleVO {
+public class SearchArticleVO implements Serializable {
     private Long id;
     private String title;
     private String source;

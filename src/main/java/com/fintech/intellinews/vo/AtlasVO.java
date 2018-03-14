@@ -1,10 +1,12 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
+
 /**
  * @author waynechu
  * Created 2017-11-22 14:00
  */
-public class AtlasVO {
+public class AtlasVO implements Serializable {
     /** 文章/条目id */
     private Long id;
     /** 文章/条目标题 */

@@ -2,11 +2,13 @@ package com.fintech.intellinews.vo;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
+
 /**
  * @author wanghao
  * create 2017-11-10 14:31
  **/
-public class DetailsArticleVO {
+public class DetailsArticleVO implements Serializable {
     private Long id;
 
     private String title;

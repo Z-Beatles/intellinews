@@ -1,12 +1,9 @@
 package com.fintech.intellinews.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.fintech.intellinews.dao.cache.RedisDao;
-import com.fintech.intellinews.dao.session.RedisSessionDAO;
 import com.fintech.intellinews.datasource.DataSourceConnector;
 import com.fintech.intellinews.datasource.DruidDataSourceFactory;
 import com.fintech.intellinews.datasource.dynamic.DynamicDataSource;
-import com.fintech.intellinews.properties.JedisConnectProperties;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,8 +15,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -128,35 +123,6 @@ public class DataSourceConfig implements EnvironmentAware {
         mapperScanner.setBasePackage("com.fintech.intellinews.dao");
         mapperScanner.setSqlSessionFactoryBeanName("sqlSessionFactory");
         return mapperScanner;
-    }
-
-    @Bean("redisSessionDAO")
-    public RedisSessionDAO redisSessionDAO(RedisDao redisDao) {
-        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setRedisDao(redisDao);
-        // session有效期30分钟
-        redisSessionDAO.setExpire(1800);
-        redisSessionDAO.setKeyPrefix("shiro_redis_session:");
-        return redisSessionDAO;
-    }
-
-    @Bean("jedisPoolConfig")
-    public JedisPoolConfig jedisPoolConfig(JedisConnectProperties jedisConnectProperties) {
-        JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(jedisConnectProperties.getMaxTotal());
-        config.setMaxIdle(jedisConnectProperties.getMaxIdle());
-        config.setMaxWaitMillis(jedisConnectProperties.getMaxWaitMillis());
-        config.setTestOnBorrow(jedisConnectProperties.getTestOnBorrow());
-        return config;
-    }
-
-    @Bean("jedisPool")
-    public JedisPool jedisPool(JedisPoolConfig jedisPoolConfig, JedisConnectProperties jedisConnectProperties) {
-        String hostName = jedisConnectProperties.getHostName();
-        int port = jedisConnectProperties.getPort();
-        int timeout = jedisConnectProperties.getTimeout();
-        String password = jedisConnectProperties.getPassword();
-        return new JedisPool(jedisPoolConfig, hostName, port, timeout, password);
     }
 
     @Override

@@ -1,10 +1,12 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
+
 /**
  * @author wanghao
  * create 2017-11-23 11:32
  **/
-public class UserKeywordVO {
+public class UserKeywordVO implements Serializable {
     private Long id;
     private String keyword;
     private Integer attention;

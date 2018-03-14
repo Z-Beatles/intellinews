@@ -1,10 +1,12 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
+
 /**
  * @author waynechu
  * Created 2017-11-09 15:30
  */
-public class AdvertiseVO {
+public class AdvertiseVO implements Serializable {
     private Long id;
 
     private String title;

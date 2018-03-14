@@ -1,10 +1,12 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
+
 /**
  * @author waynechu
  * Created 2017-10-31 12:35
  */
-public class ArticleVO {
+public class ArticleVO implements Serializable {
     /** 文章id */
     private Long id;
     /** 文章标题 */

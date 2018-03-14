@@ -1,10 +1,12 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
+
 /**
  * @author wanghao
  * create 2017-11-10 16:49
  **/
-public class CommentVO {
+public class CommentVO implements Serializable {
     private Long id;
 
     private Long userId;

@@ -25,13 +25,6 @@ import java.util.HashMap;
  **/
 public class ShiroConfig {
 
-    @Bean(name = "shiroEhCacheManager")
-    public EhCacheManager shiroEhCacheManager(net.sf.ehcache.CacheManager shiroEhcacheManager) {
-        EhCacheManager shiroEhCacheManager = new EhCacheManager();
-        shiroEhCacheManager.setCacheManager(shiroEhcacheManager);
-        return shiroEhCacheManager;
-    }
-
     @Bean(name = "sessionIdCookie")
     public SimpleCookie sessionIdCookie() {
         SimpleCookie simpleCookie = new SimpleCookie("sid");
@@ -75,12 +68,9 @@ public class ShiroConfig {
     }
 
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager securityManager(Realm realm,
-                                                     @Qualifier("sessionManager") SessionManager sessionManager,
-                                                     CacheManager shiroEhCacheManager) {
+    public DefaultWebSecurityManager securityManager(Realm realm, SessionManager sessionManager) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(realm);
-        defaultWebSecurityManager.setCacheManager(shiroEhCacheManager);
         defaultWebSecurityManager.setSessionManager(sessionManager);
         return defaultWebSecurityManager;
     }

@@ -1,10 +1,12 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
+
 /**
  * @author wanghao
  * create 2017-11-13 16:13
  **/
-public class UserSectionVO {
+public class UserSectionVO implements Serializable {
     private Long id;
     private String name;
     private String logo;

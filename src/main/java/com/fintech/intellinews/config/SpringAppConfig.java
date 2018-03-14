@@ -35,7 +35,7 @@ import java.util.concurrent.Executor;
                 RestController.class
         })
 })
-@Import({DataSourceConfig.class, ShiroConfig.class, DruidMonitorConfig.class})
+@Import({DataSourceConfig.class, RedisConfig.class, ShiroConfig.class, DruidMonitorConfig.class})
 @PropertySource(value = "classpath:application.properties")
 public class SpringAppConfig {
 
@@ -52,21 +52,6 @@ public class SpringAppConfig {
         taskExecutor.setQueueCapacity(200);
         taskExecutor.initialize();
         return taskExecutor;
-    }
-
-    @Bean
-    public EhCacheManagerFactoryBean cacheManager(ApplicationContext applicationContext) {
-        EhCacheManagerFactoryBean cacheManager = new EhCacheManagerFactoryBean();
-        cacheManager.setCacheManagerName("shiroEhcacheManager");
-        cacheManager.setConfigLocation(applicationContext.getResource("classpath:ehcache.xml"));
-        return cacheManager;
-    }
-
-    @Bean
-    public EhCacheCacheManager ehCacheCacheManager(CacheManager cacheManager){
-        EhCacheCacheManager ehCacheCacheManager = new EhCacheCacheManager();
-        ehCacheCacheManager.setCacheManager(cacheManager);
-        return ehCacheCacheManager;
     }
 
     @Bean

@@ -17,7 +17,7 @@
         <junit.version>4.12</junit.version>
         <mockito.version>2.8.9</mockito.version>
         <logback.version>1.2.3</logback.version>
-        <spring.version>4.3.8.RELEASE</spring.version>
+        <spring.version>5.0.4.RELEASE</spring.version>
         <hikaricp.version>2.6.1</hikaricp.version>
         <druid-version>1.0.29</druid-version>
         <shiro.version>1.4.0</shiro.version>
@@ -28,11 +28,12 @@
         <pagehelper.version>5.1.2</pagehelper.version>
         <mybatis-generator.version>1.3.5</mybatis-generator.version>
         <jedis.version>2.9.0</jedis.version>
+        <spring-data-redis.version>2.0.5.RELEASE</spring-data-redis.version>
         <protostuff.version>1.1.1</protostuff.version>
         <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
         <dom4j.version>2.1.0</dom4j.version>
         <xstream.version>1.4.9</xstream.version>
-        <jackson.version>2.8.8</jackson.version>
+        <jackson.version>2.9.1</jackson.version>
         <guava.version>21.0</guava.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <commons-codec.version>1.10</commons-codec.version>
@@ -253,6 +254,11 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring-data-redis.version}</version>
         </dependency>
         <dependency>
             <groupId>com.dyuproject.protostuff</groupId>

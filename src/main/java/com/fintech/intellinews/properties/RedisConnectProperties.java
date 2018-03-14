@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
  * @author waynechu
  * Created 2017-12-20 13:12
  */
-@Component("jedisConnectProperties")
-public class JedisConnectProperties {
+@Component("redisConnectProperties")
+public class RedisConnectProperties {
 
     @Value("${spring.redis.hostName}")
     private String hostName;

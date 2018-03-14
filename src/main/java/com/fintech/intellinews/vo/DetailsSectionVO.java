@@ -2,11 +2,13 @@ package com.fintech.intellinews.vo;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.Serializable;
+
 /**
  * @author waynechu
  * Created 2017-11-11 23:22
  */
-public class DetailsSectionVO {
+public class DetailsSectionVO implements Serializable {
     private Long id;
 
     private String logo;

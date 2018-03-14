@@ -1,10 +1,12 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
+
 /**
  * @author waynechu
  * Created 2017-11-24 09:16
  */
-public class HotKeywordVO {
+public class HotKeywordVO implements Serializable {
     /** 关键字id */
     private Long id;
     /** 关键字名称 */

@@ -72,7 +72,7 @@ public class SectionServiceImpl implements SectionService {
      * @param pageSize 页大小
      * @return 条目列表
      */
-    @Cacheable(cacheNames = "sections", key = "#pageNum + #pageSize")
+    @Cacheable(cacheNames = "sections", key = "T(String).valueOf(#pageNum).concat('-').concat(#pageSize)")
     @Override
     public PageInfo<ListSectionVO> listSections(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);

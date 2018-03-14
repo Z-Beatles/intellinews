@@ -1,32 +1,41 @@
 package com.fintech.intellinews.dao.session;
 
-import com.fintech.intellinews.dao.cache.RedisDao;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fintech.intellinews.util.JacksonUtil;
 import com.fintech.intellinews.util.SerializableUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author waynechu
  * Created 2017-12-20 10:41
  */
+@Component
 public class RedisSessionDAO extends AbstractSessionDAO {
 
     private static Logger logger = LoggerFactory.getLogger(RedisSessionDAO.class);
 
-    private RedisDao redisDao;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
-     * session的有效时长，默认30分钟，单位毫秒
+     * session的有效时长，默认30分钟
      */
-    private int expire = 1800000;
+    private int defaultExpire = 30;
+    private TimeUnit defaultTimeUnit = TimeUnit.MINUTES;
 
     /**
      * session key的前缀
@@ -47,9 +56,9 @@ public class RedisSessionDAO extends AbstractSessionDAO {
             logger.error("session id is null");
             return null;
         }
-        byte[] value = redisDao.get(getPrefixKey(sessionId));
-        if (value != null) {
-            return SerializableUtils.deserialize(value);
+        Object result = redisTemplate.opsForValue().get(getPrefixKey(sessionId));
+        if (result != null) {
+            return (Session) redisTemplate.opsForValue().get(getPrefixKey(sessionId));
         }
         return null;
     }
@@ -65,27 +74,24 @@ public class RedisSessionDAO extends AbstractSessionDAO {
             logger.error("session or sessionId is null");
             return;
         }
-        redisDao.del(getPrefixKey(session.getId()));
+        redisTemplate.delete(getPrefixKey(session.getId()));
     }
 
     @Override
     public Collection<Session> getActiveSessions() {
         Set<Session> sessions = new HashSet<>();
-        Set<byte[]> keys = redisDao.keys(keyPrefix + "*");
-        if (keys != null && !keys.isEmpty()) {
-            byte[] value;
-            Session session;
-            for (byte[] key : keys) {
-                value = redisDao.get(getPrefixKey(Arrays.toString(key)));
-                session = SerializableUtils.deserialize(value);
-                sessions.add(session);
+        Set<String> keys = redisTemplate.keys(keyPrefix + "*");
+        if (!keys.isEmpty()) {
+            for (String key : keys) {
+                Object result = redisTemplate.opsForValue().get(key);
+                sessions.add((Session) result);
             }
         }
         return sessions;
     }
 
     /**
-     * 将前缀+sessionId 作为key
+     * key: keyPrefix+sessionId
      *
      * @param sessionId sessionId
      * @return key
@@ -101,29 +107,27 @@ public class RedisSessionDAO extends AbstractSessionDAO {
      */
     private void saveSession(Session session) {
         if (session == null || session.getId() == null) {
-            logger.error("session or session id is null");
+            logger.error("session or sessionId is null");
             return;
         }
         String key = getPrefixKey(session.getId());
-        byte[] value = SerializableUtils.serialize(session);
-        session.setTimeout(expire);
-        redisDao.setEx(key, value, expire);
+        redisTemplate.opsForValue().set(key, session, defaultExpire, defaultTimeUnit);
     }
 
-    public RedisDao getRedisDao() {
-        return redisDao;
+    public int getDefaultExpire() {
+        return defaultExpire;
     }
 
-    public void setRedisDao(RedisDao redisDao) {
-        this.redisDao = redisDao;
+    public void setDefaultExpire(int defaultExpire) {
+        this.defaultExpire = defaultExpire;
     }
 
-    public int getExpire() {
-        return expire;
+    public TimeUnit getDefaultTimeUnit() {
+        return defaultTimeUnit;
     }
 
-    public void setExpire(int expire) {
-        this.expire = expire;
+    public void setDefaultTimeUnit(TimeUnit defaultTimeUnit) {
+        this.defaultTimeUnit = defaultTimeUnit;
     }
 
     public String getKeyPrefix() {

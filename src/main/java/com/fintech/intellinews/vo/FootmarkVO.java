@@ -1,10 +1,12 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
+
 /**
  * @author wanghao
  * create 2017-11-13 14:54
  **/
-public class FootmarkVO {
+public class FootmarkVO implements Serializable {
     private Long id;
     private Long contentId;
     private String contentType;

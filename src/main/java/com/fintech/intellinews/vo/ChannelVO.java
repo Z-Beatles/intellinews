@@ -1,10 +1,12 @@
 package com.fintech.intellinews.vo;
 
+import java.io.Serializable;
+
 /**
  * @author waynechu
  * Created 2017-11-10 09:37
  */
-public class ChannelVO {
+public class ChannelVO implements Serializable{
     /** 频道id */
     private Long id;
     /** 频道英文名 */
