@@ -142,10 +142,10 @@ public class SectionServiceImpl implements SectionService {
      *
      * @param startWith 拼音首字母
      * @param pageNum   页数
-     * @param pageSize  页大小
+     * @param pageSize  页大小  T(String).valueOf(#pageNum).concat('-').concat(#pageSize)"
      * @return 导航条目列表
      */
-    @Cacheable(cacheNames = "sectionsByStartWith", key = "#startWith + #pageNum + #pageSize")
+    @Cacheable(cacheNames = "sectionsByStartWith", key = "#startWith.concat('-').concat(#pageNum).concat('-').concat(#pageSize)")
     @Override
     public PageInfo<ListSectionVO> listByStartWith(String startWith, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
